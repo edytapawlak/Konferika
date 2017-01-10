@@ -1,17 +1,20 @@
-package com.app.android.konferika;
+package com.app.android.konferika.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.android.konferika.Lecture;
+import com.app.android.konferika.R;
+import com.app.android.konferika.SectionHeader;
 import com.app.android.konferika.data.ActivityData;
 import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHeader, Lecture , SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
+public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHeader, Lecture, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
 
     Context context;
     private ArrayList<Lecture> mRefDataForData;
@@ -41,7 +44,7 @@ public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHe
 
     @Override
     public void onBindSectionViewHolder(SectionViewHolder sectionViewHolder, int sectionPosition, SectionHeader section) {
-        sectionViewHolder.name.setText(section.sectionText);
+        sectionViewHolder.name.setText(section.getSectionText());
     }
 
     @Override

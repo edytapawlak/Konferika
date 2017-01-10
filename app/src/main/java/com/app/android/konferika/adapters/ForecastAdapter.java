@@ -1,4 +1,4 @@
-package com.app.android.konferika;
+package com.app.android.konferika.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.app.android.konferika.Lecture;
+import com.app.android.konferika.R;
 import com.app.android.konferika.data.ActivityData;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
      * The interface that receives onClick messages.
      */
     public interface ForecastAdapterOnClickHandler {
-        void onClick(String text);
+        void onClick(int id);
     }
 
 
@@ -59,8 +61,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         public void onClick(View v) {
             String text =  mIdDataTextView.getText().toString();
             int position = Integer.parseInt(text);
-            String output =  mRefData.get(position).getAuthor();
-            mClickHandler.onClick(output);
+            mClickHandler.onClick(position);
         }
     }
 

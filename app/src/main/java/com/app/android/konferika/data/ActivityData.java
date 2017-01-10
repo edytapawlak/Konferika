@@ -14,10 +14,6 @@ public class ActivityData {
 
     private ArrayList<Lecture> lectures = new ArrayList<>();
 
-    public List<SectionHeader> getHeaders() {
-        return headers;
-    }
-
     private List<SectionHeader> headers = new LinkedList<>();
 
 
@@ -41,6 +37,9 @@ public class ActivityData {
 
     public ArrayList<Lecture> getLectures() {
         return this.lectures;
+    }
+    public List<SectionHeader> getHeaders() {
+        return headers;
     }
 }
 
