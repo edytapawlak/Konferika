@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--xmlns:auto="http://schemas.android.com/apk/res-auto" -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:id="@+id/activity_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.app.android.konferika.activities.DetailsActivity">
+
     <TextView
         android:id="@+id/tv_details_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/tv_details_abs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="#000"
+        android:textSize="18sp" />
+    <!--<io.github.kexanie.library.MathView
+        android:id="@+id/formula_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:engine="MathJax"
+        auto:text="When \\(a \\ne 0\\), there are two solutions to \\(ax^2 + bx + c = 0\\)
+        and they are $$x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}.$$"></io.github.kexanie.library.MathView>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_details_abs"
-        android:textSize="18sp"
-        android:textColor="#000"
-        android:layout_margin="10dp"/>
+        android:text="Formula two: from Java String with KaTeX"
+        android:textStyle="bold" />
+
+    <io.github.kexanie.library.MathView
+        android:id="@+id/formula_two"
+        auto:engine="KaTeX"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></io.github.kexanie.library.MathView>
+    -->
 
 </LinearLayout>

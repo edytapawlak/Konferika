@@ -1,10 +1,13 @@
 package com.app.android.konferika.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.app.android.konferika.Break;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.SectionHeader;
 
@@ -85,11 +88,11 @@ public class DatabaseAccess {
     }
 
     /**
-     * Return all lectures as ArrayList<Lecture>
+     * Return all lectures as ArrayList<Activity>
      */
 
-    public ArrayList<Lecture> getLectData() {
-        ArrayList<Lecture> list = new ArrayList<>();
+    public ArrayList<com.app.android.konferika.Activity> getLectData() {
+        ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref", null);
         cursor.moveToFirst();
         Lecture lec;
@@ -98,19 +101,27 @@ public class DatabaseAccess {
             list.add(lec);
             cursor.moveToNext();
         }
+        cursor = database.rawQuery("SELECT title FROM Break", null);
+        cursor.moveToFirst();
+        Break bre;
+        while (!cursor.isAfterLast()) {
+            bre = new Break(cursor.getString(0));
+            list.add(bre);
+            cursor.moveToNext();
+        }
 
         cursor.close();
         return list;
     }
 
     /**
-     * Return all lectures for date and time as ArrayList<Lecture>
+     * Return all lectures and brakes for date and time as ArrayList<Activity>
      *
      * @param date Date in format DD-MM-YY
      * @param time Time in format HH:MM
      */
-    public ArrayList<Lecture> getLectOnDateAndTime(String date, String time) {
-        ArrayList<Lecture> list = new ArrayList<>();
+    public ArrayList<com.app.android.konferika.Activity> getLectOnDateAndTime(String date, String time) {
+        ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref WHERE date=\"" + date + "\" AND startTime=\"" + time + "\"", null);
         cursor.moveToFirst();
         Lecture lec;
@@ -120,7 +131,31 @@ public class DatabaseAccess {
             cursor.moveToNext();
         }
 
+        cursor = database.rawQuery("SELECT title FROM Break WHERE startTime = \"" + time + "\"", null);
+        cursor.moveToFirst();
+        Break bre;
+        while (!cursor.isAfterLast()) {
+            bre = new Break(cursor.getString(0));
+            list.add(bre);
+            cursor.moveToNext();
+        }
+
         cursor.close();
+
+        for (int j = 0; j < list.size(); j++) {
+            String tekst;
+            Lecture lect;
+            Break brek = null;
+            if(list.get(j).isLecture()){
+                lect = (Lecture) list.get(j);
+                tekst = lect.getAuthor();
+            }else{
+                brek = (Break) list.get(j);
+                tekst = brek.getTitle();
+            }
+            Log.v("Msg: ", tekst + "\n");
+        }
+
         return list;
     }
 
@@ -131,7 +166,7 @@ public class DatabaseAccess {
 
     public String[] getAllStartTime() {
         String[] list = new String[15];
-        Cursor cursor = database.rawQuery("SELECT DISTINCT startTime FROM Ref ORDER BY time(startTime)", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM (SELECT startTime FROM Ref UNION SELECT startTime FROM Break) ORDER BY time(startTime)", null);
         cursor.moveToFirst();
         int i = 0;
         while (!cursor.isAfterLast()) {
@@ -140,6 +175,7 @@ public class DatabaseAccess {
             i++;
         }
         cursor.close();
+
         return list;
     }
 
@@ -153,8 +189,8 @@ public class DatabaseAccess {
 
     public List<SectionHeader> getChildForDate(String date) {
         String[] times = getAllStartTime();
-        ArrayList<Lecture> lectChild;
-        List<SectionHeader> list = new LinkedList<SectionHeader>();
+        ArrayList<com.app.android.konferika.Activity> lectChild;
+        List<SectionHeader> list = new LinkedList<>();
         SectionHeader sec;
         int i = 0;
 

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.app.android.konferika.Activity;
 import com.app.android.konferika.ScheduleFragment;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.adapters.AdapterSectionRecycler;
@@ -92,17 +93,17 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
      * This method is overridden by our MainActivity class in order to handle RecyclerView item
      * clicks. (Works when data is loaded with loadData() method)
      *
-     * @param id The id of lecture that was clicked
+     * @param lect Lecture that was clicked.
      */
     @Override
-    public void onClick(int id) {
+    public void onClick(Lecture lect) {
         Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra("lect", lect);
         startActivity(intent);
     }
 
 
-    public class FetchRefTask extends AsyncTask<Void, Void, ArrayList<Lecture>> {
+    public class FetchRefTask extends AsyncTask<Void, Void, ArrayList<Activity>> {
 
         @Override
         protected void onPreExecute() {
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         }
 
         @Override
-        protected ArrayList<Lecture> doInBackground(Void... params) {
+        protected ArrayList<Activity> doInBackground(Void... params) {
             Context context = getApplicationContext();
             ActivityData act = new ActivityData(context);
 
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Lecture> refData) {
+        protected void onPostExecute(ArrayList<Activity> refData) {
             mLoadingProgrressBar.setVisibility(View.INVISIBLE);
             if (refData != null) {
                 mForecastAdapter.setmRefData(refData);

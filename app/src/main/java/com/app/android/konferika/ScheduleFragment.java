@@ -17,6 +17,8 @@ import com.app.android.konferika.data.ActivityData;
 
 public class ScheduleFragment extends Fragment implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
+    private ActivityData act;
+
     public ScheduleFragment() {
     }
 
@@ -32,7 +34,7 @@ public class ScheduleFragment extends Fragment implements ForecastAdapter.Foreca
 
         Bundle bundle = getArguments();
         String date = bundle.getString("day");
-        ActivityData act = new ActivityData(getContext(), date);
+        act = new ActivityData(getContext(), date);
         AdapterSectionRecycler adapter = new AdapterSectionRecycler(getContext(), act.getHeaders(), this);
         recyclerView.setAdapter(adapter);
 
@@ -40,9 +42,9 @@ public class ScheduleFragment extends Fragment implements ForecastAdapter.Foreca
     }
 
     @Override
-    public void onClick(int id) {
+    public void onClick(Lecture lect) {
         Intent intent = new Intent(getActivity(), DetailsActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra("lect", lect);
         startActivity(intent);
     }
 }

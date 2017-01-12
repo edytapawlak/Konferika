@@ -2,6 +2,7 @@ package com.app.android.konferika.data;
 
 import android.content.Context;
 
+import com.app.android.konferika.Activity;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.SectionHeader;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ActivityData {
 
-    private ArrayList<Lecture> lectures = new ArrayList<>();
+    private ArrayList<Activity> lectures = new ArrayList<>();
 
     private List<SectionHeader> headers = new LinkedList<>();
 
@@ -35,7 +36,7 @@ public class ActivityData {
 
     }
 
-    public ArrayList<Lecture> getLectures() {
+    public ArrayList<Activity> getLectures() {
         return this.lectures;
     }
     public List<SectionHeader> getHeaders() {

@@ -4,17 +4,18 @@ import com.intrusoft.sectionedrecyclerview.Section;
 
 import java.util.ArrayList;
 
-public class SectionHeader implements Section<Lecture>{
-    ArrayList<Lecture> childList;
+public class SectionHeader implements Section<Activity>{
+    ArrayList<Activity> childList;
     String sectionText;
 
-    public SectionHeader(ArrayList<Lecture> childList, String sectionText) {
+
+    public SectionHeader(ArrayList<Activity> childList, String sectionText) {
         this.childList = childList;
         this.sectionText = sectionText;
     }
 
     @Override
-    public ArrayList<Lecture> getChildItems() {
+    public ArrayList<Activity> getChildItems() {
         return childList;
     }
 
@@ -22,7 +23,7 @@ public class SectionHeader implements Section<Lecture>{
         return sectionText;
     }
 
-    public void setChildList(ArrayList<Lecture> childList) {
+    public void setChildList(ArrayList<Activity> childList) {
         this.childList = childList;
     }
 

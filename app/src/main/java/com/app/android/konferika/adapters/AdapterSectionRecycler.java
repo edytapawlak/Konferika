@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.android.konferika.Activity;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
 import com.app.android.konferika.SectionHeader;
@@ -14,10 +15,10 @@ import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHeader, Lecture, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
+public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHeader, Activity, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
 
     Context context;
-    private ArrayList<Lecture> mRefDataForData;
+    private ArrayList<Activity> mRefDataForData;
     private final ForecastAdapter.ForecastAdapterOnClickHandler mClickHandler;
 
     public AdapterSectionRecycler(Context context, List<SectionHeader> sectionItemList, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
@@ -48,15 +49,20 @@ public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHe
     }
 
     @Override
-    public void onBindChildViewHolder(ForecastAdapter.ForecastAdapterViewHolder childViewHolder, int sectionPosition, int childPosition, Lecture child) {
-        childViewHolder.mRefDataTextView.setText(child.getTitle() );
-        childViewHolder.mAuthorTextView.setText(child.getAuthor());
-        int id = child.getId() - 1;
-        childViewHolder.mIdDataTextView.setText(id + "");
+    public void onBindChildViewHolder(ForecastAdapter.ForecastAdapterViewHolder childViewHolder, int sectionPosition, int childPosition, Activity child) {
+
+        if(child.isLecture()) {
+            Lecture lect = (Lecture) child;
+            childViewHolder.mRefDataTextView.setText(lect.getTitle());
+            childViewHolder.mAuthorTextView.setText(lect.getAuthor());
+            int id = lect.getId() - 1;
+            childViewHolder.mIdDataTextView.setText(id + "");
+        }
+        else {childViewHolder.mAuthorTextView.setText("PRZERWA");}
 
     }
 
-    public void setmRefData(ArrayList<Lecture> mRefDataForData) {
+    public void setmRefData(ArrayList<Activity> mRefDataForData) {
         this.mRefDataForData = mRefDataForData;
         notifyDataSetChanged();
     }

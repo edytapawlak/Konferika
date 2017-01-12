@@ -1,6 +1,7 @@
 package com.app.android.konferika;
+import java.io.Serializable;
 
-public class Lecture {
+public class Lecture implements Activity, Serializable {
     private  String title;
     private String author;
     private String abs;
@@ -35,5 +36,11 @@ public class Lecture {
 
     public int getId() {
         return id;
+    }
+
+
+    @Override
+    public boolean isLecture() {
+        return true;
     }
 }
