@@ -1,11 +1,16 @@
 package com.app.android.konferika.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Layout;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.android.konferika.Activity;
+import com.app.android.konferika.Break;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
 import com.app.android.konferika.SectionHeader;
@@ -53,12 +58,28 @@ public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHe
 
         if(child.isLecture()) {
             Lecture lect = (Lecture) child;
+            String title = lect.getTitle();
+            childViewHolder.mRefDataTextView.setTextSize(25);
+            childViewHolder.mRefDataTextView.setGravity(Gravity.LEFT);
+            childViewHolder.mCardView.setCardBackgroundColor(Color.WHITE);
             childViewHolder.mRefDataTextView.setText(lect.getTitle());
+            String author = lect.getAuthor();
             childViewHolder.mAuthorTextView.setText(lect.getAuthor());
             int id = lect.getId() - 1;
             childViewHolder.mIdDataTextView.setText(id + "");
         }
-        else {childViewHolder.mAuthorTextView.setText("PRZERWA");}
+        else {
+            Break bre = (Break) child;
+            int unicode = 0x1F357; // 0x2615;
+            String emoji = new String(Character.toChars(unicode));
+            childViewHolder.mAuthorTextView.setText(bre.getTitle());
+            childViewHolder.mRefDataTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+            childViewHolder.mRefDataTextView.setTextSize(45);
+            childViewHolder.mRefDataTextView.setText(emoji);
+            childViewHolder.mIdDataTextView.setText("");
+            int coffeColor = Color.rgb(228, 226, 217);
+            childViewHolder.mCardView.setCardBackgroundColor(coffeColor);
+        }
 
     }
 

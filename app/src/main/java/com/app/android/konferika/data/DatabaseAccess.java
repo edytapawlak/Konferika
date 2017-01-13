@@ -93,7 +93,7 @@ public class DatabaseAccess {
 
     public ArrayList<com.app.android.konferika.Activity> getLectData() {
         ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref ORDER BY _id", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
@@ -101,6 +101,7 @@ public class DatabaseAccess {
             list.add(lec);
             cursor.moveToNext();
         }
+        cursor.close();
         cursor = database.rawQuery("SELECT title FROM Break", null);
         cursor.moveToFirst();
         Break bre;
@@ -111,6 +112,22 @@ public class DatabaseAccess {
         }
 
         cursor.close();
+
+        /*for (int j = 0; j < list.size(); j++) {
+            String tekst;
+            Lecture lect;
+            Break brek = null;
+            if(list.get(j).isLecture()){
+                lect = (Lecture) list.get(j);
+                tekst = lect.getTitle() +" "+ lect.getId();
+                Log.v("Lecture ", tekst +"\n");
+            }else{
+                brek = (Break) list.get(j);
+                tekst = brek.getTitle();
+                Log.v("Break ", tekst +"\n");
+            }
+        }*/
+
         return list;
     }
 
@@ -130,6 +147,7 @@ public class DatabaseAccess {
             list.add(lec);
             cursor.moveToNext();
         }
+        cursor.close();
 
         cursor = database.rawQuery("SELECT title FROM Break WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
@@ -142,19 +160,20 @@ public class DatabaseAccess {
 
         cursor.close();
 
-        for (int j = 0; j < list.size(); j++) {
+        /*for (int j = 0; j < list.size(); j++) {
             String tekst;
             Lecture lect;
             Break brek = null;
             if(list.get(j).isLecture()){
                 lect = (Lecture) list.get(j);
-                tekst = lect.getAuthor();
+                tekst = lect.getTitle();
+                Log.v("Lecture ", tekst +"\n");
             }else{
                 brek = (Break) list.get(j);
                 tekst = brek.getTitle();
+                Log.v("Break ", tekst +"\n");
             }
-            Log.v("Msg: ", tekst + "\n");
-        }
+        }*/
 
         return list;
     }

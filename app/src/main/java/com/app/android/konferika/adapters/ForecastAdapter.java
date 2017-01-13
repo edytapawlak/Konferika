@@ -1,6 +1,7 @@
 package com.app.android.konferika.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         public final TextView mRefDataTextView;
         public final TextView mAuthorTextView;
         public final TextView mIdDataTextView;
+        public final CardView mCardView;
 
 
         public ForecastAdapterViewHolder(View itemView) {
@@ -56,6 +58,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             mRefDataTextView = (TextView) itemView.findViewById(R.id.tv_ref);
             mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
             mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
+            mCardView = (CardView) itemView.findViewById(R.id.forecast_card_view);
             itemView.setOnClickListener(this);
 
         }
@@ -63,13 +66,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         @Override
         public void onClick(View v) {
             String text = mIdDataTextView.getText().toString();
-            int position = Integer.parseInt(text);
-            Activity activ = mRefData.get(position);
-            if (activ.isLecture()) {
-                Lecture lect = (Lecture) activ;
-                mClickHandler.onClick(lect);
-            }
-            else{
+            if (text != "") {
+                int position = Integer.parseInt(text);
+                Activity activ = mRefData.get(position);
+                if (activ.isLecture()) {
+                    Lecture lect = (Lecture) activ;
+                    mClickHandler.onClick(lect);
+                }
+            } else {
                 Toast.makeText(v.getContext(), "Przerwa", Toast.LENGTH_SHORT).show();
             }
         }
@@ -91,7 +95,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder holder, int position) {
-        Activity activity = mRefData.get(position);
+        /*Activity activity = mRefData.get(position);
 
 
         //to się nie wykonuje przy section
@@ -107,7 +111,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         } else {
             Break brea = (Break) activity;
             holder.mAuthorTextView.setText("PRZERWA");
-        }
+        }*/
 
     }
 
