@@ -20,17 +20,14 @@ import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHeader, Activity, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
+public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHeader, Activity, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
 
     Context context;
-    private ArrayList<Activity> mRefDataForData;
     private final ForecastAdapter.ForecastAdapterOnClickHandler mClickHandler;
 
-    public AdapterSectionRecycler(Context context, List<SectionHeader> sectionItemList, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
+    public SectionForecastAdapter(Context context, List<SectionHeader> sectionItemList, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
         super(context, sectionItemList);
         this.context = context;
-        ActivityData ad = new ActivityData(context);
-        this.mRefDataForData = ad.getLectures();
         this.mClickHandler = clickHandler;
 
     }
@@ -58,10 +55,5 @@ public class AdapterSectionRecycler extends SectionRecyclerViewAdapter<SectionHe
 
         child.setContent(childViewHolder);
 
-    }
-
-    public void setmRefData(ArrayList<Activity> mRefDataForData) {
-        this.mRefDataForData = mRefDataForData;
-        notifyDataSetChanged();
     }
 }

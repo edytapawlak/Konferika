@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.app.android.konferika.activities.ScheduleFragment;
+import com.app.android.konferika.activities.DayScheduleFragment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +29,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 2:
                 bundle.putString("day", "26-01-17");
+                break;
         }
-        ScheduleFragment sh = new ScheduleFragment();
+        DayScheduleFragment sh = new DayScheduleFragment();
         sh.setArguments(bundle);
         return sh;
     }

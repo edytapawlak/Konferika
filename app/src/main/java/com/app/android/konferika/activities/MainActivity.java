@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.app.android.konferika.Activity;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
-import com.app.android.konferika.adapters.AdapterSectionRecycler;
+import com.app.android.konferika.adapters.SectionForecastAdapter;
 import com.app.android.konferika.adapters.ForecastAdapter;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
@@ -24,14 +24,14 @@ import com.app.android.konferika.data.ActivityData;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ForecastAdapter.ForecastAdapterOnClickHandler {
-
+public class MainActivity extends AppCompatActivity //implements ForecastAdapter.ForecastAdapterOnClickHandler {
+{
     private RecyclerView mRecyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
     private ForecastAdapter mForecastAdapter;
 
-    private AdapterSectionRecycler adapterRecycler;
+    private SectionForecastAdapter adapterRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +63,16 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new ScheduleFragment(), "Piątek");
-        adapter.addFrag(new ScheduleFragment(), "Sobota");
-        adapter.addFrag(new ScheduleFragment(), "Niedziela");
+        adapter.addFrag(new DayScheduleFragment(), "Piątek");
+        adapter.addFrag(new DayScheduleFragment(), "Sobota");
+        adapter.addFrag(new DayScheduleFragment(), "Niedziela");
         viewPager.setAdapter(adapter);
     }
 
     /**
      * Load data and bind it with views
      */
-    private void loadData() {
+   /* private void loadData() {
             mForecastAdapter = new ForecastAdapter(this, this);
             mRecyclerView.setAdapter(mForecastAdapter);
             new FetchRefTask().execute();
@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
      *
      * @param lect Lecture that was clicked.
      */
-    @Override
+  /*  @Override
     public void onClick(Lecture lect) {
-        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent.putExtra("lect", lect);
-        startActivity(intent);
+     //   Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+     //   intent.putExtra("lect", lect);
+     //   startActivity(intent);
     }
 
 
@@ -113,9 +113,8 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
         @Override
         protected ArrayList<Activity> doInBackground(Void... params) {
             Context context = getApplicationContext();
-            ActivityData act = new ActivityData(context);
 
-            return act.getLectures();
+            return ActivityData.getLectures(context);
         }
 
         @Override
@@ -129,5 +128,5 @@ public class MainActivity extends AppCompatActivity implements ForecastAdapter.F
             }
         }
     }
-
+*/
 }

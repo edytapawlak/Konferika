@@ -32,8 +32,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
 
     public ForecastAdapter(Context con, ForecastAdapterOnClickHandler listener) {
-        ActivityData ad = new ActivityData(con);
-        this.mRefData = ad.getLectures();
+        this.mRefData = ActivityData.getLectures(con);
         this.mClickHandler = listener;
     }
 
@@ -67,8 +66,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         public void onClick(View v) {
             String text = mIdDataTextView.getText().toString();
             if (text != "") {
-                int position = Integer.parseInt(text);
-                Activity activ = mRefData.get(position);
+                int id = Integer.parseInt(text);
+                Activity activ = mRefData.get(id);
                 if (activ.isLecture()) {
                     Lecture lect = (Lecture) activ;
                     mClickHandler.onClick(lect);
@@ -95,24 +94,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder holder, int position) {
-        /*Activity activity = mRefData.get(position);
-
-
-        //to się nie wykonuje przy section
+        // Nieużywany kod, ale wyświetla wszystkie referaty.
+        Activity activity = mRefData.get(position);
         if (activity.isLecture()) {
-            Lecture lecData = (Lecture) activity;
-            String dataForRef = lecData.getTitle();
-            String dataAuthor = lecData.getAuthor();
-            int id = lecData.getId() - 1;
-
-            holder.mRefDataTextView.setText(dataForRef);
-            holder.mAuthorTextView.setText(dataAuthor);
-            holder.mIdDataTextView.setText(id + "");
-        } else {
-            Break brea = (Break) activity;
-            holder.mAuthorTextView.setText("PRZERWA");
-        }*/
-
+            activity.setContent(holder);
+        }
     }
 
     @Override

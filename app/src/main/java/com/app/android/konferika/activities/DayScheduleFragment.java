@@ -12,16 +12,18 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
-import com.app.android.konferika.activities.DetailsActivity;
-import com.app.android.konferika.adapters.AdapterSectionRecycler;
+import com.app.android.konferika.SectionHeader;
+import com.app.android.konferika.adapters.SectionForecastAdapter;
 import com.app.android.konferika.adapters.ForecastAdapter;
 import com.app.android.konferika.data.ActivityData;
 
-public class ScheduleFragment extends Fragment implements ForecastAdapter.ForecastAdapterOnClickHandler {
+import java.util.List;
+
+public class DayScheduleFragment extends Fragment implements ForecastAdapter.ForecastAdapterOnClickHandler {
 
     private ActivityData act;
 
-    public ScheduleFragment() {
+    public DayScheduleFragment() {
     }
 
     @Nullable
@@ -36,8 +38,8 @@ public class ScheduleFragment extends Fragment implements ForecastAdapter.Foreca
 
         Bundle bundle = getArguments();
         String date = bundle.getString("day");
-        act = new ActivityData(getContext(), date);
-        AdapterSectionRecycler adapter = new AdapterSectionRecycler(getContext(), act.getHeaders(), this);
+        List<SectionHeader> act = ActivityData.getHeaders(getContext(), date);
+        SectionForecastAdapter adapter = new SectionForecastAdapter(getContext(), act, this);
         recyclerView.setAdapter(adapter);
 
         return view;
