@@ -4,6 +4,11 @@ import com.app.android.konferika.adapters.ForecastAdapter;
 
 public interface Activity {
         boolean isLecture();
-        //void setContent(ForecastAdapter.ForecastAdapterViewHolder holder);
+
+    /**
+     * This method sets data to layout.
+     * @param holder
+     */
+        void setContent(ForecastAdapter.ForecastAdapterViewHolder holder);
 }
 

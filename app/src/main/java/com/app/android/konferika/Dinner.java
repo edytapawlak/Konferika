@@ -3,15 +3,16 @@ package com.app.android.konferika;
 import android.graphics.Color;
 import android.view.Gravity;
 
+import com.app.android.konferika.Activity;
 import com.app.android.konferika.adapters.ForecastAdapter;
 
-public class Break implements Activity {
+public class Dinner implements Activity{
 
     private String startTime;
     private String endTime;
     private String title;
 
-    public Break(String title) {
+    public Dinner(String title) {
         this.title = title;
     }
 
@@ -22,7 +23,7 @@ public class Break implements Activity {
 
     @Override
     public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
-        int unicode = 0x2615;
+        int unicode = 0x1F357;
         String emoji = new String(Character.toChars(unicode));
         holder.mAuthorTextView.setGravity(Gravity.CENTER);
         holder.mAuthorTextView.setText(this.getTitle());
@@ -30,7 +31,7 @@ public class Break implements Activity {
         holder.mRefDataTextView.setTextSize(45);
         holder.mRefDataTextView.setText(emoji);
         holder.mIdDataTextView.setText("");
-        int coffeColor = Color.rgb(228, 226, 217);
+        int coffeColor = Color.rgb(228, 227, 217);
         holder.mCardView.setCardBackgroundColor(coffeColor);
     }
 
@@ -46,3 +47,4 @@ public class Break implements Activity {
         return title;
     }
 }
+

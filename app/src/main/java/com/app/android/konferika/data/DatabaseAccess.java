@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.app.android.konferika.Break;
+import com.app.android.konferika.Dinner;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.SectionHeader;
 
@@ -105,9 +106,16 @@ public class DatabaseAccess {
         cursor = database.rawQuery("SELECT title FROM Break", null);
         cursor.moveToFirst();
         Break bre;
+        Dinner din;
         while (!cursor.isAfterLast()) {
-            bre = new Break(cursor.getString(0));
-            list.add(bre);
+
+            if (cursor.getString(0).equals("Przerwa kawowa")) {
+                bre = new Break(cursor.getString(0));
+                list.add(bre);
+            } else {
+                din = new Dinner(cursor.getString(0));
+                list.add(din);
+            }
             cursor.moveToNext();
         }
 
@@ -151,10 +159,18 @@ public class DatabaseAccess {
 
         cursor = database.rawQuery("SELECT title FROM Break WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
-        Break bre;
+        com.app.android.konferika.Activity bre;
         while (!cursor.isAfterLast()) {
-            bre = new Break(cursor.getString(0));
-            list.add(bre);
+
+            // TODO: Zrobić to lepiej.
+
+            if (cursor.getString(0).equals("Przerwa kawowa")) {
+                bre = new Break(cursor.getString(0));
+                list.add(bre);
+            } else {
+                bre = new Dinner(cursor.getString(0));
+                list.add(bre);
+            }
             cursor.moveToNext();
         }
 

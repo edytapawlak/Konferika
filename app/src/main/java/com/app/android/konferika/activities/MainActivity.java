@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.app.android.konferika.Activity;
-import com.app.android.konferika.ScheduleFragment;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.adapters.AdapterSectionRecycler;
 import com.app.android.konferika.adapters.ForecastAdapter;

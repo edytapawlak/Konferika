@@ -1,4 +1,4 @@
-package com.app.android.konferika;
+package com.app.android.konferika.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.android.konferika.Lecture;
+import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DetailsActivity;
 import com.app.android.konferika.adapters.AdapterSectionRecycler;
 import com.app.android.konferika.adapters.ForecastAdapter;

@@ -1,4 +1,9 @@
 package com.app.android.konferika;
+import android.graphics.Color;
+import android.view.Gravity;
+
+import com.app.android.konferika.adapters.ForecastAdapter;
+
 import java.io.Serializable;
 
 public class Lecture implements Activity, Serializable {
@@ -42,5 +47,18 @@ public class Lecture implements Activity, Serializable {
     @Override
     public boolean isLecture() {
         return true;
+    }
+
+    @Override
+    public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
+
+        holder.mRefDataTextView.setTextSize(25);
+        holder.mRefDataTextView.setGravity(Gravity.LEFT);
+        holder.mCardView.setCardBackgroundColor(Color.WHITE);
+        holder.mRefDataTextView.setText(this.getTitle());
+        holder.mAuthorTextView.setGravity(Gravity.LEFT);
+        holder.mAuthorTextView.setText(this.getAuthor());
+        int id = this.getId() - 1;
+        holder.mIdDataTextView.setText(id + "");
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import com.app.android.konferika.ScheduleFragment;
+import com.app.android.konferika.activities.ScheduleFragment;
 import java.util.ArrayList;
 import java.util.List;
 
