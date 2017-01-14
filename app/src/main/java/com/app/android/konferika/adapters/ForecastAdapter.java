@@ -1,6 +1,8 @@
 package com.app.android.konferika.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Vibrator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,16 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.Activity;
-import com.app.android.konferika.Break;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
+import com.app.android.konferika.UsersSchedule;
+import com.app.android.konferika.activities.MyScheduleActivity;
 import com.app.android.konferika.data.ActivityData;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.x;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
-    private ArrayList<Activity> mRefData;
+    private List<Activity> mRefData;
 
     private final ForecastAdapterOnClickHandler mClickHandler;
 
@@ -44,7 +50,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     /**
      * Cache of the children views for a forecast list item
      */
-    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         public final TextView mRefDataTextView;
         public final TextView mAuthorTextView;
@@ -58,7 +64,9 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
             mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
             mCardView = (CardView) itemView.findViewById(R.id.forecast_card_view);
+            mCardView.setLongClickable(true);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
 
@@ -76,8 +84,45 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 Toast.makeText(v.getContext(), "Przerwa", Toast.LENGTH_SHORT).show();
             }
         }
-    }
 
+        @Override
+        public boolean onLongClick(View v) {
+            String text = mIdDataTextView.getText().toString();
+            if (text != "") {
+                int id = Integer.parseInt(text);
+                Activity activ = mRefData.get(id);
+
+                if (ViewPagerAdapter.getScheduleId() == 0) {
+                    addLectToUserSchedule(v, activ);
+                    Toast.makeText(v.getContext(), "Dodano do planu", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    deleteLectFromUserSchedule(v, activ);
+                    Toast.makeText(v.getContext(), "Usuwam", Toast.LENGTH_SHORT).show();
+                    Intent in = new Intent(v.getContext(), MyScheduleActivity.class);
+                    // v.getContext().startActivity(in);
+                }
+            }
+            return true;
+        }
+
+        private void addLectToUserSchedule(View v, Activity activ) {
+            if (activ.isLecture()) {
+                UsersSchedule.addActivity(v.getContext(), activ);
+                Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(100);
+            }
+        }
+
+        private void deleteLectFromUserSchedule(View v, Activity activ) {
+            if (activ.isLecture()) {
+                UsersSchedule.deleteActivity(v.getContext(), activ);
+                Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(100);
+            }
+        }
+
+    }
 
     @Override
     public ForecastAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -113,4 +158,5 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         mRefData = refData;
         notifyDataSetChanged();
     }
+
 }

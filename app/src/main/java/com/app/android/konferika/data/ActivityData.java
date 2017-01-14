@@ -14,11 +14,13 @@ import java.util.List;
 
 public class ActivityData {
 
-    private static ArrayList<Activity> lectures;
+    private static List<Activity> lectures;
 
     private static List<SectionHeader> headers;
 
-    public static ArrayList<Activity> getLectures(Context cont) {
+    private static Activity[] breaks;
+
+    public static List<Activity> getLectures(Context cont) {
         if (lectures == null) {
             new ActivityData(cont);
         }
@@ -32,7 +34,7 @@ public class ActivityData {
         return headers;
     }
 
-    public static ArrayList<Activity> getLectures(Context cont, String date) {
+    public static List<Activity> getLectures(Context cont, String date) {
         if (lectures == null) {
             new ActivityData(cont, date);
         }
@@ -60,6 +62,16 @@ public class ActivityData {
 
         databaseAccess.close();
 
+    }
+
+    public static Activity[] getBreaks(Context context) {
+        if (breaks == null) {
+            DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
+            databaseAccess.open();
+            breaks = databaseAccess.getBrakes();
+            databaseAccess.close();
+        }
+        return breaks;
     }
 
     /*public ArrayList<Activity> getLectures() {

@@ -1,12 +1,9 @@
 package com.app.android.konferika.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import com.app.android.konferika.Break;
 import com.app.android.konferika.Dinner;
 import com.app.android.konferika.Lecture;
@@ -94,26 +91,26 @@ public class DatabaseAccess {
 
     public ArrayList<com.app.android.konferika.Activity> getLectData() {
         ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref ORDER BY _id", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id, startTime FROM Ref ORDER BY _id", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
             list.add(lec);
             cursor.moveToNext();
         }
         cursor.close();
-        cursor = database.rawQuery("SELECT title FROM Break", null);
+        cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
         cursor.moveToFirst();
         Break bre;
         Dinner din;
         while (!cursor.isAfterLast()) {
 
             if (cursor.getString(0).equals("Przerwa kawowa")) {
-                bre = new Break(cursor.getString(0));
+                bre = new Break(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             } else {
-                din = new Dinner(cursor.getString(0));
+                din = new Dinner(cursor.getString(0), cursor.getString(1));
                 list.add(din);
             }
             cursor.moveToNext();
@@ -147,17 +144,17 @@ public class DatabaseAccess {
      */
     public ArrayList<com.app.android.konferika.Activity> getLectOnDateAndTime(String date, String time) {
         ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id FROM Ref WHERE date=\"" + date + "\" AND startTime=\"" + time + "\"", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id, startTime FROM Ref WHERE date=\"" + date + "\" AND startTime=\"" + time + "\"", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
             list.add(lec);
             cursor.moveToNext();
         }
         cursor.close();
 
-        cursor = database.rawQuery("SELECT title FROM Break WHERE startTime = \"" + time + "\"", null);
+        cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
         com.app.android.konferika.Activity bre;
         while (!cursor.isAfterLast()) {
@@ -165,10 +162,10 @@ public class DatabaseAccess {
             // TODO: Zrobić to lepiej.
 
             if (cursor.getString(0).equals("Przerwa kawowa")) {
-                bre = new Break(cursor.getString(0));
+                bre = new Break(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             } else {
-                bre = new Dinner(cursor.getString(0));
+                bre = new Dinner(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             }
             cursor.moveToNext();
@@ -237,4 +234,31 @@ public class DatabaseAccess {
         }
         return list;
     }
+
+
+    public com.app.android.konferika.Activity[] getBrakes(){
+        com.app.android.konferika.Activity[] list = new com.app.android.konferika.Activity[10];
+        Cursor cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
+        cursor.moveToFirst();
+        com.app.android.konferika.Activity bre;
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+
+            // TODO: Zrobić to lepiej.
+
+            if (cursor.getString(0).equals("Przerwa kawowa")) {
+                bre = new Break(cursor.getString(0), cursor.getString(1));
+                list[i] = bre;
+            } else {
+                bre = new Dinner(cursor.getString(0), cursor.getString(1));
+                list[i] = bre;
+            }
+            cursor.moveToNext();
+            i++;
+        }
+
+        cursor.close();
+        return list;
+    }
+
 }

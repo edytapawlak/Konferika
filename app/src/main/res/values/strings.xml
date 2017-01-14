@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">"θβℓιcℤε"</string>
     <string name="error_message">Error occured</string>
+    <string name="menu_title_my_sched">Mój plan</string>
 </resources>

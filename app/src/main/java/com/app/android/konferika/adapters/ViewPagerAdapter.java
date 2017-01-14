@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.app.android.konferika.activities.DayScheduleFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
+    private static int scheduleId;
+
+    public static void setScheduleId(int id){
+        scheduleId = id;
+    }
+
+    public static int getScheduleId(){
+
+        return scheduleId;
+    }
 
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
@@ -31,6 +42,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 bundle.putString("day", "26-01-17");
                 break;
         }
+
+
         DayScheduleFragment sh = new DayScheduleFragment();
         sh.setArguments(bundle);
         return sh;

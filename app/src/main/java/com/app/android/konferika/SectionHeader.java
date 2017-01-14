@@ -3,19 +3,20 @@ package com.app.android.konferika;
 import com.intrusoft.sectionedrecyclerview.Section;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SectionHeader implements Section<Activity>{
-    ArrayList<Activity> childList;
+    List<Activity> childList;
     String sectionText;
 
 
-    public SectionHeader(ArrayList<Activity> childList, String sectionText) {
+    public SectionHeader(List<Activity> childList, String sectionText) {
         this.childList = childList;
         this.sectionText = sectionText;
     }
 
     @Override
-    public ArrayList<Activity> getChildItems() {
+    public List<Activity> getChildItems() {
         return childList;
     }
 

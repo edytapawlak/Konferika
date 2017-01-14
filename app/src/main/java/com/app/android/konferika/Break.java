@@ -11,8 +11,9 @@ public class Break implements Activity {
     private String endTime;
     private String title;
 
-    public Break(String title) {
+    public Break(String title, String startTime) {
         this.title = title;
+        this.startTime = startTime;
     }
 
     @Override

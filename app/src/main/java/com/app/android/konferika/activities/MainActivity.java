@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,10 +35,14 @@ public class MainActivity extends AppCompatActivity //implements ForecastAdapter
 
     private SectionForecastAdapter adapterRecycler;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
        // mRecyclerView = (RecyclerView) findViewById(R.id.forecast_recycled_view);
         mErrorTextView = (TextView) findViewById(R.id.error_text_view);
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity //implements ForecastAdapter
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+        ViewPagerAdapter.setScheduleId(0);
         //loadData("all");
     }
 
@@ -66,7 +73,22 @@ public class MainActivity extends AppCompatActivity //implements ForecastAdapter
         adapter.addFrag(new DayScheduleFragment(), "Piątek");
         adapter.addFrag(new DayScheduleFragment(), "Sobota");
         adapter.addFrag(new DayScheduleFragment(), "Niedziela");
+
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_for_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, MyScheduleActivity.class);
+        startActivity(intent);
+        ViewPagerAdapter.setScheduleId(1);
+        return true;
     }
 
     /**

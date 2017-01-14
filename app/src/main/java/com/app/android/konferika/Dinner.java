@@ -12,8 +12,9 @@ public class Dinner implements Activity{
     private String endTime;
     private String title;
 
-    public Dinner(String title) {
+    public Dinner(String title, String startTime) {
         this.title = title;
+        this.startTime = startTime;
     }
 
     @Override

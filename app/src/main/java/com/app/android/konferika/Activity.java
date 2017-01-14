@@ -10,5 +10,8 @@ public interface Activity {
      * @param holder
      */
         void setContent(ForecastAdapter.ForecastAdapterViewHolder holder);
+
+    public String getStartTime();
+    public String getTitle();
 }
 

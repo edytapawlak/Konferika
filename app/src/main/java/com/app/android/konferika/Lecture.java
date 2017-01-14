@@ -12,15 +12,17 @@ public class Lecture implements Activity, Serializable {
     private String abs;
     private String date;
     private int id;
+    private String startTime;
 
 
-    public Lecture(String title, String author, String abs, String date, String id) {
+    public Lecture(String title, String author, String abs, String date, String id, String startTime) {
         this.title = title;
         this.author = author;
         this.abs = abs;
         this.date = date;
         int idd = Integer.parseInt(id);
         this.id = idd;
+        this.startTime = startTime;
     }
 
     public String getTitle() {
@@ -60,5 +62,10 @@ public class Lecture implements Activity, Serializable {
         holder.mAuthorTextView.setText(this.getAuthor());
         int id = this.getId() - 1;
         holder.mIdDataTextView.setText(id + "");
+    }
+
+    @Override
+    public String getStartTime() {
+        return startTime;
     }
 }

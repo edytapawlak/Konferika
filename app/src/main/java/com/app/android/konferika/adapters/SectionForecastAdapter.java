@@ -24,13 +24,16 @@ public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHe
 
     Context context;
     private final ForecastAdapter.ForecastAdapterOnClickHandler mClickHandler;
+    private List<SectionHeader> activitiesData;
 
     public SectionForecastAdapter(Context context, List<SectionHeader> sectionItemList, ForecastAdapter.ForecastAdapterOnClickHandler clickHandler) {
         super(context, sectionItemList);
+        activitiesData = sectionItemList;
         this.context = context;
         this.mClickHandler = clickHandler;
 
     }
+
 
     @Override
     public SectionViewHolder onCreateSectionViewHolder(ViewGroup sectionViewGroup, int viewType) {
@@ -55,5 +58,11 @@ public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHe
 
         child.setContent(childViewHolder);
 
+    }
+
+    public void setActivitiesData(List<SectionHeader> activitiesData) {
+        //this.activitiesData.clear();
+        this.activitiesData.addAll(activitiesData);
+        notifyDataSetChanged();
     }
 }
