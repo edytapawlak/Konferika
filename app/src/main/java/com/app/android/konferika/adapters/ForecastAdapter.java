@@ -23,7 +23,7 @@ import java.util.List;
 
 import static android.R.attr.x;
 
-public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
+/*public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
     private List<Activity> mRefData;
 
@@ -32,7 +32,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     /**
      * The interface that receives onClick messages.
      */
-    public interface ForecastAdapterOnClickHandler {
+  /*  public interface ForecastAdapterOnClickHandler {
         void onClick(Lecture lect);
     }
 
@@ -50,7 +50,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     /**
      * Cache of the children views for a forecast list item
      */
-    public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+ /*   public class ForecastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         public final TextView mRefDataTextView;
         public final TextView mAuthorTextView;
@@ -142,7 +142,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         // Nieużywany kod, ale wyświetla wszystkie referaty.
         Activity activity = mRefData.get(position);
         if (activity.isLecture()) {
-            activity.setContent(holder);
+           // activity.setContent(holder);
         }
     }
 
@@ -159,4 +159,4 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         notifyDataSetChanged();
     }
 
-}
+}*/

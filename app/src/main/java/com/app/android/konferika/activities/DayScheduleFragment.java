@@ -15,19 +15,26 @@ import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
 import com.app.android.konferika.SectionHeader;
 import com.app.android.konferika.UsersSchedule;
-import com.app.android.konferika.adapters.SectionForecastAdapter;
-import com.app.android.konferika.adapters.ForecastAdapter;
+//import com.app.android.konferika.adapters.SectionForecastAdapter;
+//import com.app.android.konferika.adapters.ForecastAdapter;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.data.ActivityData;
+import com.app.android.konferika.newSections.DisplayData;
+import com.app.android.konferika.newSections.SectionForTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DayScheduleFragment extends Fragment implements ForecastAdapter.ForecastAdapterOnClickHandler {
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
+public class DayScheduleFragment extends Fragment implements DisplayData.DispalyAdapterOnClickHandler //implements ForecastAdapter.ForecastAdapterOnClickHandler {
+{
 
     private List<SectionHeader> activitiesData;
-    SectionForecastAdapter adapter;
-    RecyclerView recyclerView;
+    //SectionForecastAdapter adapter;
+    public RecyclerView recyclerView;
+
+    private DisplayData sectionAdapter;
 
     public DayScheduleFragment() {
     }
@@ -39,25 +46,27 @@ public class DayScheduleFragment extends Fragment implements ForecastAdapter.For
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
+
 
         Bundle bundle = getArguments();
         String date = bundle.getString("day");
 
-        int scheduleId = ViewPagerAdapter.getScheduleId();
-        if (scheduleId == 0) {
-            activitiesData = ActivityData.getHeaders(getContext(), date);
-        } else {
-            activitiesData = UsersSchedule.getUserSchedule(getContext());
-        }
 
-        if (activitiesData != null) {
-            adapter = new SectionForecastAdapter(getContext(), this.activitiesData, this);
-            recyclerView.setAdapter(adapter);
-        } else {
-            Log.e("ERR", "Brak danych do wyświetlenia");
-        }
+
+            //adapter = new SectionForecastAdapter(getContext(), this.activitiesData, this);
+
+            sectionAdapter = new DisplayData(this.getContext(), this);
+            sectionAdapter.setActivityData(getContext(), date);
+
+            DisplayData.addSections(getContext(), this, sectionAdapter);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(sectionAdapter);
+
+
+        // else {
+        //    Log.e("ERR", "Brak danych do wyświetlenia");
+        //}
 
         return view;
     }
@@ -68,5 +77,19 @@ public class DayScheduleFragment extends Fragment implements ForecastAdapter.For
         intent.putExtra("lect", lect);
         startActivity(intent);
     }
+
+    @Override
+    public void onLongClick(List<SectionHeader> list) {
+        //if(activitiesData == null){
+        //    activitiesData = new ArrayList<>();
+        //}
+        //TODO nie wiem co tu się dzieje.
+       // activitiesData.clear();
+       // activitiesData.addAll(list);
+       // sectionAdapter = new DisplayData(this.getContext(), this);
+       // recyclerView.setAdapter(sectionAdapter);
+
+    }
+
 
 }

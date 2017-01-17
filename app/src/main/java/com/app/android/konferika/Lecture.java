@@ -2,7 +2,8 @@ package com.app.android.konferika;
 import android.graphics.Color;
 import android.view.Gravity;
 
-import com.app.android.konferika.adapters.ForecastAdapter;
+//import com.app.android.konferika.adapters.ForecastAdapter;
+import com.app.android.konferika.newSections.MyItemViewHolder;
 
 import java.io.Serializable;
 
@@ -52,7 +53,8 @@ public class Lecture implements Activity, Serializable {
     }
 
     @Override
-    public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
+    //public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
+    public void setContent(MyItemViewHolder holder) {
 
         holder.mRefDataTextView.setTextSize(25);
         holder.mRefDataTextView.setGravity(Gravity.LEFT);

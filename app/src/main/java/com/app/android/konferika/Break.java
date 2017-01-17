@@ -3,7 +3,8 @@ package com.app.android.konferika;
 import android.graphics.Color;
 import android.view.Gravity;
 
-import com.app.android.konferika.adapters.ForecastAdapter;
+//import com.app.android.konferika.adapters.ForecastAdapter;
+import com.app.android.konferika.newSections.MyItemViewHolder;
 
 public class Break implements Activity {
 
@@ -22,7 +23,8 @@ public class Break implements Activity {
     }
 
     @Override
-    public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
+    //public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
+    public void setContent(MyItemViewHolder holder) {
         int unicode = 0x2615;
         String emoji = new String(Character.toChars(unicode));
         holder.mAuthorTextView.setGravity(Gravity.CENTER);

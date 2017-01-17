@@ -39,4 +39,5 @@ public class MyScheduleActivity extends AppCompatActivity {
         super.onDetachedFromWindow();
         ViewPagerAdapter.setScheduleId(0);
     }
+
 }

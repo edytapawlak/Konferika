@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.app.android.konferika.Activity;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
-import com.app.android.konferika.adapters.SectionForecastAdapter;
-import com.app.android.konferika.adapters.ForecastAdapter;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.R;
 import com.app.android.konferika.data.ActivityData;
@@ -31,9 +29,9 @@ public class MainActivity extends AppCompatActivity //implements ForecastAdapter
     private RecyclerView mRecyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
-    private ForecastAdapter mForecastAdapter;
+   // private ForecastAdapter mForecastAdapter;
 
-    private SectionForecastAdapter adapterRecycler;
+   // private SectionForecastAdapter adapterRecycler;
 
 
 
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity //implements ForecastAdapter
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        ViewPagerAdapter.setScheduleId(0);
+       // ViewPagerAdapter.setScheduleId(0);
         //loadData("all");
     }
 

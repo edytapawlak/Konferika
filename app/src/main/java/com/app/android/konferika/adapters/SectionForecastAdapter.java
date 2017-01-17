@@ -20,7 +20,7 @@ import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHeader, Activity, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
+/*public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHeader, Activity, SectionViewHolder, ForecastAdapter.ForecastAdapterViewHolder> {
 
     Context context;
     private final ForecastAdapter.ForecastAdapterOnClickHandler mClickHandler;
@@ -56,7 +56,7 @@ public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHe
     @Override
     public void onBindChildViewHolder(ForecastAdapter.ForecastAdapterViewHolder childViewHolder, int sectionPosition, int childPosition, Activity child) {
 
-        child.setContent(childViewHolder);
+       // child.setContent(childViewHolder);
 
     }
 
@@ -66,3 +66,4 @@ public class SectionForecastAdapter extends SectionRecyclerViewAdapter<SectionHe
         notifyDataSetChanged();
     }
 }
+*/

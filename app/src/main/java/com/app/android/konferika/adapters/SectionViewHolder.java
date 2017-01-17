@@ -8,7 +8,7 @@ import com.app.android.konferika.R;
 
 public class SectionViewHolder extends RecyclerView.ViewHolder {
 
-    TextView name;
+    public TextView name;
 
     public SectionViewHolder(View itemView) {
         super(itemView);

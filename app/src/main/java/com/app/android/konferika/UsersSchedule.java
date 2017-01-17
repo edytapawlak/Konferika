@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.data.ActivityData;
 
 import java.util.Iterator;
