@@ -5,8 +5,6 @@ import android.content.Context;
 import com.app.android.konferika.Activity;
 import com.app.android.konferika.Lecture;
 import com.app.android.konferika.SectionHeader;
-import com.intrusoft.sectionedrecyclerview.Section;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,15 +32,15 @@ public class ActivityData {
         return headers;
     }
 
-    public static List<Activity> getLectures(Context cont, String date) {
+    public static List<Activity> getLectures(Context cont, int dateId) {
         if (lectures == null) {
-            new ActivityData(cont, date);
+            new ActivityData(cont, dateId);
         }
         return lectures;
     }
 
-    public static List<SectionHeader> getHeaders(Context cont, String date) {
-        new ActivityData(cont, date);
+    public static List<SectionHeader> getHeaders(Context cont, int dateId) {
+        new ActivityData(cont, dateId);
         return headers;
     }
 
@@ -53,12 +51,12 @@ public class ActivityData {
         databaseAccess.close();
     }
 
-    private ActivityData(Context context, String date) {
+    private ActivityData(Context context, int dateId) {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
 
         this.lectures = databaseAccess.getLectData();
-        this.headers = databaseAccess.getChildForDate(date);
+        this.headers = databaseAccess.getChildForDate(dateId);
 
         databaseAccess.close();
 

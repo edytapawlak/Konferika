@@ -3,9 +3,8 @@ package com.app.android.konferika;
 import android.graphics.Color;
 import android.view.Gravity;
 
-import com.app.android.konferika.Activity;
 //import com.app.android.konferika.adapters.ForecastAdapter;
-import com.app.android.konferika.newSections.MyItemViewHolder;
+import com.app.android.konferika.adapters.MyItemViewHolder;
 
 public class Dinner implements Activity{
 

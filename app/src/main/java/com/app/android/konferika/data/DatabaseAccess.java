@@ -91,11 +91,12 @@ public class DatabaseAccess {
 
     public ArrayList<com.app.android.konferika.Activity> getLectData() {
         ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id, startTime FROM Ref ORDER BY _id", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref ORDER BY _id", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+            int date_id = Integer.parseInt(cursor.getString(3));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), date_id, cursor.getString(4), cursor.getString(5));
             list.add(lec);
             cursor.moveToNext();
         }
@@ -142,13 +143,14 @@ public class DatabaseAccess {
      * @param date Date in format DD-MM-YY
      * @param time Time in format HH:MM
      */
-    public ArrayList<com.app.android.konferika.Activity> getLectOnDateAndTime(String date, String time) {
+    public ArrayList<com.app.android.konferika.Activity> getLectOnDateAndTime(int date, String time) {
         ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date, _id, startTime FROM Ref WHERE date=\"" + date + "\" AND startTime=\"" + time + "\"", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+            int dateId = Integer.parseInt(cursor.getString(3));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), dateId, cursor.getString(4), cursor.getString(5));
             list.add(lec);
             cursor.moveToNext();
         }
@@ -215,11 +217,11 @@ public class DatabaseAccess {
     /**
      * Return lectures for a day grouped by time
      *
-     * @param date String represents date in format DD-MM-YY
+     * @param dateId
      * @return List of section headers (date String and list of Lectures)
      */
 
-    public List<SectionHeader> getChildForDate(String date) {
+    public List<SectionHeader> getChildForDate(int dateId) {
         String[] times = getAllStartTime();
         ArrayList<com.app.android.konferika.Activity> lectChild;
         List<SectionHeader> list = new LinkedList<>();
@@ -227,7 +229,7 @@ public class DatabaseAccess {
         int i = 0;
 
         while (times[i] != null) {
-            lectChild = getLectOnDateAndTime(date, times[i]);
+            lectChild = getLectOnDateAndTime(dateId, times[i]);
             sec = new SectionHeader(lectChild, times[i]);
             list.add(sec);
             i++;

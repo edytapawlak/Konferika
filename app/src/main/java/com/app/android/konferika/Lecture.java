@@ -3,7 +3,7 @@ import android.graphics.Color;
 import android.view.Gravity;
 
 //import com.app.android.konferika.adapters.ForecastAdapter;
-import com.app.android.konferika.newSections.MyItemViewHolder;
+import com.app.android.konferika.adapters.MyItemViewHolder;
 
 import java.io.Serializable;
 
@@ -11,16 +11,17 @@ public class Lecture implements Activity, Serializable {
     private  String title;
     private String author;
     private String abs;
-    private String date;
+    //private String date;
+    private int dateId;
     private int id;
     private String startTime;
 
 
-    public Lecture(String title, String author, String abs, String date, String id, String startTime) {
+    public Lecture(String title, String author, String abs, int date, String id, String startTime) {
         this.title = title;
         this.author = author;
         this.abs = abs;
-        this.date = date;
+        this.dateId = date;
         int idd = Integer.parseInt(id);
         this.id = idd;
         this.startTime = startTime;
@@ -38,8 +39,8 @@ public class Lecture implements Activity, Serializable {
         return abs;
     }
 
-    public String getDate() {
-        return date;
+    public int getDate() {
+        return dateId;
     }
 
     public int getId() {
@@ -53,7 +54,6 @@ public class Lecture implements Activity, Serializable {
     }
 
     @Override
-    //public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
     public void setContent(MyItemViewHolder holder) {
 
         holder.mRefDataTextView.setTextSize(25);

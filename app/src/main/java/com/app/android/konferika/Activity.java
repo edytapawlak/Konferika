@@ -1,7 +1,7 @@
 package com.app.android.konferika;
 
 //import com.app.android.konferika.adapters.ForecastAdapter;
-import com.app.android.konferika.newSections.MyItemViewHolder;
+import com.app.android.konferika.adapters.MyItemViewHolder;
 
 public interface Activity {
         boolean isLecture();

@@ -1,11 +1,10 @@
 package com.app.android.konferika;
 
-import com.intrusoft.sectionedrecyclerview.Section;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionHeader implements Section<Activity>{
+public class SectionHeader {
     List<Activity> childList;
     String sectionText;
 
@@ -15,7 +14,7 @@ public class SectionHeader implements Section<Activity>{
         this.sectionText = sectionText;
     }
 
-    @Override
+
     public List<Activity> getChildItems() {
         return childList;
     }

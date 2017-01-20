@@ -1,11 +1,10 @@
-package com.app.android.konferika.newSections;
+package com.app.android.konferika.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.app.android.konferika.Activity;
 import com.app.android.konferika.R;
-import com.app.android.konferika.adapters.SectionViewHolder;
 
 import java.util.List;
 
