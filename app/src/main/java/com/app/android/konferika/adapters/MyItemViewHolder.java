@@ -1,35 +1,66 @@
 package com.app.android.konferika.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.android.konferika.Activity;
-import com.app.android.konferika.Lecture;
+import com.app.android.konferika.activities.ItemDetailsFragment;
+import com.app.android.konferika.data.ActivityData;
+import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.R;
-import com.app.android.konferika.UserSchedule;
+
+import java.util.List;
 
 public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
     public final TextView mIdDataTextView;
+    public final TextView mBreakPicTextView;
+    public final TextView mBreakTextTextView;
     public final CardView mCardView;
+    public final LinearLayout actLayout;
+    public final LinearLayout breakLayout;
+    public final CheckBox myActCheckbox;
 
-    public MyItemViewHolder(View itemView) {
+    private List<Activity> mRefData;
+
+    public MyItemViewHolder(final View itemView) {
         super(itemView);
         mRefDataTextView = (TextView) itemView.findViewById(R.id.tv_ref);
         mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
         mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
         mCardView = (CardView) itemView.findViewById(R.id.forecast_card_view);
+        mBreakPicTextView = (TextView) itemView.findViewById(R.id.tv_break_pic);
+        mBreakTextTextView = (TextView) itemView.findViewById(R.id.tv_break_text);
+        myActCheckbox = (CheckBox) itemView.findViewById(R.id.check_box_myAct);
+        actLayout = (LinearLayout) itemView.findViewById(R.id.act_layotu);
+        breakLayout = (LinearLayout) itemView.findViewById(R.id.break_layout);
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
+        mRefData = ActivityData.getLectures(itemView.getContext());
+
+        myActCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String text = mIdDataTextView.getText().toString();
+                if (text != "") {
+                    int id = Integer.parseInt(text);
+                    Lecture activ = (Lecture) mRefData.get(id);
+                    DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
+                }
+            }
+        });
 
     }
 
@@ -39,8 +70,15 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
         String text = mIdDataTextView.getText().toString();
         if (text != "") {
             int id = Integer.parseInt(text);
-            Activity activ = DisplayDataAdapter.getmRefData().get(id);
+            Activity activ = mRefData.get(id);
             DisplayDataAdapter.getmClickHandler().onClick(activ);
+
+            if(activ.isLecture()) {
+                ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("item", (Lecture) activ);
+                fragmentDemo.setArguments(args);
+            }
         } else {
             Toast.makeText(v.getContext(), "Przerwa", Toast.LENGTH_SHORT).show();
         }
@@ -48,6 +86,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
 
     /**
      * Po LongClick dodaje lub usuwa reterat/wykład z planu, w zależności od ViewPager.scheduleId.
+     *
      * @param v
      * @return
      */
@@ -57,50 +96,17 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
         String text = mIdDataTextView.getText().toString();
         if (text != "") {
             int id = Integer.parseInt(text);
-            Activity activ = DisplayDataAdapter.getmRefData().get(id);
-            if (activ.isLecture()) {
-                Lecture activity = (Lecture) activ;
-                if (ViewPagerAdapter.getScheduleId() == 0) {
-                    //addLectToUserSchedule(v, activ);
-                    if (DisplayDataAdapter.getUserSchedule() == null) {
-                        DisplayDataAdapter.setUserSchedule(new UserSchedule(v.getContext()));
-                        Log.v("NIE MA PLANU", "ROBIE NOWY");
-                    }
-                    DisplayDataAdapter.getUserSchedule().addActivity(v.getContext(), activity, activity.getDate());
-                    Toast.makeText(v.getContext(), "Dodano do planu", Toast.LENGTH_SHORT).show();
+            Activity activ = mRefData.get(id);
 
-                } else {
-                    //deleteLectFromUserSchedule(v, activ);
-                    DisplayDataAdapter.getUserSchedule().deleteActivity(v.getContext(), activity, activity.getDate());
-                    Toast.makeText(v.getContext(), "Usuwam", Toast.LENGTH_SHORT).show();
-                    DisplayDataAdapter.getmClickHandler().onLongClick(DisplayDataAdapter.getUserSchedule().getUserSchedForDay(v.getContext(), 1)); // tu będzie odświeżanie.
-                }//Todo wróć tu zaraz
+            if (activ.isLecture()) {
+                Lecture lecture = (Lecture) activ;
+                DisplayDataAdapter.getmClickHandler().onLongClick(lecture);
+
                 Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                 vb.vibrate(100);
             }
         }
         return true;
     }
-
-   /* private void addLectToUserSchedule(View v, Activity act) { // TODO ???
-        if (act.isLecture()) {
-            Lecture activ = (Lecture) act;
-            if (DisplayDataAdapter.getUserSchedule() == null) {
-                //DisplayDataAdapter.setUserSchedule(new UserSchedule(v.getContext()));
-                Log.v("NIE MA PLANU", "ROBIE NOWY");
-            }
-            DisplayDataAdapter.getUserSchedule().addActivity(v.getContext(), activ, activ.getDate());
-            Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-            vb.vibrate(100);
-        }
-    }
-
-        private void deleteLectFromUserSchedule (View v, Activity act){
-            if (act.isLecture()) {
-                Lecture activ = (Lecture) act;
-                DisplayDataAdapter.getUserSchedule().deleteActivity(v.getContext(), activ, activ.getDate());
-                Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(100);
-            }*/
 
 }

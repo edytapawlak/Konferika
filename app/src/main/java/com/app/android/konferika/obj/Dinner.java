@@ -1,9 +1,10 @@
-package com.app.android.konferika;
+package com.app.android.konferika.obj;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 
-//import com.app.android.konferika.adapters.ForecastAdapter;
 import com.app.android.konferika.adapters.MyItemViewHolder;
 
 public class Dinner implements Activity{
@@ -27,12 +28,15 @@ public class Dinner implements Activity{
     public void setContent(MyItemViewHolder holder) {
         int unicode = 0x1F357;
         String emoji = new String(Character.toChars(unicode));
-        holder.mAuthorTextView.setGravity(Gravity.CENTER);
-        holder.mAuthorTextView.setText(this.getTitle());
-        holder.mRefDataTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-        holder.mRefDataTextView.setTextSize(45);
-        holder.mRefDataTextView.setText(emoji);
-        holder.mIdDataTextView.setText("");
+
+        holder.mBreakTextTextView.setText(this.getTitle());
+        holder.mBreakPicTextView.setText(emoji);
+
+        ViewGroup.LayoutParams params = holder.actLayout.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+        params.height = 0;
+        holder.actLayout.setLayoutParams(params);
+        holder.actLayout.setVisibility(View.INVISIBLE);
         int coffeColor = Color.rgb(228, 227, 217);
         holder.mCardView.setCardBackgroundColor(coffeColor);
     }
@@ -47,6 +51,11 @@ public class Dinner implements Activity{
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public void handleOnClick(Context context) {
+
     }
 }
 

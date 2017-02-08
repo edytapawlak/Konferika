@@ -2,11 +2,9 @@ package com.app.android.konferika.data;
 
 import android.content.Context;
 
-import com.app.android.konferika.Activity;
-import com.app.android.konferika.Lecture;
-import com.app.android.konferika.SectionHeader;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.SectionHeader;
+
 import java.util.List;
 
 

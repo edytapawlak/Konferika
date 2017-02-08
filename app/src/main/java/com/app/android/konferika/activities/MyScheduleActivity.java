@@ -1,18 +1,17 @@
 package com.app.android.konferika.activities;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.UserSchedule;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
-public class MyScheduleActivity extends AppCompatActivity {
+public class MyScheduleActivity extends FragmentActivity {//implements TabLayout.OnTabSelectedListener {//AppCompatActivity {
 
     static ViewPager viewPager;
     static TabLayout tabLayout;
@@ -22,15 +21,22 @@ public class MyScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
 
-       // LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        // LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         viewPager = (ViewPager) findViewById(R.id.main_view_pager_myschedule);
 
-        setupViewPager(viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout_myschedule);
-        tabLayout.setupWithViewPager(viewPager);
-        Log.v("SelectedTabPos", tabLayout.getSelectedTabPosition() + "");
-    }
+
+
+    setupViewPager(viewPager);
+
+    tabLayout=(TabLayout)
+
+    findViewById(R.id.tab_layout_myschedule);
+
+    tabLayout.setupWithViewPager(viewPager);
+
+    Log.v("SelectedTabPos",tabLayout.getSelectedTabPosition()+"");
+}
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -47,10 +53,11 @@ public class MyScheduleActivity extends AppCompatActivity {
         ViewPagerAdapter.setScheduleId(0);
     }
 
-    public static int getTab(){
-        if(viewPager != null) {
+
+    public static int getTab() {
+        if (viewPager != null) {
             return viewPager.getCurrentItem();
-        }else return -1;
+        } else return -1;
     }
 
 }

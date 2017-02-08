@@ -1,9 +1,17 @@
-package com.app.android.konferika;
-import android.graphics.Color;
-import android.view.Gravity;
+package com.app.android.konferika.obj;
 
-//import com.app.android.konferika.adapters.ForecastAdapter;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.app.android.konferika.activities.DetailsActivity;
+import com.app.android.konferika.activities.ItemDetailsActivity;
+import com.app.android.konferika.activities.ItemDetailsFragment;
 import com.app.android.konferika.adapters.MyItemViewHolder;
+import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 import java.io.Serializable;
 
@@ -31,6 +39,14 @@ public class Lecture implements Activity, Serializable {
         return title;
     }
 
+    @Override
+    public void handleOnClick(Context context) {
+        Intent intent = new Intent(context, ItemDetailsActivity.class);
+        intent.putExtra("lect", this);
+
+        context.startActivity(intent);
+    }
+
     public String getAuthor() {
         return author;
     }
@@ -56,12 +72,23 @@ public class Lecture implements Activity, Serializable {
     @Override
     public void setContent(MyItemViewHolder holder) {
 
-        holder.mRefDataTextView.setTextSize(25);
-        holder.mRefDataTextView.setGravity(Gravity.LEFT);
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
-        holder.mAuthorTextView.setGravity(Gravity.LEFT);
         holder.mAuthorTextView.setText(this.getAuthor());
+        if(ViewPagerAdapter.getScheduleId() != 0){
+            holder.myActCheckbox.setVisibility(View.INVISIBLE);
+        } else holder.myActCheckbox.setVisibility(View.VISIBLE);
+
+        ViewGroup.LayoutParams breakParams = holder.breakLayout.getLayoutParams();
+        breakParams.height = 1;
+        holder.actLayout.setLayoutParams(breakParams);
+        holder.actLayout.setVisibility(View.INVISIBLE);
+
+        ViewGroup.LayoutParams actParams = holder.actLayout.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+        actParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        holder.actLayout.setLayoutParams(actParams);
+        holder.actLayout.setVisibility(View.VISIBLE);
         int id = this.getId() - 1;
         holder.mIdDataTextView.setText(id + "");
     }

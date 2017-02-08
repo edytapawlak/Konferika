@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.app.android.konferika.Break;
-import com.app.android.konferika.Dinner;
-import com.app.android.konferika.Lecture;
-import com.app.android.konferika.SectionHeader;
+
+import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.Break;
+import com.app.android.konferika.obj.Dinner;
+import com.app.android.konferika.obj.Lecture;
+import com.app.android.konferika.obj.SectionHeader;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -89,8 +91,8 @@ public class DatabaseAccess {
      * Return all lectures as ArrayList<Activity>
      */
 
-    public ArrayList<com.app.android.konferika.Activity> getLectData() {
-        ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
+    public ArrayList<Activity> getLectData() {
+        ArrayList<Activity> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref ORDER BY _id", null);
         cursor.moveToFirst();
         Lecture lec;
@@ -143,8 +145,8 @@ public class DatabaseAccess {
      * @param date Date in format DD-MM-YY
      * @param time Time in format HH:MM
      */
-    public ArrayList<com.app.android.konferika.Activity> getLectOnDateAndTime(int date, String time) {
-        ArrayList<com.app.android.konferika.Activity> list = new ArrayList<>();
+    public ArrayList<Activity> getLectOnDateAndTime(int date, String time) {
+        ArrayList<Activity> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
         cursor.moveToFirst();
         Lecture lec;
@@ -158,7 +160,7 @@ public class DatabaseAccess {
 
         cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
-        com.app.android.konferika.Activity bre;
+        Activity bre;
         while (!cursor.isAfterLast()) {
 
             // TODO: Zrobić to lepiej.
@@ -223,7 +225,7 @@ public class DatabaseAccess {
 
     public List<SectionHeader> getChildForDate(int dateId) {
         String[] times = getAllStartTime();
-        ArrayList<com.app.android.konferika.Activity> lectChild;
+        ArrayList<Activity> lectChild;
         List<SectionHeader> list = new LinkedList<>();
         SectionHeader sec;
         int i = 0;
@@ -238,11 +240,11 @@ public class DatabaseAccess {
     }
 
 
-    public com.app.android.konferika.Activity[] getBrakes(){
-        com.app.android.konferika.Activity[] list = new com.app.android.konferika.Activity[10];
+    public Activity[] getBrakes(){
+        Activity[] list = new Activity[10];
         Cursor cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
         cursor.moveToFirst();
-        com.app.android.konferika.Activity bre;
+        Activity bre;
         int i = 0;
         while (!cursor.isAfterLast()) {
 

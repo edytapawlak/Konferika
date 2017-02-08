@@ -1,12 +1,10 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,17 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.app.android.konferika.Activity;
-import com.app.android.konferika.Lecture;
+import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.ConferenceSchedule;
+import com.app.android.konferika.obj.DisplayData;
+import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.R;
-import com.app.android.konferika.SectionHeader;
-import com.app.android.konferika.UserSchedule;
+import com.app.android.konferika.obj.Schedule;
+import com.app.android.konferika.obj.UserSchedule;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
-import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.adapters.DisplayDataAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.DispalyAdapterOnClickHandler {
 
@@ -36,7 +33,21 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
 
     private DisplayDataAdapter sectionAdapter;
 
+    Schedule schedule;
+
+    Context mContext;
+    UserSchedule userSchedule;
+
+    private static final int FORECAST_LOADER_ID = 0;
+
     public DayScheduleFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+        userSchedule =  UserSchedule.getInstance(mContext);
     }
 
     @Nullable
@@ -51,16 +62,15 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
 
         sectionAdapter = new DisplayDataAdapter(this.getContext(), this);
 
-        Bundle bundle = getArguments();
-        int date = bundle.getInt("day");
-        Log.v("Data z bundla", "dat: " + date);
-        loadData();
-
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(sectionAdapter);
-        return view;
 
+        loadData();
+
+        sectionAdapter.addSections();
+        recyclerView.setAdapter(sectionAdapter);
+
+        return view;
     }
 
     /**
@@ -72,44 +82,63 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
 
     @Override
     public void onClick(Activity activ) {
-        if (activ.isLecture()) {
-            Lecture lect = (Lecture) activ;
-            Intent intent = new Intent(getActivity(), DetailsActivity.class);
-            intent.putExtra("lect", lect);
-            startActivity(intent);
-        }
+        activ.handleOnClick(mContext);
     }
 
     /**
      * Odświeża recyclerView, bo wykład został usunięty.
      *
-     * @param list
+     * @param
      */
     @Override
-    public void onLongClick(List<SectionHeader> list) {
-        sectionAdapter.setActivitiesData(null);
+    public void onLongClick(Lecture lecture) {
+        int dateId = lecture.getDate();
+        //UserSchedule usersSched = new UserSchedule(mContext);
+        loadData();
+        if(schedule == null){
+            schedule = new ConferenceSchedule(mContext);
+        }
 
-        //Bundle bd = new Bundle();
-        //bd.putString("day", ViewPagerAdapter.getDayString());
+        schedule.handleLongClick(mContext, lecture, userSchedule);
+        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
+        sectionAdapter.setActivitiesData(dd);
+        recyclerView.setAdapter(sectionAdapter);
 
-        //loadData();
-       /* Fragment newFragment = DayScheduleFragment.this; //// TODO: Odświeżanie fragmentu
+    }
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        transaction.replace(((ViewGroup)getView().getParent()).getId(), newFragment);
-
-        transaction.commit();
-*/
+    @Override
+    public void onStarChanged(boolean isCheck, Lecture lecture){
+        loadData();
+        schedule.handleStarChange(mContext, isCheck, lecture, userSchedule);
+        Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(100);
     }
 
     /**
      * Wczytuje dane, w zależności od ViewPager.scheduleId i daty (z bundla)
      */
     private void loadData() {
+
+        int scheduleId = ViewPagerAdapter.getScheduleId();
         Bundle bundle = getArguments();
-        int date = bundle.getInt("day");
-        new FetchTask().execute(date);
+        int dateId = bundle.getInt("day") + 1;
+        Log.v("DataId z bundle: ", dateId + "");
+
+        if (scheduleId == 0) {
+            schedule = new ConferenceSchedule(mContext);
+        } else {
+            schedule = userSchedule;
+        }
+        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
+        mLoadingProgrressBar.setVisibility(View.INVISIBLE);
+        sectionAdapter.setActivitiesData(dd);
+        if (dd == null) {
+            showErrorMessage();
+        } else {
+            showDataView();
+        }
+
     }
 
     /**
@@ -130,39 +159,4 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         mErrorTextView.setVisibility(View.VISIBLE);
     }
 
-
-    public class FetchTask extends AsyncTask<Integer, Void, List<SectionHeader>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingProgrressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<SectionHeader> doInBackground(Integer... params) {
-            int scheduleId = ViewPagerAdapter.getScheduleId();
-            int dateId = params[0];
-            Context context = getContext();
-            List<SectionHeader> activitiesData = new ArrayList<>();
-            if (scheduleId == 0) {
-                activitiesData.addAll(ActivityData.getHeaders(context, dateId));
-            } else {
-                if (DisplayDataAdapter.getUserSchedule() == null) {
-                    DisplayDataAdapter.setUserSchedule(new UserSchedule(getContext()));
-                }
-                activitiesData.addAll(DisplayDataAdapter.getUserSchedule().getUserSchedForDay(context, dateId));
-            }
-            return activitiesData;
-        }
-
-        @Override
-        protected void onPostExecute(List<SectionHeader> activities) {
-            super.onPostExecute(activities);
-            sectionAdapter.setActivitiesData(activities);
-            sectionAdapter.addSections();
-            mLoadingProgrressBar.setVisibility(View.INVISIBLE);
-        }
-
-    }
 }
