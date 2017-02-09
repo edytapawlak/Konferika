@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.adapters.MyItemViewHolder;
 
-public class Break implements Activity {
+import java.io.Serializable;
+
+public class Break implements Activity, Serializable {
 
     private String startTime;
     private String endTime;

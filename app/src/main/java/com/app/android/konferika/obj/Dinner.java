@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.adapters.MyItemViewHolder;
 
-public class Dinner implements Activity{
+import java.io.Serializable;
+
+public class Dinner implements Activity, Serializable{
 
     private String startTime;
     private String endTime;

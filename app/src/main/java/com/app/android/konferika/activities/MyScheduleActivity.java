@@ -1,6 +1,8 @@
 package com.app.android.konferika.activities;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -33,6 +35,8 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
 
+        ViewPagerAdapter.setScheduleId(1);
+
         // LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         viewPager = (ViewPager) findViewById(R.id.main_view_pager_myschedule);
@@ -61,18 +65,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
     }
 
     @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        ViewPagerAdapter.setScheduleId(0);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       /* Intent intent = new Intent(MainActivity.this, MyScheduleActivity.class);
-        startActivity(intent);
-        ViewPagerAdapter.setScheduleId(1);
-        return true;*/
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -81,12 +74,6 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
 
         return super.onOptionsItemSelected(item);
 
-    }
-
-    public static int getTab() {
-        if (viewPager != null) {
-            return viewPager.getCurrentItem();
-        } else return -1;
     }
 
     private void initToolbar() {
@@ -101,6 +88,22 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         }
     }
 
+    Intent i;
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    //Strat another Activity Here
+                    startActivity(i);
+
+                default:
+                    break;
+            }
+            return false;
+        }
+    });
+
     private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -111,20 +114,17 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
                 Intent intent;
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_home:
-                        /*intent = new Intent(MyScheduleActivity.this, MainActivity.class);
-                        ViewPagerAdapter.setScheduleId(0);
-                        MyScheduleActivity.this.finish();
-                        startActivity(intent);*/
-                        Intent i = new Intent(MyScheduleActivity.this, MainActivity.class);
+                        i = new Intent(MyScheduleActivity.this, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(i);
+                        //startActivity(i);
+                        handler.sendEmptyMessageDelayed(1, 1000);
+                        ViewPagerAdapter.setScheduleId(0);
                 }
 
-//                Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show()
-//              menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
         });
     }
+
 }

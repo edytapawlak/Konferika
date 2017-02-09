@@ -73,8 +73,8 @@
                 <CheckBox
                     android:id="@+id/check_box_myAct"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:button="@drawable/star_selector" />
+                    android:layout_height="match_parent"/>
+                    <!--android:button="@drawable/star_selector" />-->
 
             </LinearLayout>
         </LinearLayout>

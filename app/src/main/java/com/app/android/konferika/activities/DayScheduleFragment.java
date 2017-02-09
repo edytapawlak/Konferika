@@ -1,6 +1,7 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferenceSchedule;
@@ -47,12 +49,15 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        userSchedule =  UserSchedule.getInstance(mContext);
+        //userSchedule =  UserSchedule.getInstance(mContext, null);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //if(savedInstanceState == null) {
+            userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
+        //}
 
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
@@ -68,9 +73,32 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         loadData();
 
         sectionAdapter.addSections();
+
         recyclerView.setAdapter(sectionAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("userSchedule", userSchedule);
+        outState.putSerializable("scheduleID", ViewPagerAdapter.getScheduleId());
+        outState.putString("message", "This is my message to be reloaded");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
+
+            //ViewPagerAdapter.setScheduleId( savedInstanceState.getInt("scheduleID"));
+            //String message = "Sched Id: " +  savedInstanceState.getInt("scheduleID") + " ViewPager: " + ViewPagerAdapter.getScheduleId();
+            //Toast.makeText(this.mContext, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

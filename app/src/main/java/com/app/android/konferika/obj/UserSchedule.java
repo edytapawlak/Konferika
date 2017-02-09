@@ -1,33 +1,40 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserSchedule implements Schedule {
+public class UserSchedule implements Schedule, Serializable {
 
     private UserDayData[] schedule;
-    protected Context context;
+    //protected Context context;
     private static UserSchedule scheduleObject;
 
 
-    private UserSchedule(Context con) {
-        context = con;
-        if (this.schedule == null) {
-            this.schedule = new UserDayData[3];
+    private UserSchedule(Context con, Bundle savedState) {
+       // context = con;
+        if (savedState != null && savedState.getSerializable("userSchedule") != null) {
+            scheduleObject = (UserSchedule) savedState.getSerializable("userSchedule");
+        } else {
+            if (this.schedule == null) {
+                this.schedule = new UserDayData[3];
 
-            this.schedule[0] = new UserDayData(con, 1);
-            this.schedule[1] = new UserDayData(con, 2);
-            this.schedule[2] = new UserDayData(con, 3);
+                this.schedule[0] = new UserDayData(con, 1);
+                this.schedule[1] = new UserDayData(con, 2);
+                this.schedule[2] = new UserDayData(con, 3);
+            }
         }
     }
 
-    public static UserSchedule getInstance(Context context) {
+    public static UserSchedule getInstance(Context context, Bundle savedState) {
         if (scheduleObject == null) {
             synchronized (UserSchedule.class) {
                 if (scheduleObject == null) {
-                    scheduleObject = new UserSchedule(context);
+                    scheduleObject = new UserSchedule(context, savedState);
                 }
             }
         }
@@ -37,7 +44,7 @@ public class UserSchedule implements Schedule {
 
     public void addActivity(Context con, Activity act, int date) {
         if (schedule == null) {
-            new UserSchedule(con);
+            new UserSchedule(con, null);
         }
         if (date == schedule[0].getDate()) {
             schedule[0].addActivityToList(con, act);
@@ -81,7 +88,7 @@ public class UserSchedule implements Schedule {
      */
     public List<SectionHeader> getUserSchedForDayList(Context con, int date) {
         if (schedule == null) {
-            new UserSchedule(con);
+            new UserSchedule(con, null);
         }
 
         DisplayData outputSchedule = null;
@@ -101,7 +108,7 @@ public class UserSchedule implements Schedule {
 
     public DisplayData getUserSchedForDay(Context con, int date) {
         if (schedule == null) {
-            new UserSchedule(con);
+            new UserSchedule(con, null);
         }
 
         DisplayData outputSchedule = null;

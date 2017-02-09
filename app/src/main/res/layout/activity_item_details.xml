@@ -50,7 +50,8 @@ android:fitsSystemWindows="true">
         app:contentScrim="?attr/colorPrimary"
         app:expandedTitleMarginStart="48dp"
         app:expandedTitleMarginEnd="64dp"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:title=" ">
 
         <ImageView
             android:id="@+id/image"

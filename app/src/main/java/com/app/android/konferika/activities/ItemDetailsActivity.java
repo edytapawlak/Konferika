@@ -1,6 +1,8 @@
 package com.app.android.konferika.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -20,18 +22,21 @@ import com.app.android.konferika.obj.Lecture;
 public class ItemDetailsActivity extends AppCompatActivity {
     ItemDetailsFragment fragmentItemDetail;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Context mContext;
+    private Lecture item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
-
-        Lecture item = (Lecture) getIntent().getSerializableExtra("lect");
+        mContext = this;
+        item = (Lecture) getIntent().getSerializableExtra("lect");
         initToolbar(item.getTitle());
         if (item == null) {
             Toast.makeText(this, "Jest null,sorry", Toast.LENGTH_SHORT).show();
         }
+
         TextView tvTitle = (TextView) findViewById(R.id.tv_lect_title);
         TextView tvBody = (TextView) findViewById(R.id.tv_lect_description);
         TextView tvAuthor = (TextView) findViewById(R.id.tv_lect_author);
@@ -65,9 +70,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent(ItemDetailsActivity.this, MainActivity.class); //Todo poprzednie activity
-                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
+                this.finish();
                 return true;
         }
 
@@ -80,15 +83,35 @@ public class ItemDetailsActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(" ");
 
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle(title);
-        //collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbarLayout.setTitle(item.getTitle());
+                   // collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbarLayout.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
 }
 

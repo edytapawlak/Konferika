@@ -7,12 +7,13 @@ import android.widget.Toast;
 import com.app.android.konferika.Utils;
 import com.app.android.konferika.data.ActivityData;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class UserDayData extends DisplayData {
+public class UserDayData extends DisplayData implements Serializable{
     private TreeMap<String, List<Activity>> mPlanData;
 
 

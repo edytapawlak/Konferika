@@ -1,8 +1,11 @@
 package com.app.android.konferika.activities;
 
 import android.content.Intent;
+import android.os.Build;
+
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -10,9 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -34,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-       // setSupportActionBar(toolbar);
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        // setSupportActionBar(toolbar);
 
         initToolbar();
         setupDrawerLayout();
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        ViewPagerAdapter.setScheduleId(0);
 
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -96,6 +98,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    Intent intent;
+
+    Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    startActivity(intent);
+                default:
+                    break;
+            }
+            return false;
+        }
+    });
+
     private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -103,11 +120,12 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.drawer_favourite :
-                        Intent intent = new Intent(MainActivity.this, MyScheduleActivity.class);
+                switch (menuItem.getItemId()) {
+                    case R.id.drawer_favourite:
+                        intent = new Intent(MainActivity.this, MyScheduleActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(intent);
+                       // startActivity(intent);
+                        handler.sendEmptyMessageDelayed(1, 1000);
                         ViewPagerAdapter.setScheduleId(1);
                 }
 
