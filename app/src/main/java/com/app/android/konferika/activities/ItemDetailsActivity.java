@@ -1,8 +1,15 @@
 package com.app.android.konferika.activities;
 
+import android.content.Intent;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,14 +19,17 @@ import com.app.android.konferika.obj.Lecture;
 
 public class ItemDetailsActivity extends AppCompatActivity {
     ItemDetailsFragment fragmentItemDetail;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
+
         Lecture item = (Lecture) getIntent().getSerializableExtra("lect");
-        if(item == null){
+        initToolbar(item.getTitle());
+        if (item == null) {
             Toast.makeText(this, "Jest null,sorry", Toast.LENGTH_SHORT).show();
         }
         TextView tvTitle = (TextView) findViewById(R.id.tv_lect_title);
@@ -46,4 +56,39 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       /* Intent intent = new Intent(MainActivity.this, MyScheduleActivity.class);
+        startActivity(intent);
+        ViewPagerAdapter.setScheduleId(1);
+        return true;*/
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent i = new Intent(ItemDetailsActivity.this, MainActivity.class); //Todo poprzednie activity
+                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
+    private void initToolbar(String title) {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(title);
+        //collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
+
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 }
+

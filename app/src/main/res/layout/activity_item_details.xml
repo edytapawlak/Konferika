@@ -84,12 +84,13 @@ android:fitsSystemWindows="true">
                 android:textSize="16sp"
                 android:lineSpacingExtra="20dp"
                 android:padding="15dp"
-                android:textColor="@color/cardview_dark_background"/>
+                android:textColor="@color/cardview_dark_background"
+                android:fontFamily="sans-serif-thin"/>
 
         </LinearLayout>
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
