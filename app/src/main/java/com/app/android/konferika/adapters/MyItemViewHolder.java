@@ -50,7 +50,22 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnLongClickListener(this);
         mRefData = ActivityData.getLectures(itemView.getContext());
 
-        myActCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        myActCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isChecked;
+
+                isChecked = myActCheckbox.isChecked();
+                String text = mIdDataTextView.getText().toString();
+                if (text != "") {
+                    int id = Integer.parseInt(text);
+                   //  mRefData.get(id).setIsInUserSched(isChecked);
+                    Lecture activ = (Lecture) mRefData.get(id);
+                    DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
+                }
+            }
+        });
+       /* myActCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String text = mIdDataTextView.getText().toString();
@@ -60,7 +75,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
                     DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
                 }
             }
-        });
+        });*/
 
     }
 
@@ -73,7 +88,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
             Activity activ = mRefData.get(id);
             DisplayDataAdapter.getmClickHandler().onClick(activ);
 
-            if(activ.isLecture()) {
+            if (activ.isLecture()) {
                 ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
                 Bundle args = new Bundle();
                 args.putSerializable("item", (Lecture) activ);

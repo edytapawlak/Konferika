@@ -49,7 +49,7 @@ public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
     public void setActivitiesData(DisplayData activitiesData) {
         DisplayDataAdapter.activitiesData = null;
         DisplayDataAdapter.activitiesData = activitiesData;
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
 }

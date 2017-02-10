@@ -96,8 +96,8 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
             userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
 
             //ViewPagerAdapter.setScheduleId( savedInstanceState.getInt("scheduleID"));
-            //String message = "Sched Id: " +  savedInstanceState.getInt("scheduleID") + " ViewPager: " + ViewPagerAdapter.getScheduleId();
-            //Toast.makeText(this.mContext, message, Toast.LENGTH_LONG).show();
+            String message = "Sched Id: " +  savedInstanceState.getInt("scheduleID") + " ViewPager: " + ViewPagerAdapter.getScheduleId();
+            Toast.makeText(this.mContext, message, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -138,6 +138,7 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     @Override
     public void onStarChanged(boolean isCheck, Lecture lecture){
         loadData();
+        //lecture.setInUserSched(isCheck);
         schedule.handleStarChange(mContext, isCheck, lecture, userSchedule);
         Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(100);

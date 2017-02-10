@@ -16,13 +16,14 @@ import com.app.android.konferika.adapters.ViewPagerAdapter;
 import java.io.Serializable;
 
 public class Lecture implements Activity, Serializable {
-    private  String title;
+    private String title;
     private String author;
     private String abs;
     //private String date;
     private int dateId;
     private int id;
     private String startTime;
+    private boolean isInUserSched;
 
 
     public Lecture(String title, String author, String abs, int date, String id, String startTime) {
@@ -33,6 +34,7 @@ public class Lecture implements Activity, Serializable {
         int idd = Integer.parseInt(id);
         this.id = idd;
         this.startTime = startTime;
+        isInUserSched = false;
     }
 
     public String getTitle() {
@@ -75,9 +77,16 @@ public class Lecture implements Activity, Serializable {
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
-        if(ViewPagerAdapter.getScheduleId() != 0){
+        holder.myActCheckbox.setChecked(isInUserSched);
+
+        /*if(isInUserSched) {
+            holder.myActCheckbox.toggle();
+        }*/
+        if (ViewPagerAdapter.getScheduleId() != 0) {
             holder.myActCheckbox.setVisibility(View.INVISIBLE);
-        } else holder.myActCheckbox.setVisibility(View.VISIBLE);
+        } else {
+            holder.myActCheckbox.setVisibility(View.VISIBLE);
+        }
 
         ViewGroup.LayoutParams breakParams = holder.breakLayout.getLayoutParams();
         breakParams.height = 1;

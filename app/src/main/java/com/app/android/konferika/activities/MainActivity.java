@@ -41,13 +41,19 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         setupDrawerLayout();
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        ViewPagerAdapter.setScheduleId(0);
 
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
         //Log.v("Selected tab position", viewPager.getCurrentItem()+"");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ViewPagerAdapter.setScheduleId(0);
+
     }
 
     /**
@@ -125,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, MyScheduleActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                        // startActivity(intent);
-                        handler.sendEmptyMessageDelayed(1, 1000);
-                        ViewPagerAdapter.setScheduleId(1);
+                        handler.sendEmptyMessageDelayed(1, 100);
+                        //ViewPagerAdapter.setScheduleId(1);
                 }
 
 //                Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show()
-//              menuItem.setChecked(true);
+                menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }

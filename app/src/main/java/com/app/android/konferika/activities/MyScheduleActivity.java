@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
@@ -29,13 +30,14 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
     private DrawerLayout drawerLayout;
     private View content;
     private NavigationView navigationView;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
 
-        ViewPagerAdapter.setScheduleId(1);
+
 
         // LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
@@ -55,8 +57,17 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         Log.v("SelectedTabPos", tabLayout.getSelectedTabPosition() + "");
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ViewPagerAdapter.setScheduleId(1);
+    }
+
+
+
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFrag(new DayScheduleFragment(), "Piątek");
         adapter.addFrag(new DayScheduleFragment(), "Sobota");
@@ -73,6 +84,17 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         }
 
         return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
+        ViewPagerAdapter.setScheduleId(1);
+        viewPager.getAdapter().notifyDataSetChanged();
+        setupViewPager(viewPager);
+
 
     }
 
@@ -115,12 +137,13 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_home:
                         i = new Intent(MyScheduleActivity.this, MainActivity.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        //i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         //startActivity(i);
-                        handler.sendEmptyMessageDelayed(1, 1000);
-                        ViewPagerAdapter.setScheduleId(0);
+                        handler.sendEmptyMessageDelayed(1, 100); //todo nie odświeża się
+                        //ViewPagerAdapter.setScheduleId(0);
                 }
 
+                menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return true;
             }
