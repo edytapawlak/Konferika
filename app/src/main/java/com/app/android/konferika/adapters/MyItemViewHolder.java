@@ -1,26 +1,22 @@
 package com.app.android.konferika.adapters;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.activities.ItemDetailsFragment;
-import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.R;
+import com.app.android.konferika.obj.LecturesList;
 
-import java.util.List;
-
-public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {
 
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
@@ -32,7 +28,8 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
     public final LinearLayout breakLayout;
     public final CheckBox myActCheckbox;
 
-    private List<Activity> mRefData;
+    private LecturesList mRefData;
+
 
     public MyItemViewHolder(final View itemView) {
         super(itemView);
@@ -47,45 +44,38 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
         breakLayout = (LinearLayout) itemView.findViewById(R.id.break_layout);
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
-        itemView.setOnLongClickListener(this);
-        mRefData = ActivityData.getLectures(itemView.getContext());
+       // itemView.setOnLongClickListener(this);
+
 
         myActCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isChecked;
-
+                mRefData = LecturesList.getInstance(v.getContext());
                 isChecked = myActCheckbox.isChecked();
                 String text = mIdDataTextView.getText().toString();
                 if (text != "") {
                     int id = Integer.parseInt(text);
-                   //  mRefData.get(id).setIsInUserSched(isChecked);
-                    Lecture activ = (Lecture) mRefData.get(id);
+
+                    mRefData.setCheckOnPos(id,isChecked);
+                    Lecture activ = (Lecture) mRefData.getActivityOnPos(id);
+                    String nazwa = activ.getTitle();
+                    boolean changedBollean = activ.getIsInUserSchedule();
                     DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
+                   // Log.v("Checked activ ", mRefData.printChecked());
                 }
             }
         });
-       /* myActCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                String text = mIdDataTextView.getText().toString();
-                if (text != "") {
-                    int id = Integer.parseInt(text);
-                    Lecture activ = (Lecture) mRefData.get(id);
-                    DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
-                }
-            }
-        });*/
 
     }
 
     @Override
     public void onClick(View v) {
-
+        mRefData = LecturesList.getInstance(v.getContext());
         String text = mIdDataTextView.getText().toString();
         if (text != "") {
             int id = Integer.parseInt(text);
-            Activity activ = mRefData.get(id);
+            Activity activ = mRefData.getActivityOnPos(id);
             DisplayDataAdapter.getmClickHandler().onClick(activ);
 
             if (activ.isLecture()) {
@@ -106,8 +96,9 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
      * @return
      */
 
-    @Override
+   /* @Override
     public boolean onLongClick(View v) {
+        mRefData = DisplayDataAdapter.getmRefData();
         String text = mIdDataTextView.getText().toString();
         if (text != "") {
             int id = Integer.parseInt(text);
@@ -122,6 +113,6 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
             }
         }
         return true;
-    }
+    }*/
 
 }

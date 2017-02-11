@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,7 +20,6 @@ public class Lecture implements Activity, Serializable {
     private String title;
     private String author;
     private String abs;
-    //private String date;
     private int dateId;
     private int id;
     private String startTime;
@@ -34,7 +34,6 @@ public class Lecture implements Activity, Serializable {
         int idd = Integer.parseInt(id);
         this.id = idd;
         this.startTime = startTime;
-        isInUserSched = false;
     }
 
     public String getTitle() {
@@ -47,6 +46,16 @@ public class Lecture implements Activity, Serializable {
         intent.putExtra("lect", this);
 
         context.startActivity(intent);
+    }
+
+    @Override
+    public void setIsInUserSchedule(boolean isInUserSchedule) {
+        this.isInUserSched = isInUserSchedule;
+    }
+
+    @Override
+    public boolean getIsInUserSchedule() {
+        return isInUserSched;
     }
 
     public String getAuthor() {
@@ -74,14 +83,16 @@ public class Lecture implements Activity, Serializable {
     @Override
     public void setContent(MyItemViewHolder holder) {
 
+
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
+        int idd = this.id;
+        String str = this.getTitle();
+
+        boolean changedBollean = this.getIsInUserSchedule();
         holder.myActCheckbox.setChecked(isInUserSched);
 
-        /*if(isInUserSched) {
-            holder.myActCheckbox.toggle();
-        }*/
         if (ViewPagerAdapter.getScheduleId() != 0) {
             holder.myActCheckbox.setVisibility(View.INVISIBLE);
         } else {
@@ -94,11 +105,11 @@ public class Lecture implements Activity, Serializable {
         holder.actLayout.setVisibility(View.INVISIBLE);
 
         ViewGroup.LayoutParams actParams = holder.actLayout.getLayoutParams();
-// Changes the height and width to the specified *pixels*
+
         actParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         holder.actLayout.setLayoutParams(actParams);
         holder.actLayout.setVisibility(View.VISIBLE);
-        int id = this.getId() - 1;
+        int id = this.getId();
         holder.mIdDataTextView.setText(id + "");
     }
 

@@ -3,11 +3,14 @@ package com.app.android.konferika.adapters;
 
 import android.content.Context;
 
+import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferencePlanData;
 import com.app.android.konferika.obj.DisplayData;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.SectionHeader;
+
+import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -15,7 +18,8 @@ public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
 
     private static DisplayData activitiesData;
     private static DispalyAdapterOnClickHandler mClickHandler;
-    private Context context;
+    private static Context context;
+
 
     public static DispalyAdapterOnClickHandler getmClickHandler() {
         return mClickHandler;
@@ -26,13 +30,14 @@ public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
      */
     public interface DispalyAdapterOnClickHandler {
         void onClick(Activity activity);
-        void onLongClick(Lecture lecture) ;
+       // void onLongClick(Lecture lecture) ;
         void onStarChanged(boolean isChecked, Lecture lecture);
     }
 
     public DisplayDataAdapter(Context con, DispalyAdapterOnClickHandler listener) {
         this.mClickHandler = listener;
         context = con;
+
     }
 
     public void addSections() {

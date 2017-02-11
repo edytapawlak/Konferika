@@ -16,5 +16,7 @@ public interface Activity{
     String getStartTime();
     String getTitle();
     void handleOnClick(Context context);
+    void setIsInUserSchedule(boolean isInUserSchedule);
+    boolean getIsInUserSchedule();
 }
 

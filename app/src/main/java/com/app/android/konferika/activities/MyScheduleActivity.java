@@ -116,9 +116,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    //Strat another Activity Here
                     startActivity(i);
-
                 default:
                     break;
             }
@@ -137,7 +135,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_home:
                         i = new Intent(MyScheduleActivity.this, MainActivity.class);
-                        //i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         //startActivity(i);
                         handler.sendEmptyMessageDelayed(1, 100); //todo nie odświeża się
                         //ViewPagerAdapter.setScheduleId(0);

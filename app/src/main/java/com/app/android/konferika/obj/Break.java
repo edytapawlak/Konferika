@@ -61,4 +61,14 @@ public class Break implements Activity, Serializable {
     public void handleOnClick(Context context) {
 
     }
+
+    @Override
+    public void setIsInUserSchedule(boolean isInUserSchedule) {
+
+    }
+
+    @Override
+    public boolean getIsInUserSchedule() {
+        return false;
+    }
 }

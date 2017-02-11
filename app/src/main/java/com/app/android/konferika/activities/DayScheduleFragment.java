@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.app.android.konferika.obj.ConferenceSchedule;
 import com.app.android.konferika.obj.DisplayData;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.R;
+import com.app.android.konferika.obj.LecturesList;
 import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
@@ -118,7 +120,7 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
      *
      * @param
      */
-    @Override
+    /*@Override
     public void onLongClick(Lecture lecture) {
         int dateId = lecture.getDate();
         //UserSchedule usersSched = new UserSchedule(mContext);
@@ -133,13 +135,16 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         recyclerView.setAdapter(sectionAdapter);
 
     }
-
+*/
 
     @Override
     public void onStarChanged(boolean isCheck, Lecture lecture){
-        loadData();
+
         //lecture.setInUserSched(isCheck);
         schedule.handleStarChange(mContext, isCheck, lecture, userSchedule);
+        //loadData();
+        //recyclerView.getAdapter().notifyDataSetChanged();
+
         Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(100);
     }

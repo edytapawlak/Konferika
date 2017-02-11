@@ -1,7 +1,9 @@
 package com.app.android.konferika.obj;
 
 
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.app.android.konferika.R;
@@ -90,9 +92,18 @@ public class SectionHeader extends StatelessSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
-
         // bind your view here
-        childList.get(position).setContent(itemHolder);
+        LecturesList mRefData = LecturesList.getInstance();
+        Activity activ = childList.get(position);
+        if (mRefData != null && activ.isLecture()) {
+
+            if(mRefData.containAct((Lecture) activ)){
+                int id = ((Lecture) activ).getId();
+                childList.set(position, mRefData.getActivityOnPos(id));
+                Log.v("Checked activ ", mRefData.printChecked());
+            }
+        }
+            childList.get(position).setContent(itemHolder);
 
     }
 

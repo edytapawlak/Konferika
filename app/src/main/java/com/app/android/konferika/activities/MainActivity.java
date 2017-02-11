@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.R;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter.setScheduleId(0);
 
     }
-
     /**
      * This method adds tabs to a viewPager
      *
@@ -68,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(new DayScheduleFragment(), "Niedziela");
 
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
+        ViewPagerAdapter.setScheduleId(0);
+        viewPager.getAdapter().notifyDataSetChanged();
+        setupViewPager(viewPager);
+
+
     }
 
    /* @Override

@@ -79,7 +79,10 @@ public class ConferenceSchedule implements Schedule {
     @Override
     public void handleStarChange(Context context, boolean isCheck, Lecture lecture, UserSchedule userSchedule) {
         int dayId = lecture.getDate();
-        if(isCheck) {
+        String nazwa = lecture.getTitle();
+        boolean changedBollean = lecture.getIsInUserSchedule();
+
+        if(lecture.getIsInUserSchedule()) {
             userSchedule.addActivity(context, lecture, dayId);
 
             Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
