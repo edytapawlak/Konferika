@@ -3,17 +3,16 @@ package com.app.android.konferika.adapters;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.android.konferika.R;
 import com.app.android.konferika.activities.ItemDetailsFragment;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.R;
 import com.app.android.konferika.obj.LecturesList;
 
 public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {

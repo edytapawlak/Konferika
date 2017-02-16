@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.adapters.MyItemViewHolder;
 
 import java.io.Serializable;
@@ -58,7 +59,7 @@ public class Break implements Activity, Serializable {
 
 
     @Override
-    public void handleOnClick(Context context) {
+    public void handleOnClick(Context context, DayScheduleFragment fragment) {
 
     }
 

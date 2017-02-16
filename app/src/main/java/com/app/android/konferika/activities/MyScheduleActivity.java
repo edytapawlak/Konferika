@@ -1,16 +1,13 @@
 package com.app.android.konferika.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,12 +34,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
 
-
-
-        // LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
         viewPager = (ViewPager) findViewById(R.id.main_view_pager_myschedule);
-
 
         initToolbar();
         setupDrawerLayout();
@@ -61,9 +53,14 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
     @Override
     protected void onResume() {
         super.onResume();
-        ViewPagerAdapter.setScheduleId(1);
+        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
+    }
 
 
     private void setupViewPager(ViewPager viewPager) {
@@ -91,7 +88,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
-        ViewPagerAdapter.setScheduleId(1);
+        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
         setupViewPager(viewPager);
 
@@ -131,14 +128,11 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Intent intent;
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_home:
                         i = new Intent(MyScheduleActivity.this, MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        //startActivity(i);
-                        handler.sendEmptyMessageDelayed(1, 100); //todo nie odświeża się
-                        //ViewPagerAdapter.setScheduleId(0);
+                        handler.sendEmptyMessageDelayed(1, 100);
                 }
 
                 menuItem.setChecked(true);

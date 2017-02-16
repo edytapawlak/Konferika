@@ -1,9 +1,6 @@
 package com.app.android.konferika.obj;
 
-
 import android.content.Context;
-import android.util.Log;
-import android.widget.LinearLayout;
 
 import com.app.android.konferika.data.ActivityData;
 

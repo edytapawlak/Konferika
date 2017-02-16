@@ -2,6 +2,7 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 
+import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.adapters.MyItemViewHolder;
 
 public interface Activity{
@@ -15,7 +16,7 @@ public interface Activity{
 
     String getStartTime();
     String getTitle();
-    void handleOnClick(Context context);
+    void handleOnClick(Context context, DayScheduleFragment fragment);
     void setIsInUserSchedule(boolean isInUserSchedule);
     boolean getIsInUserSchedule();
 }

@@ -1,11 +1,12 @@
 package com.app.android.konferika.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import com.app.android.konferika.obj.Lecture;
+
 import com.app.android.konferika.R;
+import com.app.android.konferika.obj.Lecture;
 
 public class DetailsActivity extends AppCompatActivity {
 

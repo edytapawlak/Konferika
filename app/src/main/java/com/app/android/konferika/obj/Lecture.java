@@ -3,14 +3,11 @@ package com.app.android.konferika.obj;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.app.android.konferika.activities.DetailsActivity;
+import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.ItemDetailsActivity;
-import com.app.android.konferika.activities.ItemDetailsFragment;
 import com.app.android.konferika.adapters.MyItemViewHolder;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
@@ -41,11 +38,14 @@ public class Lecture implements Activity, Serializable {
     }
 
     @Override
-    public void handleOnClick(Context context) {
+    public void handleOnClick(Context context, DayScheduleFragment fragment) {
+
         Intent intent = new Intent(context, ItemDetailsActivity.class);
         intent.putExtra("lect", this);
 
         context.startActivity(intent);
+
+        //fragment.startActivityForResult(intent, 1);
     }
 
     @Override
@@ -87,10 +87,7 @@ public class Lecture implements Activity, Serializable {
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
-        int idd = this.id;
-        String str = this.getTitle();
 
-        boolean changedBollean = this.getIsInUserSchedule();
         holder.myActCheckbox.setChecked(isInUserSched);
 
         if (ViewPagerAdapter.getScheduleId() != 0) {

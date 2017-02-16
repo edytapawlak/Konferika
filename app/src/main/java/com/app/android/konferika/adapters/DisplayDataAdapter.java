@@ -3,14 +3,11 @@ package com.app.android.konferika.adapters;
 
 import android.content.Context;
 
-import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferencePlanData;
 import com.app.android.konferika.obj.DisplayData;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.SectionHeader;
-
-import java.util.List;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 

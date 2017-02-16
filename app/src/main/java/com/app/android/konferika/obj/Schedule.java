@@ -2,7 +2,6 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface Schedule{
@@ -17,6 +16,6 @@ public interface Schedule{
 
     void handleLongClick(Context context, Lecture lecture, UserSchedule schedul);
 
-    void handleStarChange(Context context, boolean isCheck, Lecture lecture, UserSchedule userSchedule);
+    void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule);
 
 }

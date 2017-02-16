@@ -2,7 +2,6 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -129,7 +128,21 @@ public class UserSchedule implements Schedule, Serializable {
     }
 
     @Override
-    public void handleStarChange(Context context, boolean isCheck, Lecture lecture, UserSchedule userSchedule) {
-        Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
+    public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
+        //Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
+
+        int dayId = lecture.getDate();
+        if(scheduleObject == null){
+            scheduleObject = UserSchedule.getInstance(context, null);
+        }
+
+        if(lecture.getIsInUserSchedule()) {
+            scheduleObject.addActivity(context, lecture, dayId);
+
+            Toast.makeText(context, "Dodano do planu 1", Toast.LENGTH_SHORT).show();
+        } else {
+           scheduleObject.deleteActivity(lecture, dayId);
+            Toast.makeText(context, "Usunięto z planu 1", Toast.LENGTH_SHORT).show();
+        }
     }
 }

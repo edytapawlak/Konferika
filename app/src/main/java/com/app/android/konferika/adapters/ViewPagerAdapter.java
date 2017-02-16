@@ -4,14 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
-
-import com.app.android.konferika.activities.DayScheduleFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -19,6 +14,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
     private static int scheduleId;
+
+    public final static int CONFERENCE_SCHED = 0;
+    public final static int USER_SCHED = 1;
+
 
     public static void setScheduleId(int id) {
         scheduleId = id;

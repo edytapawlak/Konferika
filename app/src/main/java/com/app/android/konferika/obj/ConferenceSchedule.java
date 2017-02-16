@@ -11,6 +11,7 @@ public class ConferenceSchedule implements Schedule {
 
     private ConferencePlanData[] schedule;
     protected Context context;
+    private UserSchedule userSched;
 
     public ConferenceSchedule(Context con) {
         if (this.schedule == null) {
@@ -77,17 +78,18 @@ public class ConferenceSchedule implements Schedule {
     }
 
     @Override
-    public void handleStarChange(Context context, boolean isCheck, Lecture lecture, UserSchedule userSchedule) {
+    public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
         int dayId = lecture.getDate();
-        String nazwa = lecture.getTitle();
-        boolean changedBollean = lecture.getIsInUserSchedule();
+        if(userSched == null){
+            userSched = UserSchedule.getInstance(context, null);
+        }
 
         if(lecture.getIsInUserSchedule()) {
-            userSchedule.addActivity(context, lecture, dayId);
+            userSched.addActivity(context, lecture, dayId);
 
             Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
         } else {
-            userSchedule.deleteActivity(lecture, dayId);
+            userSched.deleteActivity(lecture, dayId);
             Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
         }
     }

@@ -1,12 +1,10 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,18 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.app.android.konferika.R;
+import com.app.android.konferika.adapters.DisplayDataAdapter;
+import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferenceSchedule;
 import com.app.android.konferika.obj.DisplayData;
 import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.R;
-import com.app.android.konferika.obj.LecturesList;
 import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
-import com.app.android.konferika.adapters.ViewPagerAdapter;
-import com.app.android.konferika.adapters.DisplayDataAdapter;
 
 
 public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.DispalyAdapterOnClickHandler {
@@ -34,7 +30,6 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
-
     private DisplayDataAdapter sectionAdapter;
 
     Schedule schedule;
@@ -42,9 +37,17 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     Context mContext;
     UserSchedule userSchedule;
 
-    private static final int FORECAST_LOADER_ID = 0;
-
     public DayScheduleFragment() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //Toast.makeText(mContext, "OnStart", Toast.LENGTH_SHORT).show();
+        userSchedule = UserSchedule.getInstance(mContext, null);
+        loadData();
+        recyclerView.setAdapter(sectionAdapter);
+
     }
 
     @Override
@@ -62,6 +65,7 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         //}
 
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
         mErrorTextView = (TextView) view.findViewById(R.id.error_text_view);
         mLoadingProgrressBar = (ProgressBar) view.findViewById(R.id.loading_progress_bar);
@@ -77,7 +81,7 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         sectionAdapter.addSections();
 
         recyclerView.setAdapter(sectionAdapter);
-
+        //Toast.makeText(mContext, "OnCreateView", Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -94,14 +98,14 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+       // Toast.makeText(mContext, "OnActivityCreated", Toast.LENGTH_SHORT).show();
+
         if(savedInstanceState != null) {
             userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
 
-            //ViewPagerAdapter.setScheduleId( savedInstanceState.getInt("scheduleID"));
-            String message = "Sched Id: " +  savedInstanceState.getInt("scheduleID") + " ViewPager: " + ViewPagerAdapter.getScheduleId();
-            Toast.makeText(this.mContext, message, Toast.LENGTH_LONG).show();
         }
     }
+
 
     /**
      * Jeżeli klinknięto na wykład/referat, to uruchamia nowy widok z opisem refeatu.
@@ -112,14 +116,21 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
 
     @Override
     public void onClick(Activity activ) {
-        activ.handleOnClick(mContext);
+        activ.handleOnClick(mContext, this);
     }
 
-    /**
-     * Odświeża recyclerView, bo wykład został usunięty.
-     *
-     * @param
-     */
+   /* @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //userSchedule = UserSchedule.getInstance(mContext, null);
+                loadData();
+        }
+*/
+        /**
+         * Odświeża recyclerView, bo wykład został usunięty.
+         *
+         * @param
+         */
     /*@Override
     public void onLongClick(Lecture lecture) {
         int dateId = lecture.getDate();
@@ -140,10 +151,8 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
     @Override
     public void onStarChanged(boolean isCheck, Lecture lecture){
 
-        //lecture.setInUserSched(isCheck);
-        schedule.handleStarChange(mContext, isCheck, lecture, userSchedule);
-        //loadData();
-        //recyclerView.getAdapter().notifyDataSetChanged();
+        loadData();
+        schedule.handleStarChange(mContext, lecture, userSchedule);
 
         Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(100);

@@ -1,29 +1,32 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
+import com.app.android.konferika.obj.LecturesList;
+import com.app.android.konferika.obj.UserSchedule;
+
+;
 
 public class ItemDetailsActivity extends AppCompatActivity {
     ItemDetailsFragment fragmentItemDetail;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Context mContext;
     private Lecture item;
+    private UserSchedule userSched;
+    private DayScheduleFragment lastFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         mContext = this;
         item = (Lecture) getIntent().getSerializableExtra("lect");
-        initToolbar(item.getTitle());
+
+        initToolbar();
         if (item == null) {
             Toast.makeText(this, "Jest null,sorry", Toast.LENGTH_SHORT).show();
         }
@@ -40,6 +44,32 @@ public class ItemDetailsActivity extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tv_lect_title);
         TextView tvBody = (TextView) findViewById(R.id.tv_lect_description);
         TextView tvAuthor = (TextView) findViewById(R.id.tv_lect_author);
+        FloatingActionButton fabulousBtn = (FloatingActionButton) findViewById(R.id.button_fabulous);
+
+        fabulousBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LecturesList mRefData = LecturesList.getInstance(v.getContext());
+                int id = item.getId();
+
+                boolean isChanged = false;
+                userSched = UserSchedule.getInstance(mContext, null);
+                if (item.getIsInUserSchedule()) {
+                    userSched.deleteActivity(item, item.getDate());
+                    Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
+                    isChanged = false;
+                } else {
+                    userSched.addActivity(mContext, item, item.getDate());
+                    Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
+                    isChanged = true;
+                }
+
+                mRefData.setCheckOnPos(id, isChanged);
+
+            }
+        });
+
         tvTitle.setText(item.getTitle());
         tvBody.setText(item.getAbs() + item.getAbs() + item.getAbs());
         tvAuthor.setText(item.getAuthor());
@@ -61,12 +91,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-       /* Intent intent = new Intent(MainActivity.this, MyScheduleActivity.class);
-        startActivity(intent);
-        ViewPagerAdapter.setScheduleId(1);
-        return true;*/
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -79,7 +106,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     }
 
 
-    private void initToolbar(String title) {
+    private void initToolbar() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.details_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
@@ -98,9 +125,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 }
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbarLayout.setTitle(item.getTitle());
-                   // collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    //collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(mContext, android.R.color.transparent));
                     isShow = true;
-                } else if(isShow) {
+                } else if (isShow) {
                     collapsingToolbarLayout.setTitle(" ");
                     isShow = false;
                 }
