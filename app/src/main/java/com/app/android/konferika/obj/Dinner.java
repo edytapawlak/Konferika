@@ -1,12 +1,13 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
-import com.app.android.konferika.adapters.MyItemViewHolder;
+import com.app.android.konferika.adapters.ActivityViewHolder;
 
 import java.io.Serializable;
 
@@ -28,7 +29,7 @@ public class Dinner implements Activity, Serializable{
 
     @Override
    // public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
-    public void setContent(MyItemViewHolder holder) {
+    public void setContent(ActivityViewHolder holder) {
         int unicode = 0x1F357;
         String emoji = new String(Character.toChars(unicode));
 
@@ -40,8 +41,9 @@ public class Dinner implements Activity, Serializable{
         params.height = 0;
         holder.actLayout.setLayoutParams(params);
         holder.actLayout.setVisibility(View.INVISIBLE);
-        int coffeColor = Color.rgb(228, 227, 217);
-        holder.mCardView.setCardBackgroundColor(coffeColor);
+        Context con = holder.actLayout.getContext();
+        int dinnerColor = R.color.dinner_color;
+        holder.mCardView.setCardBackgroundColor(ResourcesCompat.getColor(con.getResources(), dinnerColor, null));
     }
 
     public String getEndTime() {

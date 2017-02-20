@@ -15,7 +15,7 @@ import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.LecturesList;
 
-public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {
+public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {
 
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
@@ -30,7 +30,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
     private LecturesList mRefData;
 
 
-    public MyItemViewHolder(final View itemView) {
+    public ActivityViewHolder(final View itemView) {
         super(itemView);
         mRefDataTextView = (TextView) itemView.findViewById(R.id.tv_ref);
         mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
@@ -60,7 +60,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
                     Lecture activ = (Lecture) mRefData.getActivityOnPos(id);
                     String nazwa = activ.getTitle();
                     boolean changedBollean = activ.getIsInUserSchedule();
-                    DisplayDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
+                    DisplayActDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
                    // Log.v("Checked activ ", mRefData.printChecked());
                 }
             }
@@ -75,7 +75,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
         if (text != "") {
             int id = Integer.parseInt(text);
             Activity activ = mRefData.getActivityOnPos(id);
-            DisplayDataAdapter.getmClickHandler().onClick(activ);
+            DisplayActDataAdapter.getmClickHandler().onClick(activ);
 
             if (activ.isLecture()) {
                 ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
@@ -97,7 +97,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
 
    /* @Override
     public boolean onLongClick(View v) {
-        mRefData = DisplayDataAdapter.getmRefData();
+        mRefData = DisplayActDataAdapter.getmRefData();
         String text = mIdDataTextView.getText().toString();
         if (text != "") {
             int id = Integer.parseInt(text);
@@ -105,7 +105,7 @@ public class MyItemViewHolder extends RecyclerView.ViewHolder implements View.On
 
             if (activ.isLecture()) {
                 Lecture lecture = (Lecture) activ;
-                DisplayDataAdapter.getmClickHandler().onLongClick(lecture);
+                DisplayActDataAdapter.getmClickHandler().onLongClick(lecture);
 
                 Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
                 vb.vibrate(100);

@@ -1,25 +1,20 @@
 package com.app.android.konferika.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     public ViewPager viewPager;
     TabLayout tabLayout;
@@ -27,13 +22,22 @@ public class MainActivity extends AppCompatActivity {
     private View content;
     private NavigationView navigationView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mActivity = this;
+//        setContentView(R.layout.activity_main);
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_main, null, false);
+        super.lay.addView(contentView, 0);
+
 
         initToolbar();
-        setupDrawerLayout();
+        //setupDrawerLayout();
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
 
         setupViewPager(viewPager);
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
@@ -96,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initToolbar() {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+  /*  private void initToolbar() {
+        final Toolbar toolbar = (Toolbar) content.findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     Intent intent;
 
-    Handler handler = new Handler(new Handler.Callback() {
+   /* Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    private void setupDrawerLayout() {
+/*    private void setupDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -134,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, MyScheduleActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         handler.sendEmptyMessageDelayed(1, 100);
+                        break;
+                    case R.id.drawer_posters:
+                        intent = new Intent(MainActivity.this, PosterActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        handler.sendEmptyMessageDelayed(1, 100);
+                        break;
                 }
 
 //                Snackbar.make(content, menuItem.getTitle() + " pressed", Snackbar.LENGTH_LONG).show()
@@ -143,5 +153,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
 }

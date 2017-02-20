@@ -3,8 +3,10 @@ package com.app.android.konferika.data;
 import android.content.Context;
 
 import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.SectionHeader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +17,8 @@ public class ActivityData {
     private static List<SectionHeader> headers;
 
     private static Activity[] breaks;
+
+    private static ArrayList<Poster> posters;
 
     public static List<Activity> getLectures(Context cont) {
         if (lectures == null) {
@@ -46,6 +50,7 @@ public class ActivityData {
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
         this.lectures = databaseAccess.getLectData();
+        this.posters = databaseAccess.getPosters();
         databaseAccess.close();
     }
 
@@ -68,6 +73,16 @@ public class ActivityData {
             databaseAccess.close();
         }
         return breaks;
+    }
+
+    public static ArrayList<Poster> getPosters(Context context) {
+        if (posters == null) {
+            DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
+            databaseAccess.open();
+            posters = databaseAccess.getPosters();
+            databaseAccess.close();
+        }
+        return posters;
     }
 
     /*public ArrayList<Activity> getLectures() {

@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.adapters.MyItemViewHolder;
+import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.adapters.SectionViewHolder;
 
 import java.util.ArrayList;
@@ -85,12 +85,12 @@ public class SectionHeader extends StatelessSection {
 
     @Override
     public RecyclerView.ViewHolder getItemViewHolder(View view) {
-        return new MyItemViewHolder(view);
+        return new ActivityViewHolder(view);
     }
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MyItemViewHolder itemHolder = (MyItemViewHolder) holder;
+        ActivityViewHolder itemHolder = (ActivityViewHolder) holder;
         // bind your view here
         LecturesList mRefData = LecturesList.getInstance();
         Activity activ = childList.get(position);

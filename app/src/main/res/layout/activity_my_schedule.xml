@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -7,51 +6,53 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.app.android.konferika.activities.MyScheduleActivity">
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@android:style/Theme.NoTitleBar">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:layout_height="match_parent">
 
-
-        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/coordinatorLayout"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appBarLayout"
+            <!--   <include layout="@layout/toolbar_layout"></include> -->
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginBottom="10dp"
+                app:title="Mój plan"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/sched_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:layout_marginBottom="10dp"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/tab_layout_myschedule"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:tabSelectedTextColor="#dedccf"
-                    app:tabTextColor="#fff" />
-
-            </android.support.design.widget.AppBarLayout>
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/main_view_pager_myschedule"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout_myschedule"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </android.support.design.widget.CoordinatorLayout>
-    </FrameLayout>
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="#dedccf"
+                app:tabTextColor="#fff" />
 
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_view_pager_myschedule"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.design.widget.CoordinatorLayout>
+</FrameLayout><!--
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
@@ -60,4 +61,4 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer" />
 
-</android.support.v4.widget.DrawerLayout>
+</android.support.v4.widget.DrawerLayout> -->

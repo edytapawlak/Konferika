@@ -3,11 +3,11 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/forecast_card_view"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="4dp"
-    card_view:cardCornerRadius="8dp"
+    android:layout_margin="@dimen/spacing_small"
+    card_view:cardCornerRadius="@dimen/cardViewCornerRad"
     card_view:contentPadding="8dp">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
 
         <LinearLayout
@@ -49,7 +49,7 @@
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
                     android:textColor="#000000"
-                    android:textSize="18dp" />
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/tv_room"
@@ -73,8 +73,8 @@
                 <CheckBox
                     android:id="@+id/check_box_myAct"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-                    <!--android:button="@drawable/star_selector" />-->
+                    android:layout_height="match_parent"
+                    android:button="@drawable/star_selector" />
 
             </LinearLayout>
         </LinearLayout>

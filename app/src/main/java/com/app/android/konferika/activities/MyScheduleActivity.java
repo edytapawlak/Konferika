@@ -1,43 +1,39 @@
 package com.app.android.konferika.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
-public class MyScheduleActivity extends AppCompatActivity {//implements TabLayout.OnTabSelectedListener {//AppCompatActivity {
+public class MyScheduleActivity extends BaseActivity {//implements TabLayout.OnTabSelectedListener {//AppCompatActivity {
 
     static ViewPager viewPager;
     static TabLayout tabLayout;
-    private DrawerLayout drawerLayout;
-    private View content;
-    private NavigationView navigationView;
     private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_schedule);
+        //setContentView(R.layout.activity_my_schedule);
+        mActivity = this;
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_my_schedule, null, false);
+        super.lay.addView(contentView, 0);
 
         viewPager = (ViewPager) findViewById(R.id.main_view_pager_myschedule);
 
         initToolbar();
-        setupDrawerLayout();
+        //setupDrawerLayout();
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout)
@@ -72,7 +68,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
         viewPager.setAdapter(adapter);
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -82,7 +78,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
 
         return super.onOptionsItemSelected(item);
 
-    }
+    }*/
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -95,7 +91,7 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
 
     }
 
-    private void initToolbar() {
+   /* private void initToolbar() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.sched_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
@@ -141,5 +137,5 @@ public class MyScheduleActivity extends AppCompatActivity {//implements TabLayou
             }
         });
     }
-
+*/
 }

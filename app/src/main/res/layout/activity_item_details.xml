@@ -83,7 +83,7 @@ android:fitsSystemWindows="true">
                 android:textSize="16sp"
                 android:lineSpacingExtra="20dp"
                 android:padding="15dp"
-                android:textColor="@color/cardview_dark_background"
+                android:textColor="@color/cardview_light_background"
                 android:fontFamily="sans-serif-thin"/>
 
         </LinearLayout>
@@ -140,7 +140,6 @@ android:fitsSystemWindows="true">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
-                    android:text="@string/lorem_ipsum"
                     android:textSize="16sp"
                     android:lineSpacingExtra="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>

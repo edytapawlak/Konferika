@@ -3,16 +3,16 @@ package com.app.android.konferika.obj;
 import android.content.Context;
 
 import com.app.android.konferika.activities.DayScheduleFragment;
-import com.app.android.konferika.adapters.MyItemViewHolder;
+import com.app.android.konferika.adapters.ActivityViewHolder;
 
-public interface Activity{
+public interface Activity {
         boolean isLecture();
 
     /**
      * This method sets data to layout.
      * @param holder
      */
-    void setContent(MyItemViewHolder holder);
+    void setContent(ActivityViewHolder holder);
 
     String getStartTime();
     String getTitle();

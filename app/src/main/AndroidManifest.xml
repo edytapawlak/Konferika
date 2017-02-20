@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,10 +20,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.DetailsActivity" />
-        <activity android:name=".activities.MyScheduleActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".activities.ItemDetailsActivity"></activity>
+        <activity
+            android:name=".activities.MyScheduleActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".activities.ItemDetailsActivity" />
+        <activity android:name=".activities.PosterActivity" />
+        <activity android:name=".activities.PosterDetailsActivity" />
+        <activity android:name=".activities.BaseActivity"></activity>
     </application>
 
 </manifest>

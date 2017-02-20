@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.adapters.DisplayDataAdapter;
+import com.app.android.konferika.adapters.DisplayActDataAdapter;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferenceSchedule;
@@ -25,12 +25,12 @@ import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
 
 
-public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.DispalyAdapterOnClickHandler {
+public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler {
 
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
-    private DisplayDataAdapter sectionAdapter;
+    private DisplayActDataAdapter sectionAdapter;
 
     Schedule schedule;
 
@@ -71,7 +71,7 @@ public class DayScheduleFragment extends Fragment implements DisplayDataAdapter.
         mLoadingProgrressBar = (ProgressBar) view.findViewById(R.id.loading_progress_bar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
 
-        sectionAdapter = new DisplayDataAdapter(this.getContext(), this);
+        sectionAdapter = new DisplayActDataAdapter(this.getContext(), this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);

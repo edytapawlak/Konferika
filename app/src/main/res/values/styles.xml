@@ -22,23 +22,33 @@
         <item name="android:selectableItemBackground">@drawable/selectable_item_background</item>
 
     </style>
+<!--<item name="android:src">@mipmap/empty_star</item>-->
 
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/spacing_large</item>
-        <item name="android:src">@mipmap/star_favorites</item>
+
         <item name="borderWidth">0dp</item>
         <item name="elevation">6dp</item>
         <item name="pressedTranslationZ">12dp</item>
         <item name="rippleColor">@android:color/white</item>
     </style>
 
-    <color name="primary">#00BCD4</color>
-    <color name="primary_dark">#0097A7</color>
-    <color name="accent">#FFEB3B</color>
-    <color name="accent_translucent">#80FFEB3B</color>
+   <!-- <color name="primary">#009688</color>
+    <color name="primary_dark">#00796b</color>
+    <color name="accent">#ffb74d</color>
+    <color name="accent_translucent">#B2DFDB</color>
     <color name="accent_bright">#FFF493</color>
+    <color name="coffe_color">#fbe9e7</color>
+    <color name="dinner_color">#ffebee</color>-->
+    <color name="primary">#78567b</color>
+    <color name="primary_dark">#78567b</color>
+    <color name="accent">#fdbaa4</color>
+    <color name="accent_translucent">#FFC180</color>
+    <color name="accent_bright">#FFF493</color>
+    <color name="coffe_color">#F6EFED</color>
+    <color name="dinner_color">#F6EFED</color>
 
 
 </resources>

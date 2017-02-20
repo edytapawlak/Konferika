@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.ItemDetailsActivity;
-import com.app.android.konferika.adapters.MyItemViewHolder;
+import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 import java.io.Serializable;
@@ -81,7 +81,7 @@ public class Lecture implements Activity, Serializable {
     }
 
     @Override
-    public void setContent(MyItemViewHolder holder) {
+    public void setContent(ActivityViewHolder holder) {
 
 
         holder.mCardView.setCardBackgroundColor(Color.WHITE);

@@ -11,7 +11,7 @@ import com.app.android.konferika.obj.SectionHeader;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
+public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
 
     private static DisplayData activitiesData;
     private static DispalyAdapterOnClickHandler mClickHandler;
@@ -31,7 +31,7 @@ public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
         void onStarChanged(boolean isChecked, Lecture lecture);
     }
 
-    public DisplayDataAdapter(Context con, DispalyAdapterOnClickHandler listener) {
+    public DisplayActDataAdapter(Context con, DispalyAdapterOnClickHandler listener) {
         this.mClickHandler = listener;
         context = con;
 
@@ -49,8 +49,8 @@ public class DisplayDataAdapter extends SectionedRecyclerViewAdapter {
     }
 
     public void setActivitiesData(DisplayData activitiesData) {
-        DisplayDataAdapter.activitiesData = null;
-        DisplayDataAdapter.activitiesData = activitiesData;
+        DisplayActDataAdapter.activitiesData = null;
+        DisplayActDataAdapter.activitiesData = activitiesData;
 //        notifyDataSetChanged();
     }
 

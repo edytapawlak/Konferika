@@ -9,6 +9,7 @@ import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Break;
 import com.app.android.konferika.obj.Dinner;
 import com.app.android.konferika.obj.Lecture;
+import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.SectionHeader;
 
 import java.util.ArrayList;
@@ -240,7 +241,7 @@ public class DatabaseAccess {
     }
 
 
-    public Activity[] getBrakes(){
+    public Activity[] getBrakes() {
         Activity[] list = new Activity[10];
         Cursor cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
         cursor.moveToFirst();
@@ -263,6 +264,25 @@ public class DatabaseAccess {
 
         cursor.close();
         return list;
+    }
+
+
+    public ArrayList<Poster> getPosters() {
+        ArrayList<Poster> outputList = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT id, title, author, abstract FROM Posters", null);
+        cursor.moveToFirst();
+        int i = 0;
+        Poster poster;
+        while (!cursor.isAfterLast()) {
+            String[] tab = new String[2];
+            tab[0] = cursor.getString(2);
+            poster = new Poster(cursor.getInt(0), cursor.getString(1), tab, cursor.getString(3));
+            outputList.add(poster);
+            cursor.moveToNext();
+            i++;
+        }
+        cursor.close();
+        return outputList;
     }
 
 }
