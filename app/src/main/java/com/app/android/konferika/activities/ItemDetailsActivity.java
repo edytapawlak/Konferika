@@ -47,6 +47,11 @@ public class ItemDetailsActivity extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tv_lect_title);
         TextView tvBody = (TextView) findViewById(R.id.tv_lect_description);
         TextView tvAuthor = (TextView) findViewById(R.id.tv_lect_author);
+
+        TextView tvDay = (TextView) findViewById(R.id.tv_day);
+        TextView tvTime = (TextView) findViewById(R.id.tv_time);
+        TextView tvRoom = (TextView) findViewById(R.id.tv_room);
+
         fabulousBtn = (FloatingActionButton) findViewById(R.id.button_fabulous);
         if(item.getIsInUserSchedule()){
             fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.fill_star));
@@ -93,6 +98,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
         tvTitle.setText(item.getTitle());
         tvBody.setText(item.getAbs() + item.getAbs() + item.getAbs());
         tvAuthor.setText(item.getAuthor());
+        tvDay.setText(item.getWeekDay());
+        tvTime.setText(item.getStartTime());
+        tvRoom.setText(item.getRoom());
         //ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
         //Bundle args = new Bundle();
         //args.putSerializable("item", item);

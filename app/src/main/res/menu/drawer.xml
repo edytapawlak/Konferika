@@ -5,10 +5,10 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/drawer_home"
+            android:id="@+id/drawer_con_pan"
             android:checked="true"
             android:icon="@drawable/ic_calendar"
-            android:title="@string/home"
+            android:title="@string/con_plan"
             android:checkable="true"/>
 
         <item
@@ -19,19 +19,19 @@
 
         <item
             android:id="@+id/drawer_posters"
-            android:icon="@drawable/ic_starr_empty"
+            android:icon="@mipmap/ic_poster"
             android:title="@string/downloaded"
             android:checkable="true"/>
 
         <item
-            android:id="@+id/drawer_more"
-            android:icon="@drawable/ic_watch"
-            android:title="@string/more"
+            android:id="@+id/drawer_map"
+            android:icon="@mipmap/ic_map"
+            android:title="@string/map"
             android:checkable="true"/>
 
         <item
             android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_flag"
+            android:icon="@mipmap/ic_settings"
             android:title="@string/settings"
             android:checkable="true"/>
 

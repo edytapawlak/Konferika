@@ -1,6 +1,7 @@
 package com.app.android.konferika.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void onCreateDraver(){
+    public void onCreateDraver() {
         //initToolbar();
         setupDrawerLayout();
     }
@@ -60,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     });
 
     private void setupDrawerLayout() {
-        lay = (FrameLayout) findViewById(R.id.tabsy) ;
+        lay = (FrameLayout) findViewById(R.id.tabsy);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view_base);
@@ -68,7 +69,7 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.drawer_home:
+                    case R.id.drawer_con_pan:
                         intent = new Intent(mActivity, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         handler.sendEmptyMessageDelayed(1, 100);
@@ -83,9 +84,15 @@ public class BaseActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         handler.sendEmptyMessageDelayed(1, 100);
                         break;
+                    case R.id.drawer_map:
+                        String loc = "Wydział Matematyki i Informatyki UAM, Umultowska, Poznań";
+                        Uri geolocation = Uri.parse("geo:0,0?q=" + loc);
+                        showMap(geolocation);
+                        break;
+
                 }
 
-               Toast.makeText(mActivity, menuItem.getTitle() + " pressed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mActivity, menuItem.getTitle() + " pressed", Toast.LENGTH_SHORT).show();
                 menuItem.setChecked(false);
                 drawerLayout.closeDrawers();
                 return true;
@@ -93,7 +100,13 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-
+    private void showMap(Uri geoloc) {
+        Intent geoIntent = new Intent(Intent.ACTION_VIEW);
+        geoIntent.setData(geoloc);
+        if (geoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(geoIntent);
+        }
+    }
 
     protected void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);

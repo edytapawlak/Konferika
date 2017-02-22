@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/poster_main_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +28,7 @@
             <ImageView
                 android:id="@+id/image_poster"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax" />
@@ -37,7 +38,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="?android:attr/actionBarSize">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,9 +57,18 @@
                     android:textSize="16sp"
                     android:lineSpacingExtra="20dp"
                     android:padding="15dp"
-                    android:textColor="@color/cardview_light_background"
-                    android:fontFamily="sans-serif-thin"/>
+                    android:fontFamily="sans-serif-light"/>
 
+                <RatingBar
+                    android:id="@+id/poster_details_rating_bar"
+                    android:theme="@style/RatingBar"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:stepSize="0.5"
+                    android:layout_gravity="center_horizontal"/>
             </LinearLayout>
 
             <android.support.v7.widget.Toolbar
@@ -122,10 +134,11 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.FloatingActionButton
+   <!-- <android.support.design.widget.FloatingActionButton
         android:id="@+id/button_fabulous_poster"
         app:layout_anchor="@id/app_bar_layout_poster"
         app:layout_anchorGravity="bottom|right|end"
-        style="@style/FabStyle"/>
+        style="@style/FabStyle"/> -->
+
 
 </android.support.design.widget.CoordinatorLayout>

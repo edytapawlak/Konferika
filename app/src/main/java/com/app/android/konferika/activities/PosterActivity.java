@@ -14,18 +14,20 @@ import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.RecyclerViewAdapter;
 import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Poster;
+import com.app.android.konferika.obj.PosterSesion;
 
 import java.util.List;
 
 public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.OnItemClickListener {
 
     private static Context mContext;
-    private static List<Poster> items;
+    private List<Poster> items;
 
     private DrawerLayout drawerLayout;
     private View content;
     private RecyclerView recyclerView;
     private NavigationView navigationView;
+    RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
         super.drawerLayout.addView(contentView, 0);
 
         mContext = this;
-        items = ActivityData.getPosters(mContext);
+        items = PosterSesion.getPosterList(this);
 
         initRecyclerView();
        // initFab();
@@ -54,6 +56,14 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
        // }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        items = PosterSesion.getPosterList(this);
+        adapter.setItems(items);
+
+    }
+
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.poster_recycled_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -61,7 +71,7 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     }
 
     private void setRecyclerAdapter(RecyclerView recyclerView) {
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(items);
+        adapter = new RecyclerViewAdapter(items);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }

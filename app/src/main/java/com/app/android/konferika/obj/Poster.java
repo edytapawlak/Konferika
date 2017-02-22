@@ -21,15 +21,25 @@ public class Poster implements Serializable{
         return id;
     }
 
+    public void setMark(float mark) {
+        this.mark = mark;
+    }
+
+    public float getMark() {
+        return mark;
+    }
+
     private String title;
     private int id;
     private String[] authors;
     private String abs;
+    private float mark;
 
     public Poster(int id, String title, String[] authors, String abs){
         this.title = title;
         this.id = id;
         this.authors = authors;
         this.abs = abs;
+        this.mark = 0;
     }
 }

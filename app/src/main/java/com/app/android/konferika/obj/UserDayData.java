@@ -92,8 +92,8 @@ public class UserDayData extends DisplayData implements Serializable{
                 sections.get(i).removeItem(activity);
                 if(sections.get(i).getChildItems().isEmpty()){
                     sections.remove(i);
-                    i = sections.size();
                 }
+                i = sections.size();
 
             }
             i++;

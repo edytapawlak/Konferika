@@ -20,10 +20,11 @@ public class Lecture implements Activity, Serializable {
     private int dateId;
     private int id;
     private String startTime;
+    private String room;
     private boolean isInUserSched;
 
 
-    public Lecture(String title, String author, String abs, int date, String id, String startTime) {
+    public Lecture(String title, String author, String abs, int date, String id, String startTime, String room) {
         this.title = title;
         this.author = author;
         this.abs = abs;
@@ -31,6 +32,7 @@ public class Lecture implements Activity, Serializable {
         int idd = Integer.parseInt(id);
         this.id = idd;
         this.startTime = startTime;
+        this.room = room;
     }
 
     public String getTitle() {
@@ -74,6 +76,24 @@ public class Lecture implements Activity, Serializable {
         return id;
     }
 
+    public String getRoom() {
+        return room;
+    }
+
+    public String getWeekDay() {
+        switch (dateId) {
+            case 1:
+                return "Piątek";
+
+            case 2:
+                return "Sobota";
+
+            case 3 :
+                return "Niedziela";
+
+        }
+        return "";
+    }
 
     @Override
     public boolean isLecture() {
@@ -87,6 +107,7 @@ public class Lecture implements Activity, Serializable {
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
+        holder.mRoomTextView.setText(this.getRoom());
 
         holder.myActCheckbox.setChecked(isInUserSched);
 

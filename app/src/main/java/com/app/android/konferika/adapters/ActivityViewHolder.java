@@ -20,6 +20,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
     public final TextView mIdDataTextView;
+    public final TextView mRoomTextView;
     public final TextView mBreakPicTextView;
     public final TextView mBreakTextTextView;
     public final CardView mCardView;
@@ -35,6 +36,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         mRefDataTextView = (TextView) itemView.findViewById(R.id.tv_ref);
         mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
         mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
+        mRoomTextView = (TextView) itemView.findViewById(R.id.tv_room);
         mCardView = (CardView) itemView.findViewById(R.id.forecast_card_view);
         mBreakPicTextView = (TextView) itemView.findViewById(R.id.tv_break_pic);
         mBreakTextTextView = (TextView) itemView.findViewById(R.id.tv_break_text);

@@ -94,12 +94,15 @@ public class DatabaseAccess {
 
     public ArrayList<Activity> getLectData() {
         ArrayList<Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref ORDER BY _id", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room\n" +
+                "FROM Ref  JOIN Rooms ON Ref.room_id = Rooms._id\n" +
+                "ORDER BY Ref._id;", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
             int date_id = Integer.parseInt(cursor.getString(3));
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), date_id, cursor.getString(4), cursor.getString(5));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), date_id, cursor.getString(4),
+                                cursor.getString(5), cursor.getString(6));
             list.add(lec);
             cursor.moveToNext();
         }
@@ -148,12 +151,16 @@ public class DatabaseAccess {
      */
     public ArrayList<Activity> getLectOnDateAndTime(int date, String time) {
         ArrayList<Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, _id, startTime FROM Ref WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room  " +
+                                    "FROM Ref JOIN Rooms ON Ref.room_id = Rooms._id " +
+                                    "WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
+
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
             int dateId = Integer.parseInt(cursor.getString(3));
-            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), dateId, cursor.getString(4), cursor.getString(5));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), dateId, cursor.getString(4),
+                                cursor.getString(5), cursor.getString(6));
             list.add(lec);
             cursor.moveToNext();
         }
@@ -203,7 +210,8 @@ public class DatabaseAccess {
 
     public String[] getAllStartTime() {
         String[] list = new String[15];
-        Cursor cursor = database.rawQuery("SELECT * FROM (SELECT startTime FROM Ref UNION SELECT startTime FROM Break) ORDER BY time(startTime)", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM (SELECT startTime FROM Ref UNION SELECT startTime FROM Break) " +
+                                            "ORDER BY time(startTime)", null);
         cursor.moveToFirst();
         int i = 0;
         while (!cursor.isAfterLast()) {
@@ -269,7 +277,7 @@ public class DatabaseAccess {
 
     public ArrayList<Poster> getPosters() {
         ArrayList<Poster> outputList = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT id, title, author, abstract FROM Posters", null);
+        Cursor cursor = database.rawQuery("SELECT id, title, author, abstract FROM Posters ORDER BY id", null);
         cursor.moveToFirst();
         int i = 0;
         Poster poster;

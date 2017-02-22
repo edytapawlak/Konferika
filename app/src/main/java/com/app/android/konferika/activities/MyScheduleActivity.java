@@ -36,9 +36,7 @@ public class MyScheduleActivity extends BaseActivity {//implements TabLayout.OnT
         //setupDrawerLayout();
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout)
-
-                findViewById(R.id.tab_layout_myschedule);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout_myschedule);
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -55,7 +53,9 @@ public class MyScheduleActivity extends BaseActivity {//implements TabLayout.OnT
     @Override
     protected void onRestart() {
         super.onRestart();
-        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
+        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
+        viewPager.getAdapter().notifyDataSetChanged();
+        setupViewPager(viewPager);
     }
 
 
