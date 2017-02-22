@@ -12,7 +12,6 @@ public class ConferencePlanData extends DisplayData {
         super.setSectionList(ActivityData.getHeaders(context, dateId)); //todo zrobic to inaczej
     }
 
-
     @Override
     public void addActivityToList(Context context, Activity activity) {
 

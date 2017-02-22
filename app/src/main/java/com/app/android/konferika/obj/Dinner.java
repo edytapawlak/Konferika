@@ -11,7 +11,7 @@ import com.app.android.konferika.adapters.ActivityViewHolder;
 
 import java.io.Serializable;
 
-public class Dinner implements Activity, Serializable{
+public class Dinner implements Activity, Serializable {
 
     private String startTime;
     private String endTime;
@@ -28,7 +28,6 @@ public class Dinner implements Activity, Serializable{
     }
 
     @Override
-   // public void setContent(ForecastAdapter.ForecastAdapterViewHolder holder) {
     public void setContent(ActivityViewHolder holder) {
         int unicode = 0x1F357;
         String emoji = new String(Character.toChars(unicode));

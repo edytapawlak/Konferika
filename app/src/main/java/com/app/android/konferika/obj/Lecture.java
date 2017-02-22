@@ -88,7 +88,7 @@ public class Lecture implements Activity, Serializable {
             case 2:
                 return "Sobota";
 
-            case 3 :
+            case 3:
                 return "Niedziela";
 
         }

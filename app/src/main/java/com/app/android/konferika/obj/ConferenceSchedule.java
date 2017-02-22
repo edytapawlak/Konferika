@@ -80,11 +80,11 @@ public class ConferenceSchedule implements Schedule {
     @Override
     public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
         int dayId = lecture.getDate();
-        if(userSched == null){
+        if (userSched == null) {
             userSched = UserSchedule.getInstance(context, null);
         }
 
-        if(lecture.getIsInUserSchedule()) {
+        if (lecture.getIsInUserSchedule()) {
             userSched.addActivity(context, lecture, dayId);
 
             Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
@@ -93,6 +93,4 @@ public class ConferenceSchedule implements Schedule {
             Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

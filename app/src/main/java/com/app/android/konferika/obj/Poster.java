@@ -3,7 +3,7 @@ package com.app.android.konferika.obj;
 
 import java.io.Serializable;
 
-public class Poster implements Serializable{
+public class Poster implements Serializable {
 
     public String getTitle() {
         return title;
@@ -35,7 +35,7 @@ public class Poster implements Serializable{
     private String abs;
     private float mark;
 
-    public Poster(int id, String title, String[] authors, String abs){
+    public Poster(int id, String title, String[] authors, String abs) {
         this.title = title;
         this.id = id;
         this.authors = authors;

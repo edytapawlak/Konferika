@@ -23,12 +23,10 @@ import com.app.android.konferika.obj.UserSchedule;
 ;
 
 public class ItemDetailsActivity extends AppCompatActivity {
-    ItemDetailsFragment fragmentItemDetail;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Context mContext;
     private Lecture item;
     private UserSchedule userSched;
-    private DayScheduleFragment lastFragment;
     private FloatingActionButton fabulousBtn;
 
     @Override
@@ -84,14 +82,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 mRefData.setCheckOnPos(id, isChanged);
                 item.setIsInUserSchedule(isChanged);
                 Log.v("Clik", "Clicked " + isChanged);
-                /*if(isChanged){
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.fill_star));
-                }
-                else {
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.empty_star));
-                }*/
-
-
             }
         });
 

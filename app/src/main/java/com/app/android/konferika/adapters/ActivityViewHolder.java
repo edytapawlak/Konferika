@@ -45,7 +45,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         breakLayout = (LinearLayout) itemView.findViewById(R.id.break_layout);
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
-       // itemView.setOnLongClickListener(this);
+        // itemView.setOnLongClickListener(this);
 
 
         myActCheckbox.setOnClickListener(new View.OnClickListener() {
@@ -58,12 +58,11 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                 if (text != "") {
                     int id = Integer.parseInt(text);
 
-                    mRefData.setCheckOnPos(id,isChecked);
+                    mRefData.setCheckOnPos(id, isChecked);
                     Lecture activ = (Lecture) mRefData.getActivityOnPos(id);
-                    String nazwa = activ.getTitle();
-                    boolean changedBollean = activ.getIsInUserSchedule();
+
                     DisplayActDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
-                   // Log.v("Checked activ ", mRefData.printChecked());
+                    // Log.v("Checked activ ", mRefData.printChecked());
                 }
             }
         });

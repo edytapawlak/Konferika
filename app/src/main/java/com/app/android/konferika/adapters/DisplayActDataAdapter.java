@@ -27,7 +27,8 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
      */
     public interface DispalyAdapterOnClickHandler {
         void onClick(Activity activity);
-       // void onLongClick(Lecture lecture) ;
+
+        // void onLongClick(Lecture lecture) ;
         void onStarChanged(boolean isChecked, Lecture lecture);
     }
 
@@ -39,8 +40,8 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
 
     public void addSections() {
         SectionHeader sc;
-        if(activitiesData == null){
-            activitiesData = new ConferencePlanData(context , 1);
+        if (activitiesData == null) {
+            activitiesData = new ConferencePlanData(context, 1);
         }
         for (int i = 0; i < activitiesData.getListSize(); i++) {
             sc = activitiesData.getSectionHeader(i);

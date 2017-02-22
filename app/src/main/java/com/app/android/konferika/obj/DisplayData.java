@@ -10,7 +10,7 @@ public abstract class DisplayData {
     private List<SectionHeader> sectionList;
 
 
-  //  public abstract void handleLongClick(Context context, Lecture lecture);
+    //  public abstract void handleLongClick(Context context, Lecture lecture);
 
     public abstract void addActivityToList(Context context, Activity activity);
 
@@ -29,9 +29,6 @@ public abstract class DisplayData {
     }
 
     public void setSectionList(List<SectionHeader> sectionList) {
-       // if (this.sectionList != null) {
-       //     this.sectionList.clear();
-       // }
         this.sectionList = null;
         this.sectionList = sectionList;
     }
@@ -44,11 +41,11 @@ public abstract class DisplayData {
         return sectionList.get(position);
     }
 
-    public void clear(){
+    public void clear() {
         sectionList.clear();
     }
 
-    public void addAll(DisplayData disp){
+    public void addAll(DisplayData disp) {
         this.sectionList.addAll(disp.getSectionList());
     }
 }

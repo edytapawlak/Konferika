@@ -13,20 +13,20 @@ public class PosterSesion implements Activity {
     private static ArrayList<Poster> postersList;
     private static PosterSesion posters;
 
-    public PosterSesion(Context context){
-        if(postersList == null){
+    public PosterSesion(Context context) {
+        if (postersList == null) {
             postersList = ActivityData.getPosters(context);
         }
     }
 
-    public static ArrayList<Poster> getPosterList(Context context){
-        if(postersList == null){
+    public static ArrayList<Poster> getPosterList(Context context) {
+        if (postersList == null) {
             posters = new PosterSesion(context);
         }
         return postersList;
     }
 
-    public static void setMarkOnPos(int posterId, float mark){
+    public static void setMarkOnPos(int posterId, float mark) {
         int pos = posterId - 1;
         postersList.get(pos).setMark(mark);
     }
