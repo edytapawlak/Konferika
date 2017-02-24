@@ -35,11 +35,11 @@ public class Poster implements Serializable {
     private String abs;
     private float mark;
 
-    public Poster(int id, String title, String[] authors, String abs) {
+    public Poster(int id, String title, String[] authors, String abs, float mark) {
         this.title = title;
         this.id = id;
         this.authors = authors;
         this.abs = abs;
-        this.mark = 0;
+        this.mark = mark;
     }
 }

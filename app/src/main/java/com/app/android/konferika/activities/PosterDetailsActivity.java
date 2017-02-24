@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
+import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.PosterSesion;
 
@@ -44,7 +45,7 @@ public class PosterDetailsActivity extends AppCompatActivity {
         posterRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                PosterSesion.setMarkOnPos(poster.getId(), rating);
+                PosterSesion.setMarkOnPos(mContext, poster.getId(), rating);
             }
         });
 

@@ -26,9 +26,10 @@ public class PosterSesion implements Activity {
         return postersList;
     }
 
-    public static void setMarkOnPos(int posterId, float mark) {
+    public static void setMarkOnPos(Context context, int posterId, float mark) {
         int pos = posterId - 1;
         postersList.get(pos).setMark(mark);
+        ActivityData.setMarkPoster(context, posterId, mark);
     }
 
     @Override

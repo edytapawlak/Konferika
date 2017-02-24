@@ -1,10 +1,12 @@
 package com.app.android.konferika.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.app.android.konferika.Utils;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Break;
 import com.app.android.konferika.obj.Dinner;
@@ -12,9 +14,11 @@ import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.SectionHeader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class DatabaseAccess {
 
@@ -28,7 +32,13 @@ public class DatabaseAccess {
      * @param context
      */
     private DatabaseAccess(Context context) {
+
+
+        //try {
+        //    this.openHelper = new DataBaseHelper(context);
+        //} catch (IOException e) {
         this.openHelper = new DatabaseOpenHelper(context);
+        //}
     }
 
     /**
@@ -94,15 +104,16 @@ public class DatabaseAccess {
 
     public ArrayList<Activity> getLectData() {
         ArrayList<Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room\n" +
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room, is_in_usr\n" +
                 "FROM Ref  JOIN Rooms ON Ref.room_id = Rooms._id\n" +
                 "ORDER BY Ref._id;", null);
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
+            boolean isInUsr = (cursor.getInt(7) != 0);
             int date_id = Integer.parseInt(cursor.getString(3));
             lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), date_id, cursor.getString(4),
-                                cursor.getString(5), cursor.getString(6));
+                    cursor.getString(5), cursor.getString(6), isInUsr);
             list.add(lec);
             cursor.moveToNext();
         }
@@ -151,16 +162,17 @@ public class DatabaseAccess {
      */
     public ArrayList<Activity> getLectOnDateAndTime(int date, String time) {
         ArrayList<Activity> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room  " +
-                                    "FROM Ref JOIN Rooms ON Ref.room_id = Rooms._id " +
-                                    "WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room, is_in_usr  " +
+                "FROM Ref JOIN Rooms ON Ref.room_id = Rooms._id " +
+                "WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\"", null);
 
         cursor.moveToFirst();
         Lecture lec;
         while (!cursor.isAfterLast()) {
+            boolean isInUsr = (cursor.getInt(7) != 0);
             int dateId = Integer.parseInt(cursor.getString(3));
             lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), dateId, cursor.getString(4),
-                                cursor.getString(5), cursor.getString(6));
+                    cursor.getString(5), cursor.getString(6), isInUsr);
             list.add(lec);
             cursor.moveToNext();
         }
@@ -211,7 +223,7 @@ public class DatabaseAccess {
     public String[] getAllStartTime() {
         String[] list = new String[15];
         Cursor cursor = database.rawQuery("SELECT * FROM (SELECT startTime FROM Ref UNION SELECT startTime FROM Break) " +
-                                            "ORDER BY time(startTime)", null);
+                "ORDER BY time(startTime)", null);
         cursor.moveToFirst();
         int i = 0;
         while (!cursor.isAfterLast()) {
@@ -277,20 +289,114 @@ public class DatabaseAccess {
 
     public ArrayList<Poster> getPosters() {
         ArrayList<Poster> outputList = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT id, title, author, abstract FROM Posters ORDER BY id", null);
+        Cursor cursor = database.rawQuery("SELECT id, title, author, abstract, mark FROM Posters ORDER BY id", null);
         cursor.moveToFirst();
         int i = 0;
         Poster poster;
         while (!cursor.isAfterLast()) {
             String[] tab = new String[2];
             tab[0] = cursor.getString(2);
-            poster = new Poster(cursor.getInt(0), cursor.getString(1), tab, cursor.getString(3));
+            poster = new Poster(cursor.getInt(0), cursor.getString(1), tab, cursor.getString(3), cursor.getFloat(4));
             outputList.add(poster);
             cursor.moveToNext();
             i++;
         }
         cursor.close();
         return outputList;
+    }
+
+    public void updatePosterMark(int id, float mark) {
+        ContentValues cv = new ContentValues();
+        cv.put("mark", mark);
+
+        database.update("Posters", cv, "id = " + id, null);
+    }
+
+    public void setIsInSched(int id, boolean isInSched) {
+        ContentValues cv = new ContentValues();
+        if (isInSched) {
+            cv.put("is_in_usr", 1);
+        } else {
+            cv.put("is_in_usr", 0);
+        }
+        database.update("Ref", cv, "_id = " + id, null);
+    }
+
+    /**
+     * Return all lectures and brakes for date and time as ArrayList<Activity>
+     *
+     * @param date Date in format DD-MM-YY
+     * @param time Time in format HH:MM
+     */
+    public ArrayList<Activity> getUserLectOnDateAndTime(int date, String time) {
+        ArrayList<Activity> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room, is_in_usr  " +
+                "FROM Ref JOIN Rooms ON Ref.room_id = Rooms._id " +
+                "WHERE date_id=\"" + date + "\" AND startTime=\"" + time + "\" AND is_in_usr = 1", null);
+
+        cursor.moveToFirst();
+        Lecture lec;
+        while (!cursor.isAfterLast()) {
+            boolean isInUsr = (cursor.getInt(7) != 0);
+            int dateId = Integer.parseInt(cursor.getString(3));
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), dateId, cursor.getString(4),
+                    cursor.getString(5), cursor.getString(6), isInUsr);
+            list.add(lec);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
+        cursor.moveToFirst();
+        Activity bre;
+        while (!cursor.isAfterLast()) {
+
+            // TODO: Zrobić to lepiej.
+
+            if (cursor.getString(0).equals("Przerwa kawowa")) {
+                bre = new Break(cursor.getString(0), cursor.getString(1));
+                list.add(bre);
+            } else {
+                bre = new Dinner(cursor.getString(0), cursor.getString(1));
+                list.add(bre);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        /*for (int j = 0; j < list.size(); j++) {
+            String tekst;
+            Lecture lect;
+            Break brek = null;
+            if(list.get(j).isLecture()){
+                lect = (Lecture) list.get(j);
+                tekst = lect.getTitle();
+                Log.v("Lecture ", tekst +"\n");
+            }else{
+                brek = (Break) list.get(j);
+                tekst = brek.getTitle();
+                Log.v("Break ", tekst +"\n");
+            }
+        }*/
+
+        return list;
+    }
+
+    public TreeMap<String, List<Activity>> getUserChildForDate(int dateId) {
+        String[] times = getAllStartTime();
+        ArrayList<Activity> lectChild;
+        TreeMap<String, List<Activity>> list = new TreeMap<>();
+        int i = 0;
+
+        while (times[i] != null) {
+            lectChild = getUserLectOnDateAndTime(dateId, times[i]);
+            if (!lectChild.isEmpty()) {
+                list.put(Utils.formatTime(times[i]), lectChild);
+            }
+            i++;
+        }
+        return list;
     }
 
 }

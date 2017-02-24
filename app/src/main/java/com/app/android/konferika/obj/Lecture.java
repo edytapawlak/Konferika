@@ -24,7 +24,7 @@ public class Lecture implements Activity, Serializable {
     private boolean isInUserSched;
 
 
-    public Lecture(String title, String author, String abs, int date, String id, String startTime, String room) {
+    public Lecture(String title, String author, String abs, int date, String id, String startTime, String room, boolean isInSched) {
         this.title = title;
         this.author = author;
         this.abs = abs;
@@ -33,6 +33,7 @@ public class Lecture implements Activity, Serializable {
         this.id = idd;
         this.startTime = startTime;
         this.room = room;
+        this.isInUserSched = isInSched;
     }
 
     public String getTitle() {

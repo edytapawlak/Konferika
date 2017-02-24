@@ -68,7 +68,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 boolean isChanged;
                 userSched = UserSchedule.getInstance(mContext, null);
                 if (item.getIsInUserSchedule()) {
-                    userSched.deleteActivity(item, item.getDate());
+                    userSched.deleteActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
                     isChanged = false;
                     fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.empty_star));

@@ -4,18 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.app.android.konferika.data.ActivityData;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class UserSchedule implements Schedule, Serializable {
 
     private UserDayData[] schedule;
-    //protected Context context;
     private static UserSchedule scheduleObject;
 
 
     private UserSchedule(Context con, Bundle savedState) {
-       // context = con;
         if (savedState != null && savedState.getSerializable("userSchedule") != null) {
             scheduleObject = (UserSchedule) savedState.getSerializable("userSchedule");
         } else {
@@ -42,6 +42,10 @@ public class UserSchedule implements Schedule, Serializable {
 
 
     public void addActivity(Context con, Activity act, int date) {
+        if (act.isLecture()) {
+            Lecture lec = (Lecture) act;
+            ActivityData.setIsUsrSched(con, lec.getId(), true);
+        }
         if (schedule == null) {
             new UserSchedule(con, null);
         }
@@ -55,9 +59,10 @@ public class UserSchedule implements Schedule, Serializable {
         }
     }
 
-    public void deleteActivity(Activity act, int date) {
+    public void deleteActivity(Context con, Activity act, int date) {
         if (act.isLecture()) {
             Lecture lect = (Lecture) act;
+            ActivityData.setIsUsrSched(con, lect.getId(), false);
             if (date == schedule[0].getDate()) {
                 schedule[0].deleteActivityFromList(lect);
             } else if (date == schedule[1].getDate()) {
@@ -123,7 +128,7 @@ public class UserSchedule implements Schedule, Serializable {
 
     @Override
     public void handleLongClick(Context context, Lecture lecture, UserSchedule sched) {
-        deleteActivity(lecture, lecture.getDate());
+        deleteActivity(context, lecture, lecture.getDate());
         Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
     }
 
@@ -132,16 +137,16 @@ public class UserSchedule implements Schedule, Serializable {
         //Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
 
         int dayId = lecture.getDate();
-        if(scheduleObject == null){
+        if (scheduleObject == null) {
             scheduleObject = UserSchedule.getInstance(context, null);
         }
 
-        if(lecture.getIsInUserSchedule()) {
+        if (lecture.getIsInUserSchedule()) {
             scheduleObject.addActivity(context, lecture, dayId);
 
             Toast.makeText(context, "Dodano do planu 1", Toast.LENGTH_SHORT).show();
         } else {
-           scheduleObject.deleteActivity(lecture, dayId);
+            scheduleObject.deleteActivity(context, lecture, dayId);
             Toast.makeText(context, "Usunięto z planu 1", Toast.LENGTH_SHORT).show();
         }
     }

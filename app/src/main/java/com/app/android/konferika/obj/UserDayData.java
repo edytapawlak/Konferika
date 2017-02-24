@@ -1,6 +1,5 @@
 package com.app.android.konferika.obj;
 
-
 import android.content.Context;
 import android.widget.Toast;
 
@@ -14,9 +13,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class UserDayData extends DisplayData implements Serializable{
+
     private TreeMap<String, List<Activity>> mPlanData;
-
-
     /**
      * Construct UsersDayData object, sets default activities - only breaks.
      *
@@ -25,16 +23,9 @@ public class UserDayData extends DisplayData implements Serializable{
      */
     public UserDayData(Context context, int date) {
         super.setDateId(date);
-        Activity[] actList = ActivityData.getBreaks(context); // Default user plan, only breaks. //Todo tu trzeba poprawić, żeby nie pobierać za każdym razem z bazy.
-        mPlanData = new TreeMap<>();
-        for (int i = 0; i < actList.length; i++) {
-            if (actList[i] != null) {
-                this.addActivityToList(context, actList[i]);
-            }
-        }
-         super.setSectionList(createUserSchedule());
+        mPlanData = ActivityData.getUserSchedForDay(context, date);
+        super.setSectionList(createUserSchedule());
     }
-
 
     /**
      * This method adds activity to UserSchedulesDay object.
@@ -46,15 +37,6 @@ public class UserDayData extends DisplayData implements Serializable{
      */
 
     public void addActivityToList(Context context, Activity activity) {
-       /* List<SectionHeader> sections = super.getSectionList();
-        int i = 0;
-        while (i < sections.size()) {
-            if (activity.getStartTime().equals(sections.get(i).getTitle())) {
-                sections.get(i).addItem(activity);
-                i = sections.size();
-            }
-            i++;
-        }*/
 
         String time = Utils.formatTime(activity.getStartTime());
         // Log.v("Add Activity", "Dodaje " + time);
@@ -75,15 +57,12 @@ public class UserDayData extends DisplayData implements Serializable{
         super.setSectionList(createUserSchedule());
     }
 
-
     /**
      * Metoda usuwa podane Activity z planu dnia użytkownika.
      * (Tylko w przypadku, gdy jest to referat/wykład. Innych nie usuwa.)
      *
      * @param activity - to musi być Lecture, innych się nie usuwa.
      */
-
-
     public void deleteActivityFromList(Lecture activity) {
         List<SectionHeader> sections = super.getSectionList();
         int i = 0;
@@ -94,7 +73,6 @@ public class UserDayData extends DisplayData implements Serializable{
                     sections.remove(i);
                 }
                 i = sections.size();
-
             }
             i++;
         }
@@ -105,7 +83,6 @@ public class UserDayData extends DisplayData implements Serializable{
      * Przekształca treeMap w List<SectionHeader>
      * @return
      */
-
     public List<SectionHeader> createUserSchedule() {
 
         List<SectionHeader> planForDay = new LinkedList<>();
@@ -121,7 +98,4 @@ public class UserDayData extends DisplayData implements Serializable{
         }
         return planForDay;
     }
-
-
-
 }

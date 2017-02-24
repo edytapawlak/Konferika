@@ -89,7 +89,7 @@ public class ConferenceSchedule implements Schedule {
 
             Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
         } else {
-            userSched.deleteActivity(lecture, dayId);
+            userSched.deleteActivity(context, lecture, dayId);
             Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
         }
     }
