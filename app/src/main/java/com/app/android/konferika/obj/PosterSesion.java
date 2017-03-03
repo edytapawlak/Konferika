@@ -1,15 +1,22 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.support.v4.content.res.ResourcesCompat;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.data.ActivityData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PosterSesion implements Activity {
+public class PosterSesion implements Activity, Serializable {
     private String title = "Sesja plakatowa";
+    private int date;
+    private String time;
     private static ArrayList<Poster> postersList;
     private static PosterSesion posters;
 
@@ -17,6 +24,11 @@ public class PosterSesion implements Activity {
         if (postersList == null) {
             postersList = ActivityData.getPosters(context);
         }
+    }
+    public PosterSesion(int date, String time, String title){
+        this.title = title;
+        this.time = time;
+        this.date = date;
     }
 
     public static ArrayList<Poster> getPosterList(Context context) {
@@ -39,7 +51,21 @@ public class PosterSesion implements Activity {
 
     @Override
     public void setContent(ActivityViewHolder holder) {
+        int unicode = 0x2615;
+        String emoji = new String(Character.toChars(unicode));
 
+        holder.mIdDataTextView.setText("");
+        holder.mBreakTextTextView.setText(this.getTitle());
+        holder.mBreakPicTextView.setText(emoji);
+
+        ViewGroup.LayoutParams params = holder.actLayout.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+        params.height = 0;
+        holder.actLayout.setLayoutParams(params);
+        holder.actLayout.setVisibility(View.INVISIBLE);
+        int coffeColor = R.color.coffe_color;
+        Context con = holder.actLayout.getContext();
+        holder.mCardView.setCardBackgroundColor(ResourcesCompat.getColor(con.getResources(), coffeColor, null));
     }
 
     @Override

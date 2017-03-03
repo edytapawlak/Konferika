@@ -24,6 +24,7 @@ public class MyScheduleActivity extends BaseActivity {
         //setContentView(R.layout.activity_my_schedule);
         mActivity = this;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        super.drawerLayout.
 
         View contentView = inflater.inflate(R.layout.activity_my_schedule, null, false);
         super.lay.addView(contentView, 0);

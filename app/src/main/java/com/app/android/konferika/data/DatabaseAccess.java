@@ -12,6 +12,7 @@ import com.app.android.konferika.obj.Break;
 import com.app.android.konferika.obj.Dinner;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Poster;
+import com.app.android.konferika.obj.PosterSesion;
 import com.app.android.konferika.obj.SectionHeader;
 
 import java.io.IOException;
@@ -118,13 +119,31 @@ public class DatabaseAccess {
             cursor.moveToNext();
         }
         cursor.close();
-        cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
-        cursor.moveToFirst();
+
+        Cursor cursor1 = database.rawQuery("SELECT title, startTime FROM Break JOIN BreakData ON Break.type=BreakData.id", null);
+        cursor1.moveToFirst();
         Break bre;
         Dinner din;
-        while (!cursor.isAfterLast()) {
+        while (!cursor1.isAfterLast()) {
 
-            if (cursor.getString(0).equals("Przerwa kawowa")) {
+            switch (cursor1.getInt(1)) {
+                case 3:
+                    bre = new Break(cursor1.getString(0), cursor1.getString(1));
+                    list.add(bre);
+                    break;
+                case 2:
+                    din = new Dinner(cursor1.getString(0), cursor1.getString(1));
+                    list.add(din);
+                    break;
+                /*case 1:
+                    if (cursor.getInt(2) == date) {
+                        bre = new PosterSesion(cursor.getInt(2), time, cursor.getString(0));
+                        list.add(bre);
+                    }
+                    break; */
+            }
+
+            /*if (cursor.getString(0).equals("Przerwa kawowa")) {
                 bre = new Break(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             } else {
@@ -132,9 +151,9 @@ public class DatabaseAccess {
                 list.add(din);
             }
             cursor.moveToNext();
-        }
+        }*/
 
-        cursor.close();
+         cursor1.moveToNext();
 
         /*for (int j = 0; j < list.size(); j++) {
             String tekst;
@@ -150,14 +169,16 @@ public class DatabaseAccess {
                 Log.v("Break ", tekst +"\n");
             }
         }*/
-
+        }
+        cursor1.close();
         return list;
     }
+
 
     /**
      * Return all lectures and brakes for date and time as ArrayList<Activity>
      *
-     * @param date Date in format DD-MM-YY
+     * @param date Date in int
      * @param time Time in format HH:MM
      */
     public ArrayList<Activity> getLectOnDateAndTime(int date, String time) {
@@ -178,20 +199,40 @@ public class DatabaseAccess {
         }
         cursor.close();
 
-        cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
+        //cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
+
+        cursor = database.rawQuery("SELECT title, type, date FROM Break JOIN BreakData ON Break.type=BreakData.id WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
         Activity bre;
         while (!cursor.isAfterLast()) {
 
             // TODO: Zrobić to lepiej.
 
-            if (cursor.getString(0).equals("Przerwa kawowa")) {
+            switch (cursor.getInt(1)) {
+                case 3:
+                    bre = new Break(cursor.getString(0), time);
+                    list.add(bre);
+                    break;
+                case 2:
+                    bre = new Dinner(cursor.getString(0), time);
+                    list.add(bre);
+                    break;
+                case 1:
+                    if (cursor.getInt(2) == date) {
+                        bre = new PosterSesion(cursor.getInt(2), time, cursor.getString(0));
+                        list.add(bre);
+                    }
+                    break;
+            }
+
+         /*   if (cursor.getInt(1) == 3) {
                 bre = new Break(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             } else {
                 bre = new Dinner(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             }
+            */
             cursor.moveToNext();
         }
 
@@ -262,8 +303,8 @@ public class DatabaseAccess {
 
 
     public Activity[] getBrakes() {
-        Activity[] list = new Activity[10];
-        Cursor cursor = database.rawQuery("SELECT title, startTime FROM Break", null);
+        Activity[] list = new Activity[20];
+        Cursor cursor = database.rawQuery("SELECT title, startTime, type FROM Break JOIN BreakData ON Break.type=BreakData.id", null);
         cursor.moveToFirst();
         Activity bre;
         int i = 0;
@@ -271,19 +312,31 @@ public class DatabaseAccess {
 
             // TODO: Zrobić to lepiej.
 
-            if (cursor.getString(0).equals("Przerwa kawowa")) {
+            /*if (cursor.getString(0).equals("Przerwa kawowa")) {
                 bre = new Break(cursor.getString(0), cursor.getString(1));
                 list[i] = bre;
             } else {
                 bre = new Dinner(cursor.getString(0), cursor.getString(1));
                 list[i] = bre;
             }
+            */
+
+            switch (cursor.getInt(2)) {
+                case 3:
+                    bre = new Break(cursor.getString(0), cursor.getString(1));
+                    list[i] = bre;
+                    break;
+                case 2:
+                    bre = new Dinner(cursor.getString(0), cursor.getString(1));
+                    list[i] = bre;
+                    break;
+            }
             cursor.moveToNext();
             i++;
         }
-
         cursor.close();
         return list;
+
     }
 
 
@@ -323,9 +376,9 @@ public class DatabaseAccess {
     }
 
     /**
-     * Return all lectures and brakes for date and time as ArrayList<Activity>
+     * Return users lectures and brakes for date and time as ArrayList<Activity>
      *
-     * @param date Date in format DD-MM-YY
+     * @param date Date in int
      * @param time Time in format HH:MM
      */
     public ArrayList<Activity> getUserLectOnDateAndTime(int date, String time) {
@@ -346,14 +399,14 @@ public class DatabaseAccess {
         }
         cursor.close();
 
-        cursor = database.rawQuery("SELECT title, startTime FROM Break WHERE startTime = \"" + time + "\"", null);
+        cursor = database.rawQuery("SELECT title, startTime, type, date FROM Break JOIN BreakData ON Break.type=BreakData.id WHERE startTime = \"" + time + "\"", null);
         cursor.moveToFirst();
         Activity bre;
         while (!cursor.isAfterLast()) {
 
             // TODO: Zrobić to lepiej.
 
-            if (cursor.getString(0).equals("Przerwa kawowa")) {
+           /* if (cursor.getString(0).equals("Przerwa kawowa")) {
                 bre = new Break(cursor.getString(0), cursor.getString(1));
                 list.add(bre);
             } else {
@@ -361,11 +414,32 @@ public class DatabaseAccess {
                 list.add(bre);
             }
             cursor.moveToNext();
+        }*/
+
+            switch (cursor.getInt(2)) {
+                case 3:
+                    bre = new Break(cursor.getString(0), time);
+                    list.add(bre);
+                    break;
+                case 2:
+                    bre = new Dinner(cursor.getString(0), time);
+                    list.add(bre);
+                    break;
+                case 1:
+                    if (cursor.getInt(3) == date) {
+                        bre = new PosterSesion(cursor.getInt(3), time, cursor.getString(0));
+                        list.add(bre);
+                    }
+                    break;
+            }
+            cursor.moveToNext();
         }
-
         cursor.close();
+        return list;
+    }
 
-        /*for (int j = 0; j < list.size(); j++) {
+
+     /*for (int j = 0; j < list.size(); j++) {
             String tekst;
             Lecture lect;
             Break brek = null;
@@ -379,9 +453,6 @@ public class DatabaseAccess {
                 Log.v("Break ", tekst +"\n");
             }
         }*/
-
-        return list;
-    }
 
     public TreeMap<String, List<Activity>> getUserChildForDate(int dateId) {
         String[] times = getAllStartTime();
