@@ -1,7 +1,6 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
-
 import com.app.android.konferika.data.ActivityData;
 
 import java.util.List;
@@ -48,7 +47,6 @@ public class LecturesList {
                 output = output + "\n ................................................\n" + list.get(i).getTitle();
             }
         }
-
         return output;
     }
 

@@ -3,10 +3,8 @@ package com.app.android.konferika.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -25,11 +23,12 @@ public class MainActivity extends BaseActivity {
         mActivity = this;
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         View contentView = inflater.inflate(R.layout.activity_main, null, false);
+
         super.lay.addView(contentView, 0);
 
         initToolbar();
+
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
 
         setupViewPager(viewPager);
@@ -41,6 +40,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
+        super.navigationView.setCheckedItem(R.id.drawer_con_pan);
     }
 
     /**

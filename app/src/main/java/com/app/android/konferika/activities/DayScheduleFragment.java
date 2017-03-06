@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +31,9 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     private ProgressBar mLoadingProgrressBar;
     private DisplayActDataAdapter sectionAdapter;
 
-    Schedule schedule;
-
-    Context mContext;
-    UserSchedule userSchedule;
+    private Schedule schedule;
+    private Context mContext;
+    private UserSchedule userSchedule;
 
     public DayScheduleFragment() {
     }
@@ -45,25 +43,21 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         super.onStart();
         //Toast.makeText(mContext, "OnStart", Toast.LENGTH_SHORT).show();
         userSchedule = UserSchedule.getInstance(mContext, null);
-        loadData();
+        //loadData();
         recyclerView.setAdapter(sectionAdapter);
-
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        //userSchedule =  UserSchedule.getInstance(mContext, null);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //if(savedInstanceState == null) {
-            userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
-        //}
 
+        userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
@@ -91,19 +85,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
 
         outState.putSerializable("userSchedule", userSchedule);
         outState.putSerializable("scheduleID", ViewPagerAdapter.getScheduleId());
-        outState.putString("message", "This is my message to be reloaded");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-       // Toast.makeText(mContext, "OnActivityCreated", Toast.LENGTH_SHORT).show();
-
-        if(savedInstanceState != null) {
-            userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
-
-        }
     }
 
 
@@ -119,38 +100,8 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         activ.handleOnClick(mContext, this);
     }
 
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //userSchedule = UserSchedule.getInstance(mContext, null);
-                loadData();
-        }
-*/
-        /**
-         * Odświeża recyclerView, bo wykład został usunięty.
-         *
-         * @param
-         */
-    /*@Override
-    public void onLongClick(Lecture lecture) {
-        int dateId = lecture.getDate();
-        //UserSchedule usersSched = new UserSchedule(mContext);
-        loadData();
-        if(schedule == null){
-            schedule = new ConferenceSchedule(mContext);
-        }
-
-        schedule.handleLongClick(mContext, lecture, userSchedule);
-        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
-        sectionAdapter.setActivitiesData(dd);
-        recyclerView.setAdapter(sectionAdapter);
-
-    }
-*/
-
     @Override
-    public void onStarChanged(boolean isCheck, Lecture lecture){
-
+    public void onStarChanged(boolean isCheck, Lecture lecture) {
         loadData();
         schedule.handleStarChange(mContext, lecture, userSchedule);
 
@@ -166,7 +117,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         int scheduleId = ViewPagerAdapter.getScheduleId();
         Bundle bundle = getArguments();
         int dateId = bundle.getInt("day") + 1;
-        Log.v("DataId z bundle: ", dateId + "");
+       // Log.v("DataId z bundle: ", dateId + "");
 
         if (scheduleId == 0) {
             schedule = new ConferenceSchedule(mContext);

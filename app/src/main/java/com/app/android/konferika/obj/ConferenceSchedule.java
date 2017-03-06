@@ -20,6 +20,7 @@ public class ConferenceSchedule implements Schedule {
             this.schedule[0] = new ConferencePlanData(con, 1);
             this.schedule[1] = new ConferencePlanData(con, 2);
             this.schedule[2] = new ConferencePlanData(con, 3);
+
         }
     }
 

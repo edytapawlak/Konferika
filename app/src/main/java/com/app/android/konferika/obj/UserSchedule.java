@@ -132,10 +132,16 @@ public class UserSchedule implements Schedule, Serializable {
         Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
     }
 
+
+    /**
+     * Zdaje się, że ta metoda jest nieużywana. Przynajmniej nie powinna.
+     * @param context
+     * @param lecture
+     * @param userSchedule
+     */
     @Override
     public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
         //Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
-
         int dayId = lecture.getDate();
         if (scheduleObject == null) {
             scheduleObject = UserSchedule.getInstance(context, null);

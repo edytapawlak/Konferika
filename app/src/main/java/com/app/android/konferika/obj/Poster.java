@@ -5,6 +5,12 @@ import java.io.Serializable;
 
 public class Poster implements Serializable {
 
+    private String title;
+    private int id;
+    private String[] authors;
+    private String abs;
+    private float mark;
+
     public String getTitle() {
         return title;
     }
@@ -29,11 +35,6 @@ public class Poster implements Serializable {
         return mark;
     }
 
-    private String title;
-    private int id;
-    private String[] authors;
-    private String abs;
-    private float mark;
 
     public Poster(int id, String title, String[] authors, String abs, float mark) {
         this.title = title;

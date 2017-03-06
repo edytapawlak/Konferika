@@ -1,19 +1,17 @@
 package com.app.android.konferika.adapters;
 
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.activities.ItemDetailsFragment;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.LecturesList;
+import com.app.android.konferika.obj.PosterSesion;
 
 public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {
 
@@ -28,8 +26,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final LinearLayout breakLayout;
     public final CheckBox myActCheckbox;
 
-    private LecturesList mRefData;
-
+    private LecturesList mLectList;
 
     public ActivityViewHolder(final View itemView) {
         super(itemView);
@@ -52,45 +49,47 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
             @Override
             public void onClick(View v) {
                 boolean isChecked;
-                mRefData = LecturesList.getInstance(v.getContext());
+                mLectList = LecturesList.getInstance(v.getContext());
+
                 isChecked = myActCheckbox.isChecked();
                 String text = mIdDataTextView.getText().toString();
                 if (text != "") {
                     int id = Integer.parseInt(text);
 
-                    mRefData.setCheckOnPos(id, isChecked);
-                    Lecture activ = (Lecture) mRefData.getActivityOnPos(id);
+                    mLectList.setCheckOnPos(id, isChecked);
+                    Lecture activ = (Lecture) mLectList.getActivityOnPos(id);
 
                     DisplayActDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
-                    // Log.v("Checked activ ", mRefData.printChecked());
+                    // Log.v("Checked activ ", mLectList.printChecked());
                 }
             }
         });
-
     }
+
+    /**
+     * W zależności od tego co  było kliknięte robią się różne rzeczy.
+     * (To p oznacza sesje plakatową, może potem wymyślę coś lepszego)
+     * @param v
+     */
 
     @Override
     public void onClick(View v) {
-        mRefData = LecturesList.getInstance(v.getContext());
+        mLectList = LecturesList.getInstance(v.getContext());
         String text = mIdDataTextView.getText().toString();
+        Activity activ;
         if (text != "") {
-            int id = Integer.parseInt(text);
-            Activity activ = mRefData.getActivityOnPos(id);
-            DisplayActDataAdapter.getmClickHandler().onClick(activ);
-
-            if (activ.isLecture()) {
-                ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
-                Bundle args = new Bundle();
-                args.putSerializable("item", (Lecture) activ);
-                fragmentDemo.setArguments(args);
+            if (text.equals("p")) {
+                activ = new PosterSesion(v.getContext());
+            } else {
+                int id = Integer.parseInt(text);
+                activ = mLectList.getActivityOnPos(id);
             }
-        } else {
-            Toast.makeText(v.getContext(), "Przerwa", Toast.LENGTH_SHORT).show();
+            DisplayActDataAdapter.getmClickHandler().onClick(activ);
         }
     }
 
     /**
-     * Po LongClick dodaje lub usuwa reterat/wykład z planu, w zależności od ViewPager.scheduleId.
+     * Po LongClick ...
      *
      * @param v
      * @return
@@ -98,20 +97,9 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
    /* @Override
     public boolean onLongClick(View v) {
-        mRefData = DisplayActDataAdapter.getmRefData();
-        String text = mIdDataTextView.getText().toString();
-        if (text != "") {
-            int id = Integer.parseInt(text);
-            Activity activ = mRefData.get(id);
 
-            if (activ.isLecture()) {
-                Lecture lecture = (Lecture) activ;
-                DisplayActDataAdapter.getmClickHandler().onLongClick(lecture);
-
-                Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(100);
-            }
-        }
+        Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(100);
         return true;
     }*/
 

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.PosterSesion;
 
@@ -53,23 +52,7 @@ public class PosterDetailsActivity extends AppCompatActivity {
         tvBody.setText(poster.getAbs() + poster.getAbs() + poster.getAbs());
         tvAuthor.setText(poster.getAuthors()[0]);
         posterRatingBar.setRating(poster.getMark());
-        //ItemDetailsFragment fragmentDemo = new ItemDetailsFragment();
-        //Bundle args = new Bundle();
-        //args.putSerializable("item", item);
-        //fragmentDemo.setArguments(args);
-        /*TextView tvTitle = (TextView) findViewById(R.id.tv_details_title);
-        TextView tvBody = (TextView) findViewById(R.id.tv_details_description);
-        tvTitle.setText(item.getAuthor());
-        tvBody.setText(item.getTitle());*/
-        if (savedInstanceState == null) {
-            // Insert detail fragment based on the item passed
 
-            /*fragmentItemDetail = ItemDetailsFragment.newInstance(item);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.flDetailContainer, fragmentItemDetail);
-            ft.commit();*/
-
-        }
     }
 
     @Override

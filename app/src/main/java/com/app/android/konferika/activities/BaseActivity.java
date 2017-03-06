@@ -21,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected DrawerLayout drawerLayout;
     protected NavigationView navigationView;
-    Intent intent;
+    private Intent intent;
     protected BaseActivity mActivity;
     protected FrameLayout lay;
 
@@ -82,13 +82,13 @@ public class BaseActivity extends AppCompatActivity {
                     case R.id.drawer_map:
                         String loc = "Wydział Matematyki i Informatyki UAM, Umultowska, Poznań";
                         Uri geolocation = Uri.parse("geo:0,0?q=" + loc);
+
+                        //Uri geolocation = Uri.parse("geo:47.6,-122.3?z=2" + loc);
+
                         showMap(geolocation);
                         break;
 
                 }
-
-                //Toast.makeText(mActivity, menuItem.getTitle() + " pressed", Toast.LENGTH_SHORT).show();
-                menuItem.setChecked(false);
                 drawerLayout.closeDrawers();
                 return true;
             }

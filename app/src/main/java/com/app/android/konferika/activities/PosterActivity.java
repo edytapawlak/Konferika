@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.OnItemClickListener {
 
-    private static Context mContext;
+    //private static Context mContext;
     private List<Poster> items;
     private RecyclerView recyclerView;
     RecyclerViewAdapter adapter;
@@ -25,23 +25,21 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_poster);
-        mActivity = this;
 
+        mActivity = this;
+        super.navigationView.setCheckedItem(R.id.drawer_posters);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View contentView = inflater.inflate(R.layout.activity_poster, null, false);
         super.drawerLayout.addView(contentView, 0);
 
-        mContext = this;
+       // mContext = this;
         items = PosterSesion.getPosterList(this);
 
         initRecyclerView();
         initToolbar();
 
-        // if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
         setRecyclerAdapter(recyclerView);
-        // }
     }
 
     @Override

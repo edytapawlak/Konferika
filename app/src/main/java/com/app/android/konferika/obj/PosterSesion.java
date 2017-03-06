@@ -1,12 +1,14 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
+import com.app.android.konferika.activities.PosterActivity;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.data.ActivityData;
 
@@ -51,10 +53,10 @@ public class PosterSesion implements Activity, Serializable {
 
     @Override
     public void setContent(ActivityViewHolder holder) {
-        int unicode = 0x2615;
+        int unicode = 0x1F4C3;
         String emoji = new String(Character.toChars(unicode));
 
-        holder.mIdDataTextView.setText("");
+        holder.mIdDataTextView.setText("p"); // mało mądre, popraw to.
         holder.mBreakTextTextView.setText(this.getTitle());
         holder.mBreakPicTextView.setText(emoji);
 
@@ -80,7 +82,9 @@ public class PosterSesion implements Activity, Serializable {
 
     @Override
     public void handleOnClick(Context context, DayScheduleFragment fragment) {
-
+        Intent intent = new Intent(context, PosterActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        context.startActivity(intent);
     }
 
     @Override

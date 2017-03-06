@@ -153,7 +153,7 @@ public class DatabaseAccess {
             cursor.moveToNext();
         }*/
 
-         cursor1.moveToNext();
+            cursor1.moveToNext();
 
         /*for (int j = 0; j < list.size(); j++) {
             String tekst;
@@ -221,6 +221,8 @@ public class DatabaseAccess {
                     if (cursor.getInt(2) == date) {
                         bre = new PosterSesion(cursor.getInt(2), time, cursor.getString(0));
                         list.add(bre);
+                    } else {
+
                     }
                     break;
             }
@@ -294,8 +296,10 @@ public class DatabaseAccess {
 
         while (times[i] != null) {
             lectChild = getLectOnDateAndTime(dateId, times[i]);
-            sec = new SectionHeader(lectChild, times[i]);
-            list.add(sec);
+            if (!lectChild.isEmpty()) {
+                sec = new SectionHeader(lectChild, times[i]);
+                list.add(sec);
+            }
             i++;
         }
         return list;
@@ -403,18 +407,6 @@ public class DatabaseAccess {
         cursor.moveToFirst();
         Activity bre;
         while (!cursor.isAfterLast()) {
-
-            // TODO: Zrobić to lepiej.
-
-           /* if (cursor.getString(0).equals("Przerwa kawowa")) {
-                bre = new Break(cursor.getString(0), cursor.getString(1));
-                list.add(bre);
-            } else {
-                bre = new Dinner(cursor.getString(0), cursor.getString(1));
-                list.add(bre);
-            }
-            cursor.moveToNext();
-        }*/
 
             switch (cursor.getInt(2)) {
                 case 3:

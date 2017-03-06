@@ -7,6 +7,7 @@ import com.app.android.konferika.data.ActivityData;
 
 public class ConferencePlanData extends DisplayData {
 
+
     public ConferencePlanData(Context context, int dateId) {
         super.setDateId(dateId);
         super.setSectionList(ActivityData.getHeaders(context, dateId)); //todo zrobic to inaczej

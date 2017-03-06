@@ -91,7 +91,7 @@ public class SectionHeader extends StatelessSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         ActivityViewHolder itemHolder = (ActivityViewHolder) holder;
-        // bind your view here
+        // bind view
         LecturesList mRefData = LecturesList.getInstance();
         Activity activ = childList.get(position);
         if (mRefData != null && activ.isLecture()) {

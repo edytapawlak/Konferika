@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
@@ -21,10 +20,10 @@ public class MyScheduleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_my_schedule);
+
         mActivity = this;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        super.drawerLayout.
+        super.navigationView.setCheckedItem(R.id.drawer_favourite);
 
         View contentView = inflater.inflate(R.layout.activity_my_schedule, null, false);
         super.lay.addView(contentView, 0);
@@ -49,7 +48,7 @@ public class MyScheduleActivity extends BaseActivity {
         super.onRestart();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
-        setupViewPager(viewPager);
+        //setupViewPager(viewPager);
     }
 
 
@@ -66,7 +65,7 @@ public class MyScheduleActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
         setupViewPager(viewPager);
