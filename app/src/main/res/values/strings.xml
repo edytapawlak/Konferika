@@ -9,5 +9,7 @@
     <string name="downloaded">Plakaty</string>
     <string name="map">Mapa</string>
     <string name="settings">Ustawienia</string>
+    <string name="poll">Głosowanie</string>
+    <string name="scan">Skanuj</string>
 
 </resources>

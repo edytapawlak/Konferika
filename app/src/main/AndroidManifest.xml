@@ -3,6 +3,7 @@
     package="com.app.android.konferika">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -25,7 +26,8 @@
         <activity android:name=".activities.ItemDetailsActivity" />
         <activity android:name=".activities.PosterActivity" />
         <activity android:name=".activities.PosterDetailsActivity" />
-        <activity android:name=".activities.BaseActivity"></activity>
+        <activity android:name=".activities.BaseActivity" />
+        <activity android:name=".activities.PollActivity"></activity>
     </application>
 
 </manifest>

@@ -30,6 +30,12 @@
             android:checkable="true"/>
 
         <item
+            android:id="@+id/drawer_poll"
+            android:icon="@mipmap/ic_lempty_heart"
+            android:title="@string/poll"
+            android:checkable="true"/>
+
+        <item
             android:id="@+id/drawer_settings"
             android:icon="@mipmap/ic_settings"
             android:title="@string/settings"

@@ -1,5 +1,6 @@
 package com.app.android.konferika.activities;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -80,12 +81,15 @@ public class BaseActivity extends AppCompatActivity {
                         handler.sendEmptyMessageDelayed(1, 100);
                         break;
                     case R.id.drawer_map:
-                        String loc = "Wydział Matematyki i Informatyki UAM, Umultowska, Poznań";
-                        Uri geolocation = Uri.parse("geo:0,0?q=" + loc);
-
-                        //Uri geolocation = Uri.parse("geo:47.6,-122.3?z=2" + loc);
-
-                        showMap(geolocation);
+                        Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/d/viewer?mid=1vJsjI7BdMOQVKy2uj79gk_OKsOQ&ll=52.434831325958655%2C16.91918844999998&z=13");
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                        break;
+                    case R.id.drawer_poll:
+                        intent = new Intent(mActivity, PollActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        handler.sendEmptyMessageDelayed(1, 100);
                         break;
 
                 }
