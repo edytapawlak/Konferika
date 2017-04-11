@@ -36,20 +36,6 @@
         <item name="android:colorBackground" > @color/coffe_color</item>
     </style>
 
-   <!-- <color name="primary">#009688</color>
-    <color name="primary_dark">#00796b</color>
-    <color name="accent">#ffb74d</color>
-    <color name="accent_translucent">#B2DFDB</color>
-    <color name="accent_bright">#FFF493</color>
-    <color name="coffe_color">#fbe9e7</color>
-    <color name="dinner_color">#ffebee</color>
-#e9cb31
-    #ddce6e
-    #d9d9c2
-    #676778
-    #272933
-    -->
-
     <style name="SmallRatingBar"
         parent="android:style/Widget.Material.RatingBar.Small">
         <item name="colorControlNormal">@color/accent</item>
@@ -60,25 +46,6 @@
         parent="android:style/Widget.Material.RatingBar">
         <item name="colorControlNormal">#f1df7d</item>
         <item name="colorControlActivated">#efdc75</item>
-
     </style>
-
-    <color name="blu">#338cb6</color>
-    <color name="primary">#2D7BA0</color>
-    <color name="primary_dark">#1C719B</color>
-    <color name="accent">#e7d3bc</color>
-    <color name="accent_translucent">#e2d6c4</color>
-    <color name="accent_bright">#F6EFED</color>
-    <color name="coffe_color">#F6EFED</color>
-    <color name="dinner_color">#F6EFED</color>
-
-    <!--<color name="primary">#78567b</color>
-    <color name="primary_dark">#78567b</color>
-    <color name="accent">#fdbaa4</color>
-    <color name="accent_translucent">#FFC180</color>
-    <color name="accent_bright">#FFF493</color>
-    <color name="coffe_color">#F6EFED</color>
-    <color name="dinner_color">#F6EFED</color>
--->
 
 </resources>

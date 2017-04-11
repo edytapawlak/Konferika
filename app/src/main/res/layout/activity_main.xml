@@ -43,6 +43,9 @@
                       android:layout_width="match_parent"
                       android:layout_height="?attr/actionBarSize"
                       android:layout_marginBottom="10dp"
+                      app:titleTextColor="@color/text_color"
+                      app:title="Plan konferencji"
+                      android:background="@drawable/tlo1"
                       app:layout_scrollFlags="scroll|enterAlways"
                       app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -51,6 +54,8 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:tabSelectedTextColor="@color/text_color"
+                    app:tabTextColor="@color/inactive_text_color"
                     />
 
            </android.support.design.widget.AppBarLayout>

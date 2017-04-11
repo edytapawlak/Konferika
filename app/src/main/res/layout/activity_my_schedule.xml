@@ -33,6 +33,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginBottom="10dp"
                 app:title="Mój plan"
+                app:titleTextColor="@color/text_color"
+                android:background="@drawable/tlo1"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -41,8 +43,8 @@
                 android:id="@+id/tab_layout_myschedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabSelectedTextColor="#dedccf"
-                app:tabTextColor="#fff" />
+                app:tabSelectedTextColor="@color/text_color"
+                app:tabTextColor="@color/inactive_text_color" />
 
         </android.support.design.widget.AppBarLayout>
 
