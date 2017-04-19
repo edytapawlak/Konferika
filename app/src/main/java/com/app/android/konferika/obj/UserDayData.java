@@ -1,9 +1,10 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.app.android.konferika.Utils;
+import com.app.android.konferika.utils.Utils;
 import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
@@ -36,10 +37,9 @@ public class UserDayData extends DisplayData implements Serializable{
      * @param
      */
 
-    public void addActivityToList(Context context, Activity activity) {
+    public void addActivityToList(Context context, Lecture activity) {
 
         String time = Utils.formatTime(activity.getStartTime());
-        // Log.v("Add Activity", "Dodaje " + time);
         List<Activity> actForTime;
         if (mPlanData.containsKey(time)) {
             actForTime = mPlanData.remove(time);

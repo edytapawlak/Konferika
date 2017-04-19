@@ -1,17 +1,22 @@
 package com.app.android.konferika.data;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.app.android.konferika.obj.Activity;
+import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.SectionHeader;
+import com.app.android.konferika.obj.Tag;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
 public class ActivityData {
 
+    private static List<Lecture> onlyLect;
     private static List<Activity> lectures;
     private static List<SectionHeader> headers;
     private static Activity[] breaks;
@@ -23,6 +28,7 @@ public class ActivityData {
     private ActivityData(Context context) {
         databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
+        this.onlyLect = databaseAccess.getOnlyLectData();
         this.lectures = databaseAccess.getLectData();
         this.posters = databaseAccess.getPosters();
         databaseAccess.close();
@@ -32,17 +38,26 @@ public class ActivityData {
         databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
 
-        this.lectures = databaseAccess.getLectData();
+//        this.lectures = databaseAccess.getLectData();
         this.headers = databaseAccess.getChildForDate(dateId);
 
         databaseAccess.close();
     }
 
-    public static List<Activity> getLectures(Context cont) {
+    public static List<Tag> getTagArray(Context context){
+        List<Tag> list;
+        databaseAccess = DatabaseAccess.getInstance(context);
+        databaseAccess.open();
+         list = databaseAccess.getTagsTitles();
+        databaseAccess.close();
+        return list;
+    }
+
+    public static List<Lecture> getLectures(Context cont) {
         if (lectures == null) {
             new ActivityData(cont);
         }
-        return lectures;
+        return onlyLect;
     }
 
     public static List<SectionHeader> getHeaders(Context cont) {
@@ -111,6 +126,23 @@ public class ActivityData {
             databaseAccess.close();
         }
         return userSchedTree[pos];
+    }
+
+
+    public static ArrayList<Lecture> getLectForTag(Context context, int tagId){
+        ArrayList<Lecture> out = new ArrayList<>();
+        databaseAccess.open();
+        out = databaseAccess.getLectForTag(tagId);
+        databaseAccess.close();
+        return out;
+    }
+
+    public static ArrayList<Poster> getPostersForTag(Context context, int tagId){
+        ArrayList<Poster> out;
+        databaseAccess.open();
+        out = databaseAccess.getPostersForTag(tagId);
+        databaseAccess.close();
+        return out;
     }
 }
 

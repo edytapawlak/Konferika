@@ -41,6 +41,10 @@ public class PosterSesion implements Activity, Serializable {
     }
 
     public static void setMarkOnPos(Context context, int posterId, float mark) {
+
+        if(postersList == null){
+            new PosterSesion(context);
+        }
         int pos = posterId - 1;
         postersList.get(pos).setMark(mark);
         ActivityData.setMarkPoster(context, posterId, mark);
@@ -49,6 +53,11 @@ public class PosterSesion implements Activity, Serializable {
     @Override
     public boolean isLecture() {
         return false;
+    }
+
+    @Override
+    public String getTags() {
+        return "";
     }
 
     @Override

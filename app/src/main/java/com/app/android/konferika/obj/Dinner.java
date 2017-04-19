@@ -28,6 +28,11 @@ public class Dinner implements Activity, Serializable {
     }
 
     @Override
+    public String getTags() {
+        return "";
+    }
+
+    @Override
     public void setContent(ActivityViewHolder holder) {
         int unicode = 0x1F357;
         String emoji = new String(Character.toChars(unicode));

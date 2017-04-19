@@ -16,4 +16,7 @@
     <color name="text_color">#383838</color>
     <color name="inactive_text_color">#999494</color>
 
+    <color name="green">#D4F093</color>
+    <color name="redd">#D34F5D</color>
+
 </resources>

@@ -94,8 +94,8 @@ public class SectionHeader extends StatelessSection {
         // bind view
         LecturesList mRefData = LecturesList.getInstance();
         Activity activ = childList.get(position);
-        if (mRefData != null && activ.isLecture()) {
 
+        if (mRefData != null && activ.isLecture()) {
             if(mRefData.containAct((Lecture) activ)){
                 int id = ((Lecture) activ).getId();
                 childList.set(position, mRefData.getActivityOnPos(id));

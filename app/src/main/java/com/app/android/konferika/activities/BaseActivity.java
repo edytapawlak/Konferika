@@ -1,6 +1,5 @@
 package com.app.android.konferika.activities;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.app.android.konferika.R;
 
@@ -90,6 +87,16 @@ public class BaseActivity extends AppCompatActivity {
                         break;
                     case R.id.drawer_poll:
                         intent = new Intent(mActivity, PollActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        handler.sendEmptyMessageDelayed(1, 100);
+                        break;
+                    case R.id.drawer_settings:
+                        intent = new Intent(mActivity, DataTestActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        handler.sendEmptyMessageDelayed(1, 100);
+                        break;
+                    case R.id.drawer_tags:
+                        intent = new Intent(mActivity, TagsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         handler.sendEmptyMessageDelayed(1, 100);
                         break;

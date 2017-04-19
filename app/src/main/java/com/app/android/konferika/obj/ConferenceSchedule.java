@@ -2,6 +2,7 @@ package com.app.android.konferika.obj;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -72,10 +73,6 @@ public class ConferenceSchedule implements Schedule {
 
     @Override
     public void handleLongClick(Context context, Lecture lecture, UserSchedule scheduleU) {
-        int dayId = lecture.getDate();
-        scheduleU.addActivity(context, lecture, dayId);
-
-        Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
     }
 
     @Override

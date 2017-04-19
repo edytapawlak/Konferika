@@ -12,7 +12,7 @@ public abstract class DisplayData {
 
     //  public abstract void handleLongClick(Context context, Lecture lecture);
 
-    public abstract void addActivityToList(Context context, Activity activity);
+    public abstract void addActivityToList(Context context, Lecture activity);
 
     public abstract void deleteActivityFromList(Lecture lecture);
 

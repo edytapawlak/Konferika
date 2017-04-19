@@ -22,9 +22,16 @@ public class Break implements Activity, Serializable {
         this.startTime = startTime;
     }
 
+
+
     @Override
     public boolean isLecture() {
         return false;
+    }
+
+    @Override
+    public String getTags() {
+        return "";
     }
 
     @Override

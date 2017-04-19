@@ -1,7 +1,14 @@
 package com.app.android.konferika.obj;
 
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.app.android.konferika.activities.PosterActivity;
+import com.app.android.konferika.activities.PosterDetailsActivity;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Poster implements Serializable {
 
@@ -10,6 +17,7 @@ public class Poster implements Serializable {
     private String[] authors;
     private String abs;
     private float mark;
+    private List<Tag> tags;
 
     public String getTitle() {
         return title;
@@ -36,11 +44,27 @@ public class Poster implements Serializable {
     }
 
 
-    public Poster(int id, String title, String[] authors, String abs, float mark) {
+    public Poster(int id, String title, String[] authors, String abs, List<Tag> tags, float mark) {
         this.title = title;
         this.id = id;
         this.authors = authors;
         this.abs = abs;
+        this.tags = tags;
         this.mark = mark;
+    }
+
+    public void handleOnClick(Context context){
+        Intent intent = new Intent(context, PosterDetailsActivity.class);
+        intent.putExtra("poster", this);
+        context.startActivity(intent);
+    }
+
+    public String getTags() {
+        String out = "";
+        for (Tag t :
+                this.tags) {
+            out += t.getTitle() + "\n";
+        }
+        return out;
     }
 }

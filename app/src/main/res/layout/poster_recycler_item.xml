@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/spacing_small"
@@ -16,18 +15,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="8"
-            >
+            android:weightSum="8">
 
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_weight="7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="@dimen/spacing_xsmall"
                 android:layout_gravity="top"
-                >
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_xsmall">
                 <!-- <ImageView
                      android:id="@+id/image"
                      android:layout_width="match_parent"
@@ -40,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/spacing_medium"
                     android:textColor="@color/cardview_dark_background"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/author_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,25 +44,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/cardview_dark_background"
-                    android:textSize="15dp" />
+                    android:textSize="@dimen/title_text_size" />
+
+                <TextView
+                    android:id="@+id/poster_tags_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blu"
+                    android:textSize="10sp"
+                    android:textStyle="italic" />
                 <!--
                 android:padding="@dimen/spacing_medium"
                 android:background="@color/coffe_color" -->
 
             </LinearLayout>
 
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_gravity="bottom">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/poster_tags_text_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@color/blu"-->
+            <!--android:textSize="@dimen/elevation_low"-->
+            <!--android:textStyle="italic" />-->
+            <!--</LinearLayout>-->
+
+
             <LinearLayout
+                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="@dimen/spacing_xsmall"
-                android:layout_weight="1">
-
+               >
                 <RatingBar
                     android:id="@+id/poster_list_rating_bar"
                     style="?attr/ratingBarStyleSmall"
+                    android:layout_marginBottom="@dimen/spacing_medium"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:numStars="5"
                     android:rating="3.5"
                     android:stepSize="0.5" />

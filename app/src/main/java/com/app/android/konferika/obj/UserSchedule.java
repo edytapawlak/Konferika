@@ -41,11 +41,26 @@ public class UserSchedule implements Schedule, Serializable {
     }
 
 
-    public void addActivity(Context con, Activity act, int date) {
-        if (act.isLecture()) {
-            Lecture lec = (Lecture) act;
-            ActivityData.setIsUsrSched(con, lec.getId(), true);
-        }
+//    public void addActivity(Context con, Activity act, int date) {
+//        if (act.isLecture()) {
+//            Lecture lec = (Lecture) act;
+//            ActivityData.setIsUsrSched(con, lec.getId(), true);
+//        }
+//        if (schedule == null) {
+//            new UserSchedule(con, null);
+//        }
+//        if (date == schedule[0].getDate()) {
+//            schedule[0].addActivityToList(con, act);
+//        } else if (date == schedule[1].getDate()) {
+//            schedule[1].addActivityToList(con, act);
+//        } else if (date == schedule[2].getDate()) {
+//            schedule[2].addActivityToList(con, act);
+//
+//        }
+//    }
+
+    public void addActivity(Context con, Lecture act, int date) {
+        ActivityData.setIsUsrSched(con, act.getId(), true);
         if (schedule == null) {
             new UserSchedule(con, null);
         }
@@ -135,6 +150,7 @@ public class UserSchedule implements Schedule, Serializable {
 
     /**
      * Zdaje się, że ta metoda jest nieużywana. Przynajmniej nie powinna.
+     *
      * @param context
      * @param lecture
      * @param userSchedule
@@ -146,7 +162,6 @@ public class UserSchedule implements Schedule, Serializable {
         if (scheduleObject == null) {
             scheduleObject = UserSchedule.getInstance(context, null);
         }
-
         if (lecture.getIsInUserSchedule()) {
             scheduleObject.addActivity(context, lecture, dayId);
 

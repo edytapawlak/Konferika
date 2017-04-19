@@ -43,6 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Poster item = items.get(position);
         holder.text.setText(item.getTitle());
         holder.author.setText(item.getAuthors()[0]);
+        holder.tags.setText(item.getTags());
 //        holder.image.setImageBitmap(null);
         holder.ratingBar.setRating(item.getMark());
         holder.itemView.setTag(item);
@@ -61,6 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ImageView image;
         public TextView text;
         public TextView author;
+        public TextView tags;
         public RatingBar ratingBar;
 
         public ViewHolder(View itemView) {
@@ -68,6 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             image = (ImageView) itemView.findViewById(R.id.image);
             text = (TextView) itemView.findViewById(R.id.text);
             author = (TextView) itemView.findViewById(R.id.poster_author);
+            tags = (TextView) itemView.findViewById(R.id.poster_tags_text_view);
             ratingBar = (RatingBar) itemView.findViewById(R.id.poster_list_rating_bar);
         }
     }

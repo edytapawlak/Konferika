@@ -7,7 +7,7 @@ import java.util.List;
 
 public class LecturesList {
 
-    private List<Activity> mLectData;
+    private List<Lecture> mLectData;
     private static LecturesList lectList;
 
     public static LecturesList getInstance(Context con) {
@@ -39,12 +39,12 @@ public class LecturesList {
     }
 
     public String printChecked() {
-        List<Activity> list = mLectData;
+        List<Lecture> list = mLectData;
         String output = "";
         for (int i = 0; i < list.size(); i++) {
 
             if (list.get(i).getIsInUserSchedule()) {
-                output = output + "\n ................................................\n" + list.get(i).getTitle();
+                output = output + "\n ................................................\n" + list.get(i).getTitle() + "\n "+ list.get(i).getTags();
             }
         }
         return output;

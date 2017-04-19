@@ -14,8 +14,7 @@ public class ConferencePlanData extends DisplayData {
     }
 
     @Override
-    public void addActivityToList(Context context, Activity activity) {
-
+    public void addActivityToList(Context context, Lecture activity) {
     }
 
     @Override

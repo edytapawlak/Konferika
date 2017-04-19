@@ -1,4 +1,4 @@
-package com.app.android.konferika;
+package com.app.android.konferika.utils;
 
 
 public class Utils {

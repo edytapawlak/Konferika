@@ -13,5 +13,14 @@
     <dimen name="elevation_high">12dp</dimen>
     <dimen name="status_bar_height">25dp</dimen>
 
+    <dimen name="paddings">8dp</dimen>
+    <dimen name="padding_top_bottom">3dp</dimen>
+    <dimen name="title_text_size">16sp</dimen>
+    <dimen name="author_text_size">14sp</dimen>
+    <dimen name="room_text_size">15sp</dimen>
+    <dimen name="pic_dim">40dp</dimen>
+    <dimen name="section_header_text_size">18dp</dimen>
+
     <dimen name="cardViewCornerRad">4dp</dimen>
 </resources>
+

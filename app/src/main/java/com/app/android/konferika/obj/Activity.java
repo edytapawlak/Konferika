@@ -8,6 +8,8 @@ import com.app.android.konferika.adapters.ActivityViewHolder;
 public interface Activity {
     boolean isLecture();
 
+    String getTags();
+
     /**
      * This method sets data to layout.
      *

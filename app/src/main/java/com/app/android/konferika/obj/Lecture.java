@@ -3,6 +3,7 @@ package com.app.android.konferika.obj;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +13,7 @@ import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Lecture implements Activity, Serializable {
     private String title;
@@ -22,33 +24,43 @@ public class Lecture implements Activity, Serializable {
     private String startTime;
     private String room;
     private boolean isInUserSched;
+    private List<Tag> tags;
 
 
-    public Lecture(String title, String author, String abs, int date, String id, String startTime, String room, boolean isInSched) {
+    public Lecture(String title, String author, String abs, int date, int id, String startTime, String room, List<Tag> tags, boolean isInSched) {
         this.title = title;
         this.author = author;
         this.abs = abs;
         this.dateId = date;
-        int idd = Integer.parseInt(id);
-        this.id = idd;
+//        int idd = Integer.parseInt(id);
+        this.id = id;
         this.startTime = startTime;
         this.room = room;
+        this.tags = tags;
         this.isInUserSched = isInSched;
     }
+
+
 
     public String getTitle() {
         return title;
     }
 
+    public String getTags(){
+        String out = "";
+        for (Tag t :
+                this.tags) {
+            out += t.getTitle() + " ";
+        }
+        return out;
+    }
+
     @Override
     public void handleOnClick(Context context, DayScheduleFragment fragment) {
-
         Intent intent = new Intent(context, ItemDetailsActivity.class);
         intent.putExtra("lect", this);
-
+        Log.v("przesyłam:", this.getTags());
         context.startActivity(intent);
-
-        //fragment.startActivityForResult(intent, 1);
     }
 
     @Override
@@ -85,13 +97,10 @@ public class Lecture implements Activity, Serializable {
         switch (dateId) {
             case 1:
                 return "Piątek";
-
             case 2:
                 return "Sobota";
-
             case 3:
                 return "Niedziela";
-
         }
         return "";
     }
@@ -104,12 +113,11 @@ public class Lecture implements Activity, Serializable {
     @Override
     public void setContent(ActivityViewHolder holder) {
 
-
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
         holder.mRoomTextView.setText(this.getRoom());
-
+        holder.mTagsTextView.setText(this.getTags());
         holder.myActCheckbox.setChecked(isInUserSched);
 
         if (ViewPagerAdapter.getScheduleId() != 0) {

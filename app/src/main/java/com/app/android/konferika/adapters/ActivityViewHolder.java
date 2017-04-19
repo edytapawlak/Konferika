@@ -2,6 +2,7 @@ package com.app.android.konferika.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final TextView mAuthorTextView;
     public final TextView mIdDataTextView;
     public final TextView mRoomTextView;
+    public final TextView mTagsTextView;
     public final TextView mBreakPicTextView;
     public final TextView mBreakTextTextView;
     public final CardView mCardView;
@@ -34,6 +36,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
         mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
         mRoomTextView = (TextView) itemView.findViewById(R.id.tv_room);
+        mTagsTextView = (TextView) itemView.findViewById(R.id.tv_tags);
         mCardView = (CardView) itemView.findViewById(R.id.forecast_card_view);
         mBreakPicTextView = (TextView) itemView.findViewById(R.id.tv_break_pic);
         mBreakTextTextView = (TextView) itemView.findViewById(R.id.tv_break_text);
@@ -58,7 +61,6 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
                     mLectList.setCheckOnPos(id, isChecked);
                     Lecture activ = (Lecture) mLectList.getActivityOnPos(id);
-
                     DisplayActDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
                     // Log.v("Checked activ ", mLectList.printChecked());
                 }

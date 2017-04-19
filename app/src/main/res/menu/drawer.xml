@@ -24,6 +24,13 @@
             android:checkable="true"/>
 
         <item
+            android:id="@+id/drawer_tags"
+            android:checked="true"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/tags"
+            android:checkable="true"/>
+
+        <item
             android:id="@+id/drawer_map"
             android:icon="@mipmap/ic_map"
             android:title="@string/map"
