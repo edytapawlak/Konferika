@@ -13,4 +13,6 @@
     <string name="poll">Głosowanie</string>
     <string name="scan">Skanuj</string>
 
+    <string name="content_authority">com.app.android.konferika</string>
+
 </resources>

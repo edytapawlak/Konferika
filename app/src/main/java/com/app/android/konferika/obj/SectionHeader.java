@@ -1,6 +1,7 @@
 package com.app.android.konferika.obj;
 
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,8 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class SectionHeader extends StatelessSection {
     List<Activity> childList;
+//    List<Cursor> childList;
+
     String title;
 
 
