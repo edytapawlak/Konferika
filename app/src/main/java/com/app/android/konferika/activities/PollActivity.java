@@ -1,6 +1,8 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,15 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(zXingScannerView!= null) {
+//            zXingScannerView.resumeCameraPreview(this);
+
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         if(zXingScannerView != null) {
@@ -45,7 +56,12 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
 
     @Override
     public void handleResult(Result result) {
-        Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT).show();
-        zXingScannerView.resumeCameraPreview(this);
+        String url = "https://rszczers.students.wmi.amu.edu.pl/oblicze_poll/" + result.getText();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
+        onBackPressed();
+//        zXingScannerView.resumeCameraPreview(this);
+//        Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT).show();
     }
 }

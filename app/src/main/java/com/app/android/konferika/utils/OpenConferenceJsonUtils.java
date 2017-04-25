@@ -17,10 +17,18 @@ package com.app.android.konferika.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
+
+import com.app.android.konferika.data.ActivityData;
+import com.app.android.konferika.obj.Lecture;
+import com.app.android.konferika.obj.Tag;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility functions to handle OpenWeatherMap JSON data.
@@ -48,6 +56,7 @@ public final class OpenConferenceJsonUtils {
         final String OWM_DATE = "date";
         final String OWM_ROOM = "place";
         final String OWM_TAGS = "tags";
+        final String OWM_ID = "id";
 
         /* String array to hold each lecture String */
         String[] parsedLecturesData = null;
@@ -65,10 +74,11 @@ public final class OpenConferenceJsonUtils {
             String[] authors;
             String startTime;
             String endTime;
-            String date;
+            int date;
             String description;
             String place;
             String[] tags;
+            int id;
             JSONArray tmp;
             JSONArray authorsArr;
             JSONObject schedule;
@@ -91,10 +101,13 @@ public final class OpenConferenceJsonUtils {
                 tags[j] = tmp.getString(j);
             }
             schedule = lectureForecast.getJSONObject(OWM_SCHEDULE);
+            id = lectureForecast.getInt(OWM_ID);
 
             startTime = schedule.getString(OWM_STARTTIME);
             endTime = schedule.getString(OWM_ENDTIME);
-            date = schedule.getString(OWM_DATE);
+            if(schedule.getString(OWM_DATE).equals("23 05 2042")) {
+                date = 1;
+            } else{date = 2;}
             place = schedule.getString(OWM_ROOM);
             if (tags.length > 0) {
                 parsedLecturesData[i] = " - " + title + " - " + date + "-" + place + "--" + tags[0];
@@ -102,6 +115,10 @@ public final class OpenConferenceJsonUtils {
                 parsedLecturesData[i] = " - " + title + " - " + date + "-" + place + "--";
             }
 //            TU TRZEBA BĘDZIE TWORZYĆ LECTURES
+
+            Lecture lectToAdd = new Lecture(title, authors[0], description, date, id, startTime, place, new ArrayList<Tag>(), false);
+            ActivityData.updateLecture(context, lectToAdd);
+
         }
 
         return parsedLecturesData;
@@ -188,6 +205,7 @@ public final class OpenConferenceJsonUtils {
 
         JSONArray jsonArray = new JSONArray(forecastJsonStr);
         parsedLecturesData = new String[jsonArray.length()];
+        Log.v("Arrrrr", jsonArray.length()+"");
 
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */

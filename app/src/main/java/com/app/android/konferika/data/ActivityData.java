@@ -2,6 +2,7 @@ package com.app.android.konferika.data;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
@@ -16,9 +17,9 @@ import java.util.TreeMap;
 
 public class ActivityData {
 
-    private static List<Lecture> onlyLect;
-    private static List<Activity> lectures;
-    private static List<SectionHeader> headers;
+//    private static List<Lecture> onlyLect;
+//    private static List<Activity> lectures;
+//    private static List<SectionHeader> headers;
     private static Activity[] breaks;
     private static ArrayList<Poster> posters;
     private static TreeMap<String, List<Activity>>[] userSchedTree = new TreeMap[3];
@@ -28,19 +29,9 @@ public class ActivityData {
     private ActivityData(Context context) {
         databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
-        this.onlyLect = databaseAccess.getOnlyLectData();
-        this.lectures = databaseAccess.getLectData();
-        this.posters = databaseAccess.getPosters();
-        databaseAccess.close();
-    }
-
-    private ActivityData(Context context, int dateId) {
-        databaseAccess = DatabaseAccess.getInstance(context);
-        databaseAccess.open();
 
 //        this.lectures = databaseAccess.getLectData();
-        this.headers = databaseAccess.getChildForDate(dateId);
-
+        this.posters = databaseAccess.getPosters();
         databaseAccess.close();
     }
 
@@ -54,29 +45,20 @@ public class ActivityData {
     }
 
     public static List<Lecture> getLectures(Context cont) {
-        if (lectures == null) {
-            new ActivityData(cont);
-        }
+        List<Lecture> onlyLect;
+        databaseAccess = DatabaseAccess.getInstance(cont);
+        databaseAccess.open();
+        onlyLect = databaseAccess.getOnlyLectData();
+        databaseAccess.close();
         return onlyLect;
     }
 
-    public static List<SectionHeader> getHeaders(Context cont) {
-        if (headers == null) {
-            new ActivityData(cont);
-        }
-        return headers;
-    }
-
-
-    public static List<Activity> getLectures(Context cont, int dateId) {
-        if (lectures == null) {
-            new ActivityData(cont, dateId);
-        }
-        return lectures;
-    }
-
     public static List<SectionHeader> getHeaders(Context cont, int dateId) {
-        new ActivityData(cont, dateId);
+        List<SectionHeader> headers;
+        databaseAccess = DatabaseAccess.getInstance(cont);
+        databaseAccess.open();
+        headers = databaseAccess.getChildForDate(dateId);
+        databaseAccess.close();
         return headers;
     }
 
@@ -144,6 +126,15 @@ public class ActivityData {
         databaseAccess.close();
         return out;
     }
+
+    public static void updateLecture(Context context, Lecture lect) {
+
+        databaseAccess = DatabaseAccess.getInstance(context);
+        databaseAccess.open();
+        databaseAccess.updateLecture(lect);
+        databaseAccess.close();
+    }
+
 }
 
 

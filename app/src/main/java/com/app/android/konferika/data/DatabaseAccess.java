@@ -2,6 +2,7 @@ package com.app.android.konferika.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -151,9 +152,9 @@ public class DatabaseAccess {
         return list;
     }
 
-        /**
-         * Return all lectures and breaks as ArrayList<Activity>
-         */
+    /**
+     * Return all lectures and breaks as ArrayList<Activity>
+     */
 
     public ArrayList<Activity> getLectData() {
         ArrayList<Activity> list = new ArrayList<>();
@@ -176,7 +177,7 @@ public class DatabaseAccess {
             tagsCursor = database.rawQuery("SELECT tag_id, tag_text FROM Ref Join Lectures_tags On " +
                     "Ref._id = Lectures_tags.lecture_id Join Tags on Lectures_tags.tag_id = Tags.id Where Ref._id = " + lectId, null);
             tagsCursor.moveToFirst();
-            while(!tagsCursor.isAfterLast()){
+            while (!tagsCursor.isAfterLast()) {
                 tagId = tagsCursor.getInt(0);
                 tagList.add(new Tag(tagsCursor.getString(1), tagId));
                 tagsCursor.moveToNext();
@@ -267,7 +268,7 @@ public class DatabaseAccess {
             tagsCursor = database.rawQuery("SELECT tag_id, tag_text FROM Ref Join Lectures_tags On " +
                     "Ref._id = Lectures_tags.lecture_id Join Tags on Lectures_tags.tag_id = Tags.id Where Ref._id = " + lectId, null);
             tagsCursor.moveToFirst();
-            while(!tagsCursor.isAfterLast()){
+            while (!tagsCursor.isAfterLast()) {
                 int tagId = tagsCursor.getInt(0);
                 tagList.add(new Tag(tagsCursor.getString(1), tagId));
                 tagsCursor.moveToNext();
@@ -442,7 +443,7 @@ public class DatabaseAccess {
                     "Posters.id = Posters_tags.poster_id Join Tags on " +
                     "Posters_tags.tag_id = Tags.id WHERE Posters.id = " + posterId, null);
             tagCursor.moveToFirst();
-            while(!tagCursor.isAfterLast()){
+            while (!tagCursor.isAfterLast()) {
                 int tagId = tagCursor.getInt(0);
                 tagList.add(new Tag(tagCursor.getString(1), tagId));
                 tagCursor.moveToNext();
@@ -493,12 +494,12 @@ public class DatabaseAccess {
             boolean isInUsr = (cursor.getInt(7) != 0);
             int dateId = cursor.getInt(3);
             int lectId = cursor.getInt(4);
-            Log.v("LectID: ", lectId + "" );
+            Log.v("LectID: ", lectId + "");
             tagCursor = database.rawQuery("SELECT tag_id, tag_text FROM Ref JOIN Lectures_tags ON " +
                     "Ref._id = Lectures_tags.lecture_id JOIN Tags ON Lectures_tags.tag_id = Tags.id WHERE " +
                     "Ref._id = " + lectId, null);
             tagCursor.moveToFirst();
-            while(!tagCursor.isAfterLast()){
+            while (!tagCursor.isAfterLast()) {
                 int tagId = tagCursor.getInt(0);
                 tagList.add(new Tag(tagCursor.getString(1), tagId));
                 tagCursor.moveToNext();
@@ -570,13 +571,13 @@ public class DatabaseAccess {
         return list;
     }
 
-    public ArrayList<Lecture> getLectForTag(int tagId){
+    public ArrayList<Lecture> getLectForTag(int tagId) {
         ArrayList<Lecture> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room, is_in_usr " +
-                            "FROM Ref  JOIN Rooms ON Ref.room_id = Rooms._id JOIN Lectures_tags ON " +
-                            "Ref._id = Lectures_tags.lecture_id JOIN Tags ON Lectures_tags.tag_id = Tags.id " +
-                            "WHERE Tags.id = " + tagId +
-                            " ORDER BY Ref._id;", null);
+                "FROM Ref  JOIN Rooms ON Ref.room_id = Rooms._id JOIN Lectures_tags ON " +
+                "Ref._id = Lectures_tags.lecture_id JOIN Tags ON Lectures_tags.tag_id = Tags.id " +
+                "WHERE Tags.id = " + tagId +
+                " ORDER BY Ref._id;", null);
         cursor.moveToFirst();
         Lecture lec;
         int date_id;
@@ -593,11 +594,11 @@ public class DatabaseAccess {
         return list;
     }
 
-    public ArrayList<Poster> getPostersForTag(int tagId){
+    public ArrayList<Poster> getPostersForTag(int tagId) {
         ArrayList<Poster> outputList = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT Posters.id, Posters.title, author, abstract, mark FROM Posters JOIN Posters_tags ON " +
-                                "Posters.id = Posters_tags.poster_id JOIN Tags ON Posters_tags.tag_id = Tags.id WHERE Tags.id = "
-                                + tagId + " ORDER BY Posters.id", null);
+                "Posters.id = Posters_tags.poster_id JOIN Tags ON Posters_tags.tag_id = Tags.id WHERE Tags.id = "
+                + tagId + " ORDER BY Posters.id", null);
         cursor.moveToFirst();
         Poster poster;
         while (!cursor.isAfterLast()) {
@@ -610,6 +611,54 @@ public class DatabaseAccess {
         }
         cursor.close();
         return outputList;
+    }
+
+    public List<Integer> selectAllId() {
+        List<Integer> list = new ArrayList<Integer>();
+        Cursor cursor = this.database.query("Ref", new String[]{"_id"},
+                null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return list;
+    }
+
+    public void updateLecture(Lecture lect) {
+
+        List<Integer> list = selectAllId();
+        ContentValues cv = new ContentValues();
+        int id = lect.getId();
+        cv.put("title", lect.getTitle());
+        cv.put("author", lect.getAuthor());
+        cv.put("abstract", lect.getAbs());
+        cv.put("startTime", lect.getStartTime());
+        cv.put("date_id", lect.getDate());
+        cv.put("room_id", lect.getRoom());
+
+
+        if (list.contains(lect.getId())) {
+            database.update("Ref", cv, "_id = " + id, null);
+        } else {
+            cv.put("_id", id);
+            database.insert("Ref", null, cv);
+        Log.v("UPDATE: ", "uuu " + lect.getTitle() + " " + lect.getDate());
+        }
+    }
+
+    public void updatePoster(Poster pos) {
+        ContentValues cv = new ContentValues();
+        int id = pos.getId();
+        cv.put("title", pos.getTitle());
+        cv.put("author", pos.getAuthors()[0]);
+        cv.put("abstract", pos.getAbs());
+
+        database.update("Posters", cv, "id = " + id, null);
     }
 
 }

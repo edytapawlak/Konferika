@@ -7,7 +7,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.app.android.konferika.activities.TagDataActivity">
+    android:layout_marginTop="25dp"
+    tools:context="com.app.android.konferika.activities.TagDataActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tag_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:textColor="@color/blu"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,40 +26,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="REFERATY"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:padding="@dimen/paddings"
-                />
+                android:text="REFERATY"
+                android:textStyle="bold" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/tags_lectures_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:orientation="vertical" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PLAKATY"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:padding="@dimen/paddings"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
+                android:text="PLAKATY"
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/tags_posters_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tags_posters_linear_layout"
                 android:layout_marginBottom="20dp"
-                ></LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>
     </ScrollView>

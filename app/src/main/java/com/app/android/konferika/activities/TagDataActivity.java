@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,19 +23,24 @@ public class TagDataActivity extends AppCompatActivity {
 
     Context mActivity;
     int tagId;
+    String tagTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_data);
 
         mActivity = this;
-        tagId = getIntent().getIntExtra("tagId", 0);
+        Intent i = getIntent();
+        tagId = i.getIntExtra("tagId", 0);
+        tagTitle = i.getStringExtra("tagTitle");
 
         final ArrayList<Lecture> lectForTag = ActivityData.getLectForTag(this, tagId);
         final ArrayList<Poster> postersForTag = ActivityData.getPostersForTag(this, tagId);
 
         LinearLayout lecturesLinearLayout = (LinearLayout) findViewById(R.id.tags_lectures_linear_layout);
         LinearLayout posterLinearLayout = (LinearLayout) findViewById(R.id.tags_posters_linear_layout);
+        TextView tagTitleTextView = (TextView) findViewById(R.id.tag_title_text_view);
+        tagTitleTextView.setText(tagTitle);
 
         TextView clickableTextView;
         for (Lecture lect :

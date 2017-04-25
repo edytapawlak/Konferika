@@ -20,6 +20,7 @@ import com.app.android.konferika.R;
 import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TagsActivity extends BaseActivity{
@@ -36,7 +37,7 @@ public class TagsActivity extends BaseActivity{
         super.lay.addView(contentView, 0);
         initToolbar();
 
-        List<Tag> tags = ActivityData.getTagArray(this);
+        final List<Tag> tags = ActivityData.getTagArray(this);
         LinearLayout linear = (LinearLayout) findViewById(R.id.tags_linear_layout);
         ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_tags);
         Button btn1;
@@ -70,14 +71,26 @@ public class TagsActivity extends BaseActivity{
             btn1 = ((Button) findViewById(id_));
             btn1.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(),
-                            "Button clicked index = " + id_, Toast.LENGTH_SHORT)
-                            .show();
+//                    Toast.makeText(view.getContext(),
+//                            "Button clicked index = " + id_, Toast.LENGTH_SHORT)
+//                            .show();
                     Intent i = new Intent(TagsActivity.this, TagDataActivity.class);
                     i.putExtra("tagId", id_);
+                    String tagTitle = findTagTitleById(tags, id_);
+                    i.putExtra("tagTitle", tagTitle);
                     startActivity(i);
                 }
             });
         }
     }
+    private String findTagTitleById(List<Tag> arr, int id){
+        for (Tag t :
+                arr) {
+            if(t.getId() == id){
+                return t.getTitle();
+            }
+        }
+            return  "";
+    }
+
 }

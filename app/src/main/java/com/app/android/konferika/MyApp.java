@@ -1,48 +1,35 @@
-package com.app.android.konferika.activities;
+package com.app.android.konferika;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.app.android.konferika.R;
+import com.app.android.konferika.activities.DataTestActivity;
 import com.app.android.konferika.utils.NetworkUtils;
 import com.app.android.konferika.utils.OpenConferenceJsonUtils;
 
 import java.net.URL;
 
-public class DataTestActivity extends AppCompatActivity {
+public class MyApp extends Application {
 
-    private TextView mTextView;
-    private TextView mErrorMessageDisplay;
-    private ProgressBar mLoadingIndicator;
-
+    Context con;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather_test);
-
-        mTextView = (TextView) findViewById(R.id.tv_weather_data);
-        mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
+    public void onCreate() {
+        super.onCreate();
+        con  =  this;
+//        Toast.makeText(this, "Tu bym ten", Toast.LENGTH_SHORT).show();
         loadData();
-    }
 
-    private void showDataView() {
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void showErrorMessage() {
-        mTextView.setVisibility(View.INVISIBLE);
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     private void loadData() {
-        new FetchDataTask().execute("get_lectures");
+        new MyApp.FetchDataTask().execute("get_lectures");
     }
 
     public class FetchDataTask extends AsyncTask<String, Void, String[]> {
@@ -50,7 +37,7 @@ public class DataTestActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+//            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
         @Override
         protected String[] doInBackground(String... params) {
@@ -66,9 +53,10 @@ public class DataTestActivity extends AppCompatActivity {
             try {
                 String jsonLectResponse = NetworkUtils
                         .getResponseFromHttpUrl(lectRequestUrl);
+                Log.v("Wynik: ", jsonLectResponse);
 
                 String[] simpleJsonLectData = OpenConferenceJsonUtils
-                        .getLecturesStringsFromJson(DataTestActivity.this, jsonLectResponse);
+                        .getLecturesStringsFromJson(con, jsonLectResponse);
 
                 return simpleJsonLectData;
 
@@ -80,19 +68,23 @@ public class DataTestActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String[] weatherData) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
+//            mLoadingIndicator.setVisibility(View.INVISIBLE);
+                int i = 0;
             if (weatherData != null) {
-                showDataView();
+//                showDataView();
                 /*
                  * Iterate through the array and append the Strings to the TextView. The reason why we add
                  * the "\n\n\n" after the String is to give visual separation between each String in the
                  * TextView. Later, we'll learn about a better way to display lists of data.
                  */
-                for (String weatherString : weatherData) {
-                    mTextView.append((weatherString) + "\n\n\n");
-                }
+//                for (String weatherString : weatherData) {
+////                    mTextView.append((weatherString) + "\n\n\n");
+//                    i++;
+//
+//                }
+            Toast.makeText(con, "Jest ich " + weatherData.length, Toast.LENGTH_SHORT).show();
             } else {
-                showErrorMessage();
+//                showErrorMessage();
             }
         }
     }
