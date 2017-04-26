@@ -1,10 +1,15 @@
 package com.app.android.konferika.activities;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +22,7 @@ import android.widget.TextView;
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.DisplayActDataAdapter;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.ConferenceSchedule;
 import com.app.android.konferika.obj.DisplayData;
@@ -25,7 +31,7 @@ import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
 
 
-public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler {
+public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler{
 
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
@@ -35,6 +41,8 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     private Schedule schedule;
     private Context mContext;
     private UserSchedule userSchedule;
+
+    private static final int ID_CONFERENCE_LOADER = 44;
 
     public DayScheduleFragment() {
     }

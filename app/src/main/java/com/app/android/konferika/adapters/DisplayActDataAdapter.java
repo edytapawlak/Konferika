@@ -13,7 +13,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 
 public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
 
-    private static DisplayData activitiesData;
+    private  DisplayData activitiesData;
     private static DispalyAdapterOnClickHandler mClickHandler;
     private static Context context;
 
@@ -50,9 +50,10 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
     }
 
     public void setActivitiesData(DisplayData activitiesData) {
-        DisplayActDataAdapter.activitiesData = null;
-        DisplayActDataAdapter.activitiesData = activitiesData;
-//        notifyDataSetChanged();
+//        DisplayActDataAdapter.activitiesData = null;
+        this.activitiesData = activitiesData;
+        notifyDataSetChanged();
     }
+
 
 }

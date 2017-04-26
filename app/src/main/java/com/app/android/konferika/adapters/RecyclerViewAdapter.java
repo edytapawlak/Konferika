@@ -1,5 +1,6 @@
 package com.app.android.konferika.adapters;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyDataSetChanged();
     }
 
+    private Cursor it;
     private List<Poster> items;
     private OnItemClickListener onItemClickListener;
 
@@ -40,22 +42,38 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override public void onBindViewHolder(ViewHolder holder, int position) {
-        Poster item = items.get(position);
-        holder.text.setText(item.getTitle());
-        holder.author.setText(item.getAuthors()[0]);
-        holder.tags.setText(item.getTags());
+        it.moveToPosition(position);
+        holder.text.setText(it.getString(0));
+        holder.author.setText(it.getString(1));
+        holder.tags.setText("tag");
 //        holder.image.setImageBitmap(null);
-        holder.ratingBar.setRating(item.getMark());
-        holder.itemView.setTag(item);
+        holder.ratingBar.setRating(it.getFloat(2));
+
+//        Poster item = items.get(position);
+//        holder.text.setText(item.getTitle());
+//        holder.author.setText(item.getAuthors()[0]);
+//        holder.tags.setText(item.getTags());
+////        holder.image.setImageBitmap(null);
+//        holder.ratingBar.setRating(item.getMark());
+//        holder.itemView.setTag(item);
 
     }
 
     @Override public int getItemCount() {
-        return items.size();
+        if(it == null){
+            return 0;
+        }
+        return it.getCount();
     }
 
     @Override public void onClick(final View v) {
         onItemClickListener.onItemClick(v, (Poster) v.getTag());
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        it = newCursor;
+        // After the new Cursor is set, call notifyDataSetChanged
+        notifyDataSetChanged();
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {

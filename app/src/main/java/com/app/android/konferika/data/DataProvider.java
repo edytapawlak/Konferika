@@ -10,8 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.util.Log;
 
 /**
  * Created by edyta on 25.04.17.
@@ -19,15 +17,20 @@ import android.util.Log;
 
 public class DataProvider extends ContentProvider {
 
-    public static final int CODE_DATA = 100;
-    public static final int CODE_SPECYFIC_DATA = 101;
+    public static final int CODE_LECTURES = 100;
+    public static final int CODE_SPECYFIC_LECTURE = 101;
+    public static final int CODE_POSTERS = 200;
+    public static final int CODE_SPECYFIC_POSTER = 201;
+    public static final int CODE_BREAKS = 300;
+    public static final int CODE_SPECYFIC_BREAK = 301;
+    public static final int CODE_GET_ALL_START_TIMES = 400;
+
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private DatabaseOpenHelper mOpenHelper;
     private Context context;
-//    SQLiteDatabase db;
-//    private DatabaseAccess db;
+
     @Override
     public boolean onCreate() {
         this.context = this.getContext();
@@ -41,15 +44,19 @@ public class DataProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = DatabaseContract.CONTENT_AUTHORITY;
 
-        /* This URI is content://com.example.android.sunshine/weather/ */
-        matcher.addURI(authority, DatabaseContract.PATH_LECTURES, CODE_DATA);
+        matcher.addURI(authority, DatabaseContract.PATH_LECTURES, CODE_LECTURES);
+        matcher.addURI(authority, DatabaseContract.PATH_POSTERS, CODE_POSTERS);
+        matcher.addURI(authority, DatabaseContract.PATH_BREAK, CODE_BREAKS);
+        matcher.addURI(authority, DatabaseContract.PATH_ALL_START_TIME, CODE_GET_ALL_START_TIMES);
 
         /*
          * This URI would look something like content://com.example.android.sunshine/weather/1472214172
          * The "/#" signifies to the UriMatcher that if PATH_WEATHER is followed by ANY number,
          * that it should return the CODE_WEATHER_WITH_DATE code
          */
-        matcher.addURI(authority, DatabaseContract.PATH_LECTURES + "/#", CODE_SPECYFIC_DATA);
+        matcher.addURI(authority, DatabaseContract.PATH_LECTURES + "/#", CODE_SPECYFIC_LECTURE);
+        matcher.addURI(authority, DatabaseContract.PATH_POSTERS + "/#", CODE_SPECYFIC_POSTER);
+        matcher.addURI(authority, DatabaseContract.PATH_POSTERS + "/#", CODE_SPECYFIC_BREAK);
 
         return matcher;
     }
@@ -59,15 +66,19 @@ public class DataProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         switch (sUriMatcher.match(uri)) {
-            case CODE_DATA:
+            case CODE_LECTURES:
                 db.beginTransaction();
                 int rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
+                        String selection = DatabaseContract.LecturesEntry.COLUMN_ID + " = ?";
+                        String[] selectionArgs = {value.getAsString(DatabaseContract.LecturesEntry.COLUMN_ID)};
 
-                        long _id = db.insert(DatabaseContract.LecturesEntry.TABLE_NAME, null, value);
-                        if (_id != -1) {
-                            rowsInserted++;
+                        int affected = db.update(DatabaseContract.LecturesEntry.TABLE_NAME,
+                                value, selection, selectionArgs);
+                        if (affected == 0) {
+                            long rowId = db.insert(DatabaseContract.LecturesEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
@@ -79,6 +90,55 @@ public class DataProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted;
+
+            case CODE_POSTERS:
+                db.beginTransaction();
+                int rowsInserted2 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        String selection = DatabaseContract.PostersEntry.COLUMN_ID + " = ?";
+                        String[] selectionArgs = {value.getAsString(DatabaseContract.PostersEntry.COLUMN_ID)};
+
+                        int affected = db.update(DatabaseContract.PostersEntry.TABLE_NAME,
+                                value, selection, selectionArgs);
+                        if (affected == 0) {
+                            long rowId = db.insert(DatabaseContract.PostersEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted2++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted2 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted2;
+            case CODE_BREAKS:
+                db.beginTransaction();
+                int rowsInserted3 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        String selection = DatabaseContract.BreakEntry.COLUMN_ID + " = ?";
+                        String[] selectionArgs = {value.getAsString(DatabaseContract.BreakEntry.COLUMN_ID)};
+
+                        int affected = db.update(DatabaseContract.BreakEntry.TABLE_NAME,
+                                value, selection, selectionArgs);
+                        if (affected == 0) {
+                            long rowId = db.insert(DatabaseContract.BreakEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted3++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted3 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted3;
 
             default:
                 return super.bulkInsert(uri, values);
@@ -103,16 +163,7 @@ public class DataProvider extends ContentProvider {
 
         Cursor cursor;
         switch (sUriMatcher.match(uri)) {
-
-            /*
-             * When sUriMatcher's match method is called with a URI that looks something like this
-             *
-             *      content://com.example.android.sunshine/weather/1472214172
-
-             * In this case, we want to return a cursor that contains one row of data for
-             * a particular id.
-             */
-            case CODE_SPECYFIC_DATA: {
+            case CODE_SPECYFIC_LECTURE: {
 
                 String data_id = uri.getLastPathSegment();
 
@@ -145,16 +196,7 @@ public class DataProvider extends ContentProvider {
 
                 break;
             }
-
-            /*
-             * When sUriMatcher's match method is called with a URI that looks EXACTLY like this
-             *
-             *      content://com.example.android.sunshine/weather/
-             *
-             * In this case, we want to return a cursor that contains every row of lect data
-             * in our lect table.
-             */
-            case CODE_DATA: {
+            case CODE_LECTURES: {
                 cursor = mOpenHelper.getReadableDatabase().query(
                         DatabaseContract.LecturesEntry.TABLE_NAME,
                         projection,
@@ -166,8 +208,54 @@ public class DataProvider extends ContentProvider {
 
                 break;
             }
+            case CODE_SPECYFIC_POSTER: {
 
-            default:
+                String data_id = uri.getLastPathSegment();
+
+                String[] selectionArguments = new String[]{data_id};
+
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        DatabaseContract.PostersEntry.TABLE_NAME,
+                        projection,
+                        DatabaseContract.PostersEntry.COLUMN_ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+
+                break;
+            }
+
+            case CODE_POSTERS: {
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        DatabaseContract.PostersEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+
+                break;
+            }
+            case CODE_GET_ALL_START_TIMES:
+                SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+                cursor = db.rawQuery("SELECT startTime FROM (SELECT startTime, date_id FROM Ref UNION SELECT startTime, date_id FROM Break) WHERE date_id = "
+                        + selectionArgs[0] +
+                        " ORDER BY time(startTime)", null);
+                break;
+            case CODE_BREAKS: {
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        DatabaseContract.BreakEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+                default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
@@ -188,7 +276,7 @@ public class DataProvider extends ContentProvider {
         int numRowsDeleted;
         if (null == selection) selection = "1";
         switch (sUriMatcher.match(uri)) {
-            case CODE_DATA:
+            case CODE_LECTURES:
                 numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
                         DatabaseContract.LecturesEntry.TABLE_NAME,
                         selection,
@@ -227,7 +315,7 @@ public class DataProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         switch (match) {
-            case CODE_DATA:
+            case CODE_LECTURES:
                 long id = db.insert(DatabaseContract.LecturesEntry.TABLE_NAME, null, values);
                 if ( id > 0 ) {
                     returnUri = ContentUris.withAppendedId(DatabaseContract.LecturesEntry.CONTENT_URI, id);

@@ -11,6 +11,9 @@ public class DatabaseContract {
     public static final String CONTENT_AUTHORITY = "com.app.android.konferika";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_LECTURES = "Ref";
+    public static final String PATH_POSTERS = "Posters";
+    public static final String PATH_BREAK = "Break";
+    public static final String PATH_ALL_START_TIME = "StartTimes";
 
     public static final class LecturesEntry implements BaseColumns {
 
@@ -34,7 +37,7 @@ public class DatabaseContract {
          * @param id LectID
          * @return Uri to query details about a single weather entry
          */
-        public static Uri buildWeatherUriWithDate(int id) {
+        public static Uri buildLecturesUriWithDate(int id) {
             return CONTENT_URI.buildUpon()
                     .appendPath(id + "")
                     .build();
@@ -52,4 +55,65 @@ public class DatabaseContract {
 //            return WeatherContract.WeatherEntry.COLUMN_DATE + " >= " + normalizedUtcNow;
 //        }
     }
+
+    public static final class PostersEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_POSTERS)
+                .build();
+
+        public static final String TABLE_NAME = "Posters";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_ABSTRACT = "abstract";
+        public static final String COLUMN_MARK = "mark";
+
+        /**
+         * @param id LectID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildPostersUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+
+    }
+
+    public static final class BreakEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_BREAK)
+                .build();
+
+        public static final String TABLE_NAME = "Break";
+
+        public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_START_TIME = "startTime";
+        public static final String COLUMN_END_TIME = "endTime";
+        public static final String COLUMN_DATE_ID = "date_id";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_ID = "id";
+
+
+        /**
+         * @param id LectID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildPostersUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+    }
+        public static final class StartTimesEntry implements BaseColumns {
+
+            public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                    .appendPath(PATH_ALL_START_TIME)
+                    .build();
+
+
+        }
 }

@@ -16,6 +16,10 @@ import com.app.android.konferika.utils.OpenConferenceJsonUtils;
 
 import java.net.URL;
 
+/**
+ * Tu pobieram dane przy każdym włączaniu aplikacji
+ */
+
 public class MyApp extends Application {
 
     Context con;
@@ -24,12 +28,12 @@ public class MyApp extends Application {
         super.onCreate();
         con  =  this;
 //        Toast.makeText(this, "Tu bym ten", Toast.LENGTH_SHORT).show();
-//        loadData();
+        loadData();
 
     }
 
     private void loadData() {
-        new MyApp.FetchDataTask().execute("get_lectures");
+        new MyApp.FetchDataTask().execute("get_lectures", "get_posters", "get_breaks");
     }
 
     public class FetchDataTask extends AsyncTask<String, Void, String[]> {
@@ -47,16 +51,29 @@ public class MyApp extends Application {
                 return null;
             }
 
-            String dest = params[0];
-            URL lectRequestUrl = NetworkUtils.buildUrl(dest);
+            String lectures = params[0];
+            URL lectRequestUrl = NetworkUtils.buildUrl(lectures);
+            String posters = params[1];
+            URL postersRequestUrl = NetworkUtils.buildUrl(posters);
+            String breaks = params[2];
+            URL breaksRequestUrl = NetworkUtils.buildUrl(breaks);
+
 
             try {
                 String jsonLectResponse = NetworkUtils
                         .getResponseFromHttpUrl(lectRequestUrl);
-                Log.v("Wynik: ", jsonLectResponse);
+                String jsonPosResponse = NetworkUtils
+                        .getResponseFromHttpUrl(postersRequestUrl);
+                String jsonBreakResponse = NetworkUtils
+                        .getResponseFromHttpUrl(breaksRequestUrl);
+//                Log.v("Wynik: ", jsonLectResponse);
 
                 String[] simpleJsonLectData = OpenConferenceJsonUtils
                         .getLecturesStringsFromJson(con, jsonLectResponse);
+                String[] simpleJsonPostersData = OpenConferenceJsonUtils
+                        .getPostersStringsFromJson(con, jsonPosResponse);
+                String[] simpleJsonBreakData = OpenConferenceJsonUtils
+                        .getBreaksStringsFromJson(con, jsonBreakResponse);
 
                 return simpleJsonLectData;
 

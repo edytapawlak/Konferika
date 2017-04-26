@@ -1,6 +1,7 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class UserDayData extends DisplayData implements Serializable{
+public class UserDayData extends DisplayData implements Serializable {
 
-    private TreeMap<String, List<Activity>> mPlanData;
+    //    private TreeMap<String, List<Activity>> mPlanData;
+    private TreeMap<String, Cursor> mPlanData;
+
     /**
      * Construct UsersDayData object, sets default activities - only breaks.
      *
@@ -25,6 +28,7 @@ public class UserDayData extends DisplayData implements Serializable{
     public UserDayData(Context context, int date) {
         super.setDateId(date);
         mPlanData = new TreeMap<>();//ActivityData.getUserSchedForDay(context, date);
+
         super.setSectionList(createUserSchedule());
     }
 
@@ -39,22 +43,22 @@ public class UserDayData extends DisplayData implements Serializable{
 
     public void addActivityToList(Context context, Lecture activity) {
 
-        String time = Utils.formatTime(activity.getStartTime());
-        List<Activity> actForTime;
-        if (mPlanData.containsKey(time)) {
-            actForTime = mPlanData.remove(time);
-        } else {
-            actForTime = new LinkedList<>();
-        }
-        if (!actForTime.contains(activity)) {
-            if (!actForTime.isEmpty()) {
-                //TODO: Rozwiązać problem bilokacji
-                Toast.makeText(context, "Czy masz zdolność bilokacji?", Toast.LENGTH_SHORT).show();
-            }
-            actForTime.add(activity);
-        }
-        mPlanData.put(time, actForTime);
-        super.setSectionList(createUserSchedule());
+//        String time = Utils.formatTime(activity.getStartTime());
+//        List<Activity> actForTime;
+//        if (mPlanData.containsKey(time)) {
+////            actForTime = mPlanData.remove(time);
+//        } else {
+//            actForTime = new LinkedList<>();
+//        }
+//        if (!actForTime.contains(activity)) {
+//            if (!actForTime.isEmpty()) {
+//                //TODO: Rozwiązać problem bilokacji
+//                Toast.makeText(context, "Czy masz zdolność bilokacji?", Toast.LENGTH_SHORT).show();
+//            }
+//            actForTime.add(activity);
+//        }
+//        mPlanData.put(time, actForTime);
+//        super.setSectionList(createUserSchedule());
     }
 
     /**
@@ -69,7 +73,7 @@ public class UserDayData extends DisplayData implements Serializable{
         while (i < sections.size()) {
             if (activity.getStartTime().equals(sections.get(i).getTitle())) {
                 sections.get(i).removeItem(activity);
-                if(sections.get(i).getChildItems().isEmpty()){
+                if (sections.get(i).getChildItems().isEmpty()) {
                     sections.remove(i);
                 }
                 i = sections.size();
@@ -81,6 +85,7 @@ public class UserDayData extends DisplayData implements Serializable{
 
     /**
      * Przekształca treeMap w List<SectionHeader>
+     *
      * @return
      */
     public List<SectionHeader> createUserSchedule() {
@@ -88,13 +93,16 @@ public class UserDayData extends DisplayData implements Serializable{
         List<SectionHeader> planForDay = new LinkedList<>();
         SectionHeader sc;
         String key;
-        List<Activity> value;
+//        List<Activity> value;
+        Cursor value;
         boolean isLec = false;
-        for (Map.Entry<String, List<Activity>> entry : mPlanData.entrySet()) {
+//        for (Map.Entry<String, List<Activity>> entry : mPlanData.entrySet()) {
+        for (Map.Entry<String, Cursor> entry : mPlanData.entrySet()) {
+
             value = entry.getValue();
             key = Utils.deFormatTime(entry.getKey());
-            if(!value.isEmpty()) {
-                isLec = value.get(0).isLecture();
+            if (value.getColumnCount() > 2) {
+                isLec = true;
             }
             sc = new SectionHeader(value, key, isLec);
             planForDay.add(sc);

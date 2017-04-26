@@ -1,6 +1,7 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public abstract class DisplayData {
         this.sectionList = null;
         this.sectionList = sectionList;
     }
+
 
     public int getListSize() {
         return sectionList.size();

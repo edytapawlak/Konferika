@@ -17,20 +17,22 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class SectionHeader extends StatelessSection {
     List<Activity> childList;
+    Cursor childrens;
     //    List<Cursor> childList;
     List<Integer> childIdes;
     String title;
     boolean areLectures;
 
 
-    public SectionHeader(List<Activity> childList, String sectionText, boolean isLect) {
+    public SectionHeader(Cursor childrens, String sectionText, boolean isLect) {
         super(R.layout.section_header, R.layout.forecast_list_item);
         this.childList = childList;
+        this.childrens = childrens;
         childIdes = new ArrayList<>();
-        for (Activity a :
-                childList) {
-            childIdes.add(a.getId());
-        }
+//        for (Activity a :
+//                childList) {
+//            childIdes.add(a.getId());
+//        }
         this.title = sectionText;
         this.areLectures = isLect;
     }
@@ -87,8 +89,8 @@ public class SectionHeader extends StatelessSection {
 
     @Override
     public int getContentItemsTotal() {
-        if (childList != null) {
-            return childList.size();
+        if (childrens != null) {
+            return childrens.getCount();
         } else
             return 0;
     }
@@ -101,28 +103,37 @@ public class SectionHeader extends StatelessSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         ActivityViewHolder itemHolder = (ActivityViewHolder) holder;
-        // bind view
-        LecturesList mRefData = LecturesList.getInstance(itemHolder.getContext());
-//        Activity activ = childList.get(position);
-        int activId = childIdes.get(position);
-        Log.v("IDDDD", activId + "");
+//        // bind view
+//        LecturesList mRefData = LecturesList.getInstance(itemHolder.getContext());
+////        Activity activ = childList.get(position);
+//        int activId = childIdes.get(position);
         Activity activ;
+        childrens.moveToPosition(position);
+        int activId = childrens.getInt(0);
         if (areLectures) {
-            activ = mRefData.getLectOfId(activId);
-        } else if (activId == PosterSesion.ID) {
+            String title = childrens.getString(1);
+            String author = childrens.getString(2);
+            String abs = childrens.getString(3);
+            int date = childrens.getInt(5);
+            String startTime = childrens.getString(4);
+            String room = childrens.getString(6);
+            List<Tag> tags = new ArrayList<>(); //TODO
+            boolean inUsrSched = false; //todo
+//            Log.v("Holder! ", "Tworze Lecture!");
+
+            activ = new Lecture(title, author, abs, date, activId, startTime, room, tags, inUsrSched);
+        } else if ( activId == PosterSesion.ID) {
             activ = new PosterSesion(itemHolder.getContext());
+//            Log.v("Holder! ", "Tworze PosterSesion");
         } else {
-            activ = mRefData.getBreakOfId(activId);
+//            Log.v("Holder! ", "Tworze Break!");
+            String title = childrens.getString(1);
+            String startTime = childrens.getString(2);
+            int type = childrens.getInt(0);
+            Log.v("Break typ ", type + "");
+            activ = new Break(title, startTime, type);
         }
 
-//        if (mRefData != null && activ.isLecture()) {
-//            if(mRefData.containAct((Lecture) activ)){
-//                int id = ((Lecture) activ).getId();
-//                childList.set(position, mRefData.getActivityOnPos(id));
-//                Log.v("Checked activ ", mRefData.printChecked());
-//            }
-//        }
-//            childList.get(position).setContent(itemHolder);
         activ.setContent(itemHolder);
 
     }
@@ -136,6 +147,12 @@ public class SectionHeader extends StatelessSection {
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         SectionViewHolder headerHolder = (SectionViewHolder) holder;
         headerHolder.name.setText(title);
+//        Log.v("BIND", "BindHeader");
 
     }
+
+    void swapCursor(Cursor newCursor) {
+        childrens = newCursor;
+    }
+
 }

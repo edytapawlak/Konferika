@@ -17,10 +17,13 @@ public class Break implements Activity, Serializable {
     private String endTime;
     private String title;
     public static final int ID = 3;
+    private int type;
+    private int dateId;
 
-    public Break(String title, String startTime) {
+    public Break(String title, String startTime, int type) {
         this.title = title;
         this.startTime = startTime;
+        this.type = type;
     }
 
 
@@ -37,7 +40,10 @@ public class Break implements Activity, Serializable {
 
     @Override
     public void setContent(ActivityViewHolder holder) {
-        int unicode = 0x2615;
+        int unicode = 0x2615; //przerwa kawowa
+        if(type == 2){
+            unicode = 0x1F357; //przerwa obiadowa
+        }
         String emoji = new String(Character.toChars(unicode));
 
         holder.mIdDataTextView.setText("");
