@@ -16,6 +16,7 @@ public class Break implements Activity, Serializable {
     private String startTime;
     private String endTime;
     private String title;
+    public static final int ID = 3;
 
     public Break(String title, String startTime) {
         this.title = title;
@@ -63,6 +64,11 @@ public class Break implements Activity, Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public int getId() {
+        return ID;
     }
 
 

@@ -27,9 +27,8 @@ public class ActivityData {
 
 
     private ActivityData(Context context) {
-        databaseAccess = DatabaseAccess.getInstance(context);
+//        databaseAccess = DatabaseAccess.getInstance(context);
         databaseAccess.open();
-
 //        this.lectures = databaseAccess.getLectData();
         this.posters = databaseAccess.getPosters();
         databaseAccess.close();
@@ -53,6 +52,24 @@ public class ActivityData {
         return onlyLect;
     }
 
+    public static HashMap<Integer, Lecture> getLectures2(Context cont) {
+        HashMap<Integer, Lecture> onlyLect;
+        databaseAccess = DatabaseAccess.getInstance(cont);
+        databaseAccess.open();
+        onlyLect = databaseAccess.getOnlyLectData2();
+        databaseAccess.close();
+        return onlyLect;
+    }
+
+    public static HashMap<Integer, Activity> getBreaks2(Context cont) {
+        HashMap<Integer, Activity> onlyLect;
+        databaseAccess = DatabaseAccess.getInstance(cont);
+        databaseAccess.open();
+        onlyLect = databaseAccess.getBrakes();
+        databaseAccess.close();
+        return onlyLect;
+    }
+
     public static List<SectionHeader> getHeaders(Context cont, int dateId) {
         List<SectionHeader> headers;
         databaseAccess = DatabaseAccess.getInstance(cont);
@@ -62,16 +79,6 @@ public class ActivityData {
         return headers;
     }
 
-
-    public static Activity[] getBreaks(Context context) {
-        if (breaks == null) {
-            DatabaseAccess databaseAccess = DatabaseAccess.getInstance(context);
-            databaseAccess.open();
-            breaks = databaseAccess.getBrakes();
-            databaseAccess.close();
-        }
-        return breaks;
-    }
 
     public static ArrayList<Poster> getPosters(Context context) {
         if (posters == null) {

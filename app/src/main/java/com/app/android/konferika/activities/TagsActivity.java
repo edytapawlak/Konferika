@@ -17,7 +17,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Tag;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class TagsActivity extends BaseActivity{
         super.lay.addView(contentView, 0);
         initToolbar();
 
-        final List<Tag> tags = ActivityData.getTagArray(this);
+        final List<Tag> tags = new ArrayList<>();//ActivityData.getTagArray(this);
         LinearLayout linear = (LinearLayout) findViewById(R.id.tags_linear_layout);
         ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_tags);
         Button btn1;

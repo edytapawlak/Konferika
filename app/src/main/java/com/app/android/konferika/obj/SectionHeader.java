@@ -17,15 +17,22 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class SectionHeader extends StatelessSection {
     List<Activity> childList;
-//    List<Cursor> childList;
-
+    //    List<Cursor> childList;
+    List<Integer> childIdes;
     String title;
+    boolean areLectures;
 
 
-    public SectionHeader(List<Activity> childList, String sectionText) {
+    public SectionHeader(List<Activity> childList, String sectionText, boolean isLect) {
         super(R.layout.section_header, R.layout.forecast_list_item);
         this.childList = childList;
+        childIdes = new ArrayList<>();
+        for (Activity a :
+                childList) {
+            childIdes.add(a.getId());
+        }
         this.title = sectionText;
+        this.areLectures = isLect;
     }
 
 
@@ -95,17 +102,28 @@ public class SectionHeader extends StatelessSection {
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         ActivityViewHolder itemHolder = (ActivityViewHolder) holder;
         // bind view
-        LecturesList mRefData = LecturesList.getInstance();
-        Activity activ = childList.get(position);
-
-        if (mRefData != null && activ.isLecture()) {
-            if(mRefData.containAct((Lecture) activ)){
-                int id = ((Lecture) activ).getId();
-                childList.set(position, mRefData.getActivityOnPos(id));
-                Log.v("Checked activ ", mRefData.printChecked());
-            }
+        LecturesList mRefData = LecturesList.getInstance(itemHolder.getContext());
+//        Activity activ = childList.get(position);
+        int activId = childIdes.get(position);
+        Log.v("IDDDD", activId + "");
+        Activity activ;
+        if (areLectures) {
+            activ = mRefData.getLectOfId(activId);
+        } else if (activId == PosterSesion.ID) {
+            activ = new PosterSesion(itemHolder.getContext());
+        } else {
+            activ = mRefData.getBreakOfId(activId);
         }
-            childList.get(position).setContent(itemHolder);
+
+//        if (mRefData != null && activ.isLecture()) {
+//            if(mRefData.containAct((Lecture) activ)){
+//                int id = ((Lecture) activ).getId();
+//                childList.set(position, mRefData.getActivityOnPos(id));
+//                Log.v("Checked activ ", mRefData.printChecked());
+//            }
+//        }
+//            childList.get(position).setContent(itemHolder);
+        activ.setContent(itemHolder);
 
     }
 

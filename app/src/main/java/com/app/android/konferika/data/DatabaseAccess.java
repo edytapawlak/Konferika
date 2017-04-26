@@ -40,7 +40,7 @@ public class DatabaseAccess {
         //try {
         //    this.openHelper = new DataBaseHelper(context);
         //} catch (IOException e) {
-        this.openHelper = new DatabaseOpenHelper(context);
+       // this.openHelper = new DatabaseOpenHelper(context);
         //}
     }
 
@@ -73,6 +73,13 @@ public class DatabaseAccess {
         }
     }
 
+    public SQLiteDatabase getDatabase(){
+        if(database == null){
+            open();
+        }
+        return database;
+    }
+
     /**
      * Returns lecture titles as ArrayList
      */
@@ -86,6 +93,42 @@ public class DatabaseAccess {
         }
         cursor.close();
         return list;
+    }
+
+    public int getPosterSesionId() {
+        int sesionId = 0;
+        Cursor cursor = database.rawQuery("SELECT id FROM BreakData WHERE title = \"Sesja plakatowa\"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            sesionId = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return sesionId;
+    }
+
+    public int getBreakId() {
+        int sesionId = 0;
+        Cursor cursor = database.rawQuery("SELECT id FROM BreakData WHERE title = \"Przerwa kawowa\"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            sesionId = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return sesionId;
+    }
+
+    public int getDinnerId() {
+        int sesionId = 0;
+        Cursor cursor = database.rawQuery("SELECT id FROM BreakData WHERE title = \"Przerwa obiadowa\"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            sesionId = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return sesionId;
     }
 
     public ArrayList<String> getAuthors() {
@@ -151,6 +194,44 @@ public class DatabaseAccess {
         cursor.close();
         return list;
     }
+
+    public HashMap<Integer, Lecture> getOnlyLectData2() {
+        HashMap<Integer, Lecture> list = new HashMap<>();
+        Cursor cursor = database.rawQuery("SELECT title, author, abstract, date_id, Ref._id, startTime, room, is_in_usr\n" +
+                "FROM Ref  JOIN Rooms ON Ref.room_id = Rooms._id\n" +
+                "ORDER BY Ref._id;", null);
+        cursor.moveToFirst();
+        Lecture lec;
+        List<Tag> tagList;
+        Cursor tagsCursor;
+        int lectId;
+        int date_id;
+        boolean isInUsr;
+        int tagId;
+        while (!cursor.isAfterLast()) {
+            tagList = new LinkedList<>();
+            isInUsr = (cursor.getInt(7) != 0);
+            date_id = cursor.getInt(3);
+            lectId = cursor.getInt(4);
+            tagsCursor = database.rawQuery("SELECT tag_id, tag_text FROM Ref Join Lectures_tags On " +
+                    "Ref._id = Lectures_tags.lecture_id Join Tags on Lectures_tags.tag_id = Tags.id Where Ref._id = " + lectId, null);
+            tagsCursor.moveToFirst();
+            while (!tagsCursor.isAfterLast()) {
+                tagId = tagsCursor.getInt(0);
+                Tag t = new Tag(tagsCursor.getString(1), tagId);
+                tagList.add(t);
+                Log.v("Tags: ", t.getTitle());
+                tagsCursor.moveToNext();
+            }
+            lec = new Lecture(cursor.getString(0), cursor.getString(1), cursor.getString(2), date_id, cursor.getInt(4),
+                    cursor.getString(5), cursor.getString(6), tagList, isInUsr);
+            list.put(lec.getId(), lec);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
+
 
     /**
      * Return all lectures and breaks as ArrayList<Activity>
@@ -379,8 +460,14 @@ public class DatabaseAccess {
 
         while (times[i] != null) {
             lectChild = getLectOnDateAndTime(dateId, times[i]);
+            boolean isLect;
             if (!lectChild.isEmpty()) {
-                sec = new SectionHeader(lectChild, times[i]);
+                if (lectChild.get(0).isLecture()) {
+                    isLect = true;
+                } else {
+                    isLect = false;
+                }
+                sec = new SectionHeader(lectChild, times[i], isLect);
                 list.add(sec);
             }
             i++;
@@ -389,33 +476,22 @@ public class DatabaseAccess {
     }
 
 
-    public Activity[] getBrakes() {
-        Activity[] list = new Activity[20];
+    public HashMap<Integer, Activity> getBrakes() {
+        HashMap<Integer, Activity> list = new HashMap<>();
         Cursor cursor = database.rawQuery("SELECT title, startTime, type FROM Break JOIN BreakData ON Break.type=BreakData.id", null);
         cursor.moveToFirst();
         Activity bre;
         int i = 0;
         while (!cursor.isAfterLast()) {
 
-            // TODO: Zrobić to lepiej.
-
-            /*if (cursor.getString(0).equals("Przerwa kawowa")) {
-                bre = new Break(cursor.getString(0), cursor.getString(1));
-                list[i] = bre;
-            } else {
-                bre = new Dinner(cursor.getString(0), cursor.getString(1));
-                list[i] = bre;
-            }
-            */
-
             switch (cursor.getInt(2)) {
-                case 3:
+                case Break.ID:
                     bre = new Break(cursor.getString(0), cursor.getString(1));
-                    list[i] = bre;
+                    list.put(Break.ID, bre);
                     break;
-                case 2:
+                case Dinner.ID:
                     bre = new Dinner(cursor.getString(0), cursor.getString(1));
-                    list[i] = bre;
+                    list.put(Dinner.ID, bre);
                     break;
             }
             cursor.moveToNext();
@@ -518,15 +594,15 @@ public class DatabaseAccess {
         while (!cursor.isAfterLast()) {
 
             switch (cursor.getInt(2)) {
-                case 3:
+                case Break.ID:
                     bre = new Break(cursor.getString(0), time);
                     list.add(bre);
                     break;
-                case 2:
+                case Dinner.ID:
                     bre = new Dinner(cursor.getString(0), time);
                     list.add(bre);
                     break;
-                case 1:
+                case PosterSesion.ID:
                     if (cursor.getInt(3) == date) {
                         bre = new PosterSesion(cursor.getInt(3), time, cursor.getString(0));
                         list.add(bre);
@@ -647,7 +723,7 @@ public class DatabaseAccess {
         } else {
             cv.put("_id", id);
             database.insert("Ref", null, cv);
-        Log.v("UPDATE: ", "uuu " + lect.getTitle() + " " + lect.getDate());
+            Log.v("UPDATE: ", "uuu " + lect.getTitle() + " " + lect.getDate());
         }
     }
 

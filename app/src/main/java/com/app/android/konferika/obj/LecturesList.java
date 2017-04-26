@@ -1,13 +1,18 @@
 package com.app.android.konferika.obj;
 
 import android.content.Context;
-import com.app.android.konferika.data.ActivityData;
+import android.util.Log;
 
+//import com.app.android.konferika.data.ActivityData;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class LecturesList {
 
-    private List<Lecture> mLectData;
+    //    private List<Lecture> mLectData;
+    private HashMap<Integer, Lecture> mLectData;
+    private HashMap<Integer, Activity> mBreakData;
     private static LecturesList lectList;
 
     public static LecturesList getInstance(Context con) {
@@ -24,7 +29,8 @@ public class LecturesList {
 
     private LecturesList(Context context) {
         if (mLectData == null) {
-            mLectData = ActivityData.getLectures(context);
+            mLectData = new HashMap<>();//ActivityData.getLectures2(context);
+            mBreakData = new HashMap<>();//ActivityData.getBreaks2(context);
         }
     }
 
@@ -38,13 +44,38 @@ public class LecturesList {
         return mLectData.get(position);
     }
 
-    public String printChecked() {
-        List<Lecture> list = mLectData;
-        String output = "";
-        for (int i = 0; i < list.size(); i++) {
+    public Lecture getLectOfId(int id){
+        Log.v("MSG", print());
+        return mLectData.get(id);
+    }
 
-            if (list.get(i).getIsInUserSchedule()) {
-                output = output + "\n ................................................\n" + list.get(i).getTitle() + "\n "+ list.get(i).getTags();
+    public Activity getBreakOfId(int id){
+        Log.v("MSG", print());
+        return mBreakData.get(id);
+    }
+
+
+    public String print() {
+//        List<Lecture> list = mLectData;
+        HashMap<Integer, Lecture> list = mLectData;
+        String output = "";
+        for (Lecture l :
+                list.values()) {
+
+                output = output + "\n ................................................\n" + l.getTitle() + " " + l.getId() + "\n " + l.getTags();
+        }
+        return output;
+    }
+
+    public String printChecked() {
+//        List<Lecture> list = mLectData;
+        HashMap<Integer, Lecture> list = new HashMap<>();
+        String output = "";
+        for (Lecture l :
+                list.values()) {
+
+            if (l.getIsInUserSchedule()) {
+                output = output + "\n ................................................\n" + l.getTitle() + "\n " + l.getTags();
             }
         }
         return output;

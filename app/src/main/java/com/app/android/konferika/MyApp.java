@@ -24,7 +24,7 @@ public class MyApp extends Application {
         super.onCreate();
         con  =  this;
 //        Toast.makeText(this, "Tu bym ten", Toast.LENGTH_SHORT).show();
-        loadData();
+//        loadData();
 
     }
 

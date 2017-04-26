@@ -3,14 +3,16 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 
-import com.app.android.konferika.data.ActivityData;
+import java.util.ArrayList;
+
+//import com.app.android.konferika.data.ActivityData;
 
 public class ConferencePlanData extends DisplayData {
 
 
     public ConferencePlanData(Context context, int dateId) {
         super.setDateId(dateId);
-        super.setSectionList(ActivityData.getHeaders(context, dateId)); //todo zrobic to inaczej
+        super.setSectionList(new ArrayList<SectionHeader>());//ActivityData.getHeaders(context, dateId)); //todo zrobic to inaczej
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.app.android.konferika.utils.Utils;
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ public class UserDayData extends DisplayData implements Serializable{
      */
     public UserDayData(Context context, int date) {
         super.setDateId(date);
-        mPlanData = ActivityData.getUserSchedForDay(context, date);
+        mPlanData = new TreeMap<>();//ActivityData.getUserSchedForDay(context, date);
         super.setSectionList(createUserSchedule());
     }
 
@@ -89,11 +89,14 @@ public class UserDayData extends DisplayData implements Serializable{
         SectionHeader sc;
         String key;
         List<Activity> value;
+        boolean isLec = false;
         for (Map.Entry<String, List<Activity>> entry : mPlanData.entrySet()) {
             value = entry.getValue();
             key = Utils.deFormatTime(entry.getKey());
-
-            sc = new SectionHeader(value, key);
+            if(!value.isEmpty()) {
+                isLec = value.get(0).isLecture();
+            }
+            sc = new SectionHeader(value, key, isLec);
             planForDay.add(sc);
         }
         return planForDay;

@@ -10,7 +10,7 @@ import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.PosterActivity;
 import com.app.android.konferika.adapters.ActivityViewHolder;
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,10 +21,11 @@ public class PosterSesion implements Activity, Serializable {
     private String time;
     private static ArrayList<Poster> postersList;
     private static PosterSesion posters;
+    public static final int  ID = 1;
 
     public PosterSesion(Context context) {
         if (postersList == null) {
-            postersList = ActivityData.getPosters(context);
+            postersList = new ArrayList<>();//ActivityData.getPosters(context);
         }
     }
     public PosterSesion(int date, String time, String title){
@@ -47,7 +48,7 @@ public class PosterSesion implements Activity, Serializable {
         }
         int pos = posterId - 1;
         postersList.get(pos).setMark(mark);
-        ActivityData.setMarkPoster(context, posterId, mark);
+        //ActivityData.setMarkPoster(context, posterId, mark);
     }
 
     @Override
@@ -87,6 +88,11 @@ public class PosterSesion implements Activity, Serializable {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public int getId() {
+        return ID;
     }
 
     @Override

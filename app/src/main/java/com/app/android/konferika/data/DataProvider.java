@@ -2,12 +2,16 @@ package com.app.android.konferika.data;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.LoaderManager;
+import android.util.Log;
 
 /**
  * Created by edyta on 25.04.17.
@@ -21,10 +25,14 @@ public class DataProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private DatabaseOpenHelper mOpenHelper;
-
+    private Context context;
+//    SQLiteDatabase db;
+//    private DatabaseAccess db;
     @Override
     public boolean onCreate() {
-        mOpenHelper = new DatabaseOpenHelper(getContext());
+        this.context = this.getContext();
+        this.mOpenHelper = new DatabaseOpenHelper(context);
+
         return true;
     }
 
@@ -213,8 +221,25 @@ public class DataProvider extends ContentProvider {
      */
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        throw new RuntimeException(
-                "We are not implementing insert in Sunshine. Use bulkInsert instead");
+
+        int match = sUriMatcher.match(uri);
+        Uri returnUri; // URI to be returned
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        switch (match) {
+            case CODE_DATA:
+                long id = db.insert(DatabaseContract.LecturesEntry.TABLE_NAME, null, values);
+                if ( id > 0 ) {
+                    returnUri = ContentUris.withAppendedId(DatabaseContract.LecturesEntry.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override

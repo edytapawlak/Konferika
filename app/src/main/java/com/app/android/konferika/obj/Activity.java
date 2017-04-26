@@ -21,6 +21,8 @@ public interface Activity {
 
     String getTitle();
 
+    int getId();
+
     void handleOnClick(Context context, DayScheduleFragment fragment);
 
     void setIsInUserSchedule(boolean isInUserSchedule);

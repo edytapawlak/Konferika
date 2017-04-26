@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
 import java.util.List;
@@ -60,7 +60,7 @@ public class UserSchedule implements Schedule, Serializable {
 //    }
 
     public void addActivity(Context con, Lecture act, int date) {
-        ActivityData.setIsUsrSched(con, act.getId(), true);
+//        ActivityData.setIsUsrSched(con, act.getId(), true);
         if (schedule == null) {
             new UserSchedule(con, null);
         }
@@ -77,7 +77,7 @@ public class UserSchedule implements Schedule, Serializable {
     public void deleteActivity(Context con, Activity act, int date) {
         if (act.isLecture()) {
             Lecture lect = (Lecture) act;
-            ActivityData.setIsUsrSched(con, lect.getId(), false);
+//            ActivityData.setIsUsrSched(con, lect.getId(), false);
             if (date == schedule[0].getDate()) {
                 schedule[0].deleteActivityFromList(lect);
             } else if (date == schedule[1].getDate()) {

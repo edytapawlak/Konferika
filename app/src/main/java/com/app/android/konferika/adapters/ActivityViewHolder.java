@@ -1,5 +1,6 @@
 package com.app.android.konferika.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final CheckBox myActCheckbox;
 
     private LecturesList mLectList;
+    private Context context;
 
     public ActivityViewHolder(final View itemView) {
         super(itemView);
@@ -45,6 +47,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         breakLayout = (LinearLayout) itemView.findViewById(R.id.break_layout);
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
+        context = itemView.getContext();
         // itemView.setOnLongClickListener(this);
 
 
@@ -66,6 +69,10 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                 }
             }
         });
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     /**

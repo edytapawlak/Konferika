@@ -16,6 +16,7 @@ public class Dinner implements Activity, Serializable {
     private String startTime;
     private String endTime;
     private String title;
+    public static final int ID = 2;
 
     public Dinner(String title, String startTime) {
         this.title = title;
@@ -60,6 +61,11 @@ public class Dinner implements Activity, Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public int getId() {
+        return ID;
     }
 
     @Override

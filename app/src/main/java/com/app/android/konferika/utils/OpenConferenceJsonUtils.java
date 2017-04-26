@@ -17,9 +17,12 @@ package com.app.android.konferika.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
+import com.app.android.konferika.data.DataProvider;
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Tag;
 
@@ -68,6 +71,7 @@ public final class OpenConferenceJsonUtils {
 //        long utcDate = SunshineDateUtils.getUTCDateFromLocal(localDate);
 //        long startDay = SunshineDateUtils.normalizeDate(utcDate);
 
+        List<ContentValues> toadd = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */
             String title;
@@ -117,9 +121,28 @@ public final class OpenConferenceJsonUtils {
 //            TU TRZEBA BĘDZIE TWORZYĆ LECTURES
 
             Lecture lectToAdd = new Lecture(title, authors[0], description, date, id, startTime, place, new ArrayList<Tag>(), false);
-            ActivityData.updateLecture(context, lectToAdd);
+//            ActivityData.updateLecture(context, lectToAdd);
+
+            ContentValues cv = new ContentValues();
+            cv.put("_id", id);
+            cv.put("title", title);
+            cv.put("author", authors[0]);
+            cv.put("abstract", description);
+            cv.put("startTime", startTime);
+            cv.put("date_id", date);
+            cv.put("room_id", place);
+            toadd.add(cv);
 
         }
+        ContentValues[] arr = new ContentValues[toadd.size()];
+        int i = 0;
+        for (ContentValues c :
+                toadd) {
+            arr[i] = c;
+            i++;
+        }
+
+        context.getContentResolver().bulkInsert(DatabaseContract.LecturesEntry.CONTENT_URI, arr);
 
         return parsedLecturesData;
     }

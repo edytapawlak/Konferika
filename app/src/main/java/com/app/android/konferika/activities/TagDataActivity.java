@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.data.ActivityData;
+//import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Poster;
 
@@ -34,8 +34,8 @@ public class TagDataActivity extends AppCompatActivity {
         tagId = i.getIntExtra("tagId", 0);
         tagTitle = i.getStringExtra("tagTitle");
 
-        final ArrayList<Lecture> lectForTag = ActivityData.getLectForTag(this, tagId);
-        final ArrayList<Poster> postersForTag = ActivityData.getPostersForTag(this, tagId);
+        final ArrayList<Lecture> lectForTag = new ArrayList<>();//ActivityData.getLectForTag(this, tagId);
+        final ArrayList<Poster> postersForTag = new ArrayList<>();//ActivityData.getPostersForTag(this, tagId);
 
         LinearLayout lecturesLinearLayout = (LinearLayout) findViewById(R.id.tags_lectures_linear_layout);
         LinearLayout posterLinearLayout = (LinearLayout) findViewById(R.id.tags_posters_linear_layout);
