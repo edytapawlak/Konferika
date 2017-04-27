@@ -29,7 +29,9 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
         void onClick(Activity activity);
 
         // void onLongClick(Lecture lecture) ;
-        void onStarChanged(boolean isChecked, Lecture lecture);
+//        void onStarChanged(boolean isChecked, Lecture lecture);
+        void onStarChanged(boolean isChecked, int lectureId);
+
     }
 
     public DisplayActDataAdapter(Context con, DispalyAdapterOnClickHandler listener) {
@@ -53,6 +55,14 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
 //        DisplayActDataAdapter.activitiesData = null;
         this.activitiesData = activitiesData;
         notifyDataSetChanged();
+    }
+
+    public void closeActData(){
+        activitiesData.closeSectionList();
+    }
+
+    public void swapData(DisplayData newActDada){
+        activitiesData.swapSectionList(newActDada.getSectionList());
     }
 
 

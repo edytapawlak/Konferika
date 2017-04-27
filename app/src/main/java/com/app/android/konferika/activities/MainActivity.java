@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
         super.navigationView.setCheckedItem(R.id.drawer_con_pan);
+        viewPager.getAdapter().notifyDataSetChanged();
+        setupViewPager(viewPager);
     }
 
     /**
@@ -60,7 +63,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        //Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "nowy intent", Toast.LENGTH_SHORT).show();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
         setupViewPager(viewPager);

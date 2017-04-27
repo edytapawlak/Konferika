@@ -56,7 +56,7 @@ public class DataProvider extends ContentProvider {
          */
         matcher.addURI(authority, DatabaseContract.PATH_LECTURES + "/#", CODE_SPECYFIC_LECTURE);
         matcher.addURI(authority, DatabaseContract.PATH_POSTERS + "/#", CODE_SPECYFIC_POSTER);
-        matcher.addURI(authority, DatabaseContract.PATH_POSTERS + "/#", CODE_SPECYFIC_BREAK);
+        matcher.addURI(authority, DatabaseContract.PATH_BREAK + "/#", CODE_SPECYFIC_BREAK);
 
         return matcher;
     }
@@ -332,7 +332,31 @@ public class DataProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        throw new RuntimeException("We are not implementing update in Sunshine");
+        int match = sUriMatcher.match(uri);
+        int updatedRows;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        switch (match) {
+            case CODE_SPECYFIC_LECTURE:
+                String data_id = uri.getLastPathSegment();
+                selection = DatabaseContract.LecturesEntry.COLUMN_ID + "= ? ";
+                String[] selectionArguments = new String[]{data_id};
+                updatedRows = db.update(DatabaseContract.LecturesEntry.TABLE_NAME,
+                        values, selection, selectionArguments);
+                break;
+                case CODE_SPECYFIC_POSTER:
+                    String poster_id = uri.getLastPathSegment();
+                    selection = DatabaseContract.PostersEntry.COLUMN_ID + "= ? ";
+                    String[] selectionArguments2 = new String[]{poster_id};
+                    updatedRows = db.update(DatabaseContract.PostersEntry.TABLE_NAME,
+                            values, selection, selectionArguments2);
+                    break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return updatedRows;
+
     }
 
     /**

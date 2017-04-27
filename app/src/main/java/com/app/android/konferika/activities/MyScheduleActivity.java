@@ -55,9 +55,9 @@ public class MyScheduleActivity extends BaseActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFrag(new DayScheduleFragment(), "Piątek");
-        adapter.addFrag(new DayScheduleFragment(), "Sobota");
-        adapter.addFrag(new DayScheduleFragment(), "Niedziela");
+        adapter.addFrag(new UserDayFragment(), "Piątek");
+        adapter.addFrag(new UserDayFragment(), "Sobota");
+        adapter.addFrag(new UserDayFragment(), "Niedziela");
         viewPager.setAdapter(adapter);
     }
 

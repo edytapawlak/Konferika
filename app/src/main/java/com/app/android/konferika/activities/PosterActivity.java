@@ -32,6 +32,7 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     private static final int ID_POSTERS_LOADER = 44;
 
     public static final String[] MAIN_FORECAST_PROJECTION = {
+            DatabaseContract.PostersEntry.COLUMN_ID,
             DatabaseContract.PostersEntry.COLUMN_TITLE,
             DatabaseContract.PostersEntry.COLUMN_AUTHOR,
             DatabaseContract.PostersEntry.COLUMN_MARK
@@ -82,6 +83,8 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     public void onItemClick(View view, Poster viewModel) {
         Intent intent = new Intent(PosterActivity.this, PosterDetailsActivity.class);
         intent.putExtra("poster", viewModel);
+
+//        intent.putExtra("posterId", )
         startActivity(intent);
     }
 

@@ -1,20 +1,28 @@
 package com.app.android.konferika.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
+import com.app.android.konferika.data.DatabaseContract;
+import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Poster;
 import com.app.android.konferika.obj.PosterSesion;
+import com.app.android.konferika.obj.Tag;
+
+import java.util.ArrayList;
 
 public class PosterDetailsActivity extends AppCompatActivity {
 
@@ -29,7 +37,29 @@ public class PosterDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_poster_details);
 
         mContext = this;
-        poster = (Poster) getIntent().getSerializableExtra("poster");
+//        poster = (Poster) getIntent().getSerializableExtra("poster");
+        final int posterId = getIntent().getIntExtra("posterId", -1);
+        Log.v("POsterId:", posterId +"");
+        String[] projection = {
+                DatabaseContract.PostersEntry.COLUMN_TITLE,
+                DatabaseContract.PostersEntry.COLUMN_AUTHOR,
+                DatabaseContract.PostersEntry.COLUMN_ABSTRACT,
+                DatabaseContract.PostersEntry.COLUMN_MARK
+        };
+        Cursor posterCur = mContext.getContentResolver().query(DatabaseContract.PostersEntry.buildPostersUriWithDate(posterId), projection, null, null, null);
+        posterCur.moveToFirst();
+        while (!posterCur.isAfterLast()){
+            String title = posterCur.getString(0);
+            String author = posterCur.getString(1);
+            String authors[] = new String[1];
+            authors[0] = author; //TODO
+            String abtract = posterCur.getString(2);
+            float mark = posterCur.getFloat(3);
+
+            poster = new Poster(posterId, title, authors, abtract, new ArrayList<Tag>(), mark);
+            posterCur.moveToNext();
+        }
+        posterCur.close();
 
         initToolbar();
         if (poster == null) {
@@ -44,12 +74,15 @@ public class PosterDetailsActivity extends AppCompatActivity {
         posterRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                PosterSesion.setMarkOnPos(mContext, poster.getId(), rating);
+//                PosterSesion.setMarkOnPos(mContext, poster.getId(), rating);
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseContract.PostersEntry.COLUMN_MARK, rating);
+                mContext.getContentResolver().update(DatabaseContract.PostersEntry.buildPostersUriWithDate(posterId), cv, null, null);
             }
         });
 
         tvTitle.setText(poster.getTitle());
-        tvBody.setText(poster.getAbs() + poster.getAbs() + poster.getAbs());
+        tvBody.setText(poster.getAbs());
         tvAuthor.setText(poster.getAuthors()[0]);
         posterRatingBar.setRating(poster.getMark());
 

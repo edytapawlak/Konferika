@@ -1,6 +1,8 @@
 package com.app.android.konferika.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,11 +18,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.android.konferika.R;
+import com.app.android.konferika.adapters.DisplayActDataAdapter;
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.LecturesList;
+import com.app.android.konferika.obj.Tag;
 import com.app.android.konferika.obj.UserSchedule;
 
-;
+;import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDetailsActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -35,7 +41,34 @@ public class ItemDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_details);
 
         mContext = this;
-        item = (Lecture) getIntent().getSerializableExtra("lect");
+//        item = (Lecture) getIntent().getIntExtra("lectID");
+        int lectureId = getIntent().getIntExtra("lectID", -1);
+        String[] projection = {
+                DatabaseContract.LecturesEntry.COLUMN_TITLE,
+                DatabaseContract.LecturesEntry.COLUMN_AUTHOR,
+                DatabaseContract.LecturesEntry.COLUMN_ABSTRACT,
+                DatabaseContract.LecturesEntry.COLUMN_START_TIME,
+                DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
+                DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
+                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR
+        };
+        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), projection, null, null, null);
+        lectCur.moveToFirst();
+        while (!lectCur.isAfterLast()){
+            String title = lectCur.getString(0);
+            String author = lectCur.getString(1);
+            String abtract = lectCur.getString(2);
+            String startTime = lectCur.getString(3);
+            int date = lectCur.getInt(4);
+            String room = lectCur.getString(5);
+            int isInUstDat = lectCur.getInt(6);
+            boolean inUsrSched = (isInUstDat == 1);
+
+            item = new Lecture(title,author, abtract, date, lectureId, startTime, room, new ArrayList<Tag>(), inUsrSched);
+            lectCur.moveToNext();
+        }
+        lectCur.close();
+
 
         initToolbar();
         if (item == null) {
@@ -65,27 +98,38 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 int id = item.getId();
 
                 boolean isChanged;
-                userSched = UserSchedule.getInstance(mContext, null);
-                if (item.getIsInUserSchedule()) {
-                    userSched.deleteActivity(mContext, item, item.getDate());
+//                userSched = UserSchedule.getInstance(mContext, null);
+
+                String[] projection = {DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
+                Cursor checkedCursor = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(id), projection, null, null, null);
+                checkedCursor.moveToFirst();
+                boolean isInSched = (checkedCursor.getInt(0) == 1);
+                checkedCursor.close();
+
+                if (isInSched) {
+//                    userSched.deleteActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
                     isChanged = false;
                     fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.empty_star));
                 } else {
-                    userSched.addActivity(mContext, item, item.getDate());
+//                    userSched.addActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
                     isChanged = true;
                     fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.fill_star));
                 }
 
-                mRefData.setCheckOnPos(id, isChanged);
-                item.setIsInUserSchedule(isChanged);
-                Log.v("Clik", "Clicked " + isChanged);
+                DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
+//                mRefData.setCheckOnPos(id, isChanged);
+//                ContentValues cv = new ContentValues();
+//                cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isChanged);
+//                mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(id), cv ,null, null);
+//                item.setIsInUserSchedule(isChanged);
+//                Log.v("Clik", "Clicked " + isChanged);
             }
         });
 
         tvTitle.setText(item.getTitle());
-        tvBody.setText(item.getAbs() + item.getAbs() + item.getAbs());
+        tvBody.setText(item.getAbs());
         tvAuthor.setText(item.getAuthor());
         tvDay.setText(item.getWeekDay());
         tvTime.setText(item.getStartTime());

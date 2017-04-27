@@ -1,6 +1,9 @@
 package com.app.android.konferika.adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,8 +11,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.android.konferika.R;
+import com.app.android.konferika.activities.ItemDetailsActivity;
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.LecturesList;
@@ -55,18 +61,22 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
             @Override
             public void onClick(View v) {
                 boolean isChecked;
-                mLectList = LecturesList.getInstance(v.getContext());
-
+                Context mContext = v.getContext();
+                boolean isChanged;
                 isChecked = myActCheckbox.isChecked();
                 String text = mIdDataTextView.getText().toString();
-                if (text != "") {
-                    int id = Integer.parseInt(text);
 
-                    mLectList.setCheckOnPos(id, isChecked);
-                    Lecture activ = (Lecture) mLectList.getActivityOnPos(id);
-                    DisplayActDataAdapter.getmClickHandler().onStarChanged(isChecked, activ);
-                    // Log.v("Checked activ ", mLectList.printChecked());
+                if (!isChecked) {
+                    Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
+                    isChanged = false;
+                    myActCheckbox.setChecked(false);
+                } else {
+                    Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
+                    isChanged = true;
+                    myActCheckbox.setChecked(true);
                 }
+                Log.v("Clik in ViewHolder", "Clicked " + isChanged);
+                    DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, Integer.parseInt(text));
             }
         });
     }
@@ -78,12 +88,13 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     /**
      * W zależności od tego co  było kliknięte robią się różne rzeczy.
      * (To p oznacza sesje plakatową, może potem wymyślę coś lepszego)
+     *
      * @param v
      */
 
     @Override
     public void onClick(View v) {
-        mLectList = LecturesList.getInstance(v.getContext());
+//        mLectList = LecturesList.getInstance(v.getContext());
         String text = mIdDataTextView.getText().toString();
         Activity activ;
         if (text != "") {
@@ -91,9 +102,10 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                 activ = new PosterSesion(v.getContext());
             } else {
                 int id = Integer.parseInt(text);
-                activ = mLectList.getActivityOnPos(id);
+                Intent intent = new Intent(context, ItemDetailsActivity.class);
+                intent.putExtra("lectID", id);
+                context.startActivity(intent);
             }
-            DisplayActDataAdapter.getmClickHandler().onClick(activ);
         }
     }
 

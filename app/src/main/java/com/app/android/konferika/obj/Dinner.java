@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
+import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 
 import java.io.Serializable;
@@ -69,7 +70,7 @@ public class Dinner implements Activity, Serializable {
     }
 
     @Override
-    public void handleOnClick(Context context, DayScheduleFragment fragment) {
+    public void handleOnClick(Context context, SchedFragment fragment) {
 
     }
 

@@ -50,6 +50,10 @@ public class SectionHeader extends StatelessSection {
         this.childList = childList;
     }
 
+    public Cursor getChildrens(){
+        return childrens;
+    }
+
     public void setTitle(String sectionText) {
         this.title = sectionText;
     }
@@ -118,8 +122,8 @@ public class SectionHeader extends StatelessSection {
             String startTime = childrens.getString(4);
             String room = childrens.getString(6);
             List<Tag> tags = new ArrayList<>(); //TODO
-            boolean inUsrSched = false; //todo
-//            Log.v("Holder! ", "Tworze Lecture!");
+            boolean inUsrSched = (childrens.getInt(7) == 1); //todo
+            Log.v("Holder! ", "Tworze Lecture! " + inUsrSched);
 
             activ = new Lecture(title, author, abs, date, activId, startTime, room, tags, inUsrSched);
         } else if ( activId == PosterSesion.ID) {

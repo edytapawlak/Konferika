@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.app.android.konferika.R;
 import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.PosterActivity;
+import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 //import com.app.android.konferika.data.ActivityData;
 
@@ -96,7 +97,7 @@ public class PosterSesion implements Activity, Serializable {
     }
 
     @Override
-    public void handleOnClick(Context context, DayScheduleFragment fragment) {
+    public void handleOnClick(Context context, SchedFragment fragment) {
         Intent intent = new Intent(context, PosterActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);

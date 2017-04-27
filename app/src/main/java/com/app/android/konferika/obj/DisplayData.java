@@ -2,6 +2,7 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public abstract class DisplayData {
     public void setSectionList(List<SectionHeader> sectionList) {
         this.sectionList = null;
         this.sectionList = sectionList;
+        this.swapSectionList(sectionList);
+        Log.v("SWAP", "SSWWAAPP");
     }
 
 
@@ -49,5 +52,28 @@ public abstract class DisplayData {
 
     public void addAll(DisplayData disp) {
         this.sectionList.addAll(disp.getSectionList());
+    }
+
+    public void closeSectionList(){
+        for (SectionHeader sc :
+                sectionList) {
+            sc.getChildrens().close();
+        }
+    }
+
+    public void swapSectionList(List<SectionHeader> secList){
+        for (SectionHeader sc :
+                sectionList) {
+            //get sctionHeader on time sc.getTime
+            String time = sc.getTitle();
+            SectionHeader newsc = null;
+            for (int i = 0; i < secList.size(); i++) {
+                if(secList.get(i).getTitle().equals(time)){
+                    newsc = secList.get(i);
+                    i = secList.size();
+                }
+            }
+            sc.swapCursor(newsc.getChildrens());
+        }
     }
 }

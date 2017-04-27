@@ -53,6 +53,11 @@
                     android:textColor="@color/blu"
                     android:textSize="10sp"
                     android:textStyle="italic" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:id="@+id/poster_id_text_view" />
                 <!--
                 android:padding="@dimen/spacing_medium"
                 android:background="@color/coffe_color" -->

@@ -15,14 +15,14 @@ public class ConferenceSchedule implements Schedule {
     private UserSchedule userSched;
 
     public ConferenceSchedule(Context con) {
-        if (this.schedule == null) {
+//        if (this.schedule == null) {
             this.schedule = new ConferencePlanData[3];
 
             this.schedule[0] = new ConferencePlanData(con, 1);
             this.schedule[1] = new ConferencePlanData(con, 2);
             this.schedule[2] = new ConferencePlanData(con, 3);
 
-        }
+//        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.ItemDetailsActivity;
+import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 
@@ -56,9 +57,9 @@ public class Lecture implements Activity, Serializable {
     }
 
     @Override
-    public void handleOnClick(Context context, DayScheduleFragment fragment) {
+    public void handleOnClick(Context context, SchedFragment fragment) {
         Intent intent = new Intent(context, ItemDetailsActivity.class);
-        intent.putExtra("lect", this);
+        intent.putExtra("lectID", this.getId());
         Log.v("przesyłam:", this.getTags());
         context.startActivity(intent);
     }
