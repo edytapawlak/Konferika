@@ -28,7 +28,7 @@ import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
 
 
-public class UserDayFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<DisplayData>, SchedFragment {
+public class UserDayFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, SchedFragment {
 
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
@@ -39,17 +39,13 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
     private Context mContext;
     private UserSchedule userSchedule;
 
-    private static final int ID_CONFERENCE_LOADER = 55;
-
     public UserDayFragment() {
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //Toast.makeText(mContext, "OnStart", Toast.LENGTH_SHORT).show();
-        userSchedule = UserSchedule.getInstance(mContext, null);
-        //loadData();
+//        userSchedule = UserSchedule.getInstance(mContext, null);
         recyclerView.setAdapter(sectionAdapter);
     }
 
@@ -63,7 +59,7 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
+//        userSchedule = new UserSchedule()
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
@@ -81,7 +77,6 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
         sectionAdapter.addSections();
 
         recyclerView.setAdapter(sectionAdapter);
-        //Toast.makeText(mContext, "OnCreateView", Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -127,7 +122,7 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
         Bundle bundle = getArguments();
         int dateId = bundle.getInt("day") + 1;
 
-        schedule = userSchedule;
+        schedule = new UserSchedule(getContext(), null);
 
         DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
         mLoadingProgrressBar.setVisibility(View.INVISIBLE);
@@ -176,39 +171,6 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
         sectionAdapter.closeActData();
     }
 
-    @Override
-    public Loader<DisplayData> onCreateLoader(int loaderId, Bundle args) {
-//        switch (loaderId) {
-//
-//            case ID_CONFERENCE_LOADER:
-//                int scheduleId = ViewPagerAdapter.getScheduleId();
-//                Bundle bundle = getArguments();
-//                int dateId = bundle.getInt("day") + 1;
-//                // Log.v("DataId z bundle: ", dateId + "");
-//
-//                if (scheduleId == 0) {
-//                    schedule = new ConferenceSchedule(mContext);
-//                } else {
-//                    schedule = userSchedule;
-//                }
-//
-//                return (new Loader<DisplayData>(mContext));
-//
-//            default:
-//                throw new RuntimeException("Loader Not Implemented: " + loaderId);
-//        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<DisplayData> loader, DisplayData data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<DisplayData> loader) {
-
-    }
 }
 
 

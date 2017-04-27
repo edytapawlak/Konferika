@@ -104,9 +104,16 @@ public final class OpenConferenceJsonUtils {
             description = lectureForecast.getString(OWM_ABSTRACT);
             tmp = lectureForecast.getJSONArray(OWM_TAGS);
             tags = new String[tmp.length()];
+            ContentValues[] contentValues = new ContentValues[tmp.length()];
             for (int j = 0; j < tmp.length(); j++) {
+                contentValues[j] = new ContentValues();
+                if(!tmp.getString(j).equals("")) {
+                    contentValues[j].put(DatabaseContract.TagsEntry.COLUMN_TITLE, tmp.getString(j));
+                }
                 tags[j] = tmp.getString(j);
+                Log.v("TAGS ADD", "Dodaje " + tags[j]);
             }
+                context.getContentResolver().bulkInsert(DatabaseContract.TagsEntry.CONTENT_URI, contentValues);
             schedule = lectureForecast.getJSONObject(OWM_SCHEDULE);
             id = lectureForecast.getInt(OWM_ID);
 

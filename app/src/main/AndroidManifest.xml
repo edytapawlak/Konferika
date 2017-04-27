@@ -27,20 +27,21 @@
         <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.PollActivity" />
         <activity android:name=".activities.DataTestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".activities.TagsActivity"><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
-        <activity android:name=".activities.TagDataActivity"></activity>
+    <activity android:name=".activities.TagsActivity"> </activity>
+    <activity android:name=".activities.TagDataActivity"></activity>
 
-        <provider
-            android:name=".data.DataProvider"
-            android:authorities="@string/content_authority"
-            android:exported="false"/>
+    <provider
+        android:name=".data.DataProvider"
+        android:authorities="@string/content_authority"
+        android:exported="false" />
 
-    </application>
+</application>
 
-</manifest>
+    </manifest>

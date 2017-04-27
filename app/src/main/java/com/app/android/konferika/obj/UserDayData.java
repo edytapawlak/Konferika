@@ -5,19 +5,18 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.utils.Utils;
 //import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class UserDayData extends DisplayData implements Serializable {
-
-    //    private TreeMap<String, List<Activity>> mPlanData;
-    private TreeMap<String, Cursor> mPlanData;
 
     /**
      * Construct UsersDayData object, sets default activities - only breaks.
@@ -27,9 +26,7 @@ public class UserDayData extends DisplayData implements Serializable {
      */
     public UserDayData(Context context, int date) {
         super.setDateId(date);
-        mPlanData = new TreeMap<>();//ActivityData.getUserSchedForDay(context, date);
-
-        super.setSectionList(createUserSchedule());
+        super.setSectionList(getUserSchedForDay(context, date));
     }
 
     /**
@@ -68,45 +65,104 @@ public class UserDayData extends DisplayData implements Serializable {
      * @param activity - to musi być Lecture, innych się nie usuwa.
      */
     public void deleteActivityFromList(Lecture activity) {
-        List<SectionHeader> sections = super.getSectionList();
-        int i = 0;
-        while (i < sections.size()) {
-            if (activity.getStartTime().equals(sections.get(i).getTitle())) {
-                sections.get(i).removeItem(activity);
-                if (sections.get(i).getChildItems().isEmpty()) {
-                    sections.remove(i);
-                }
-                i = sections.size();
-            }
-            i++;
-        }
-        super.setSectionList(sections);  //todo: tu coś się dzieje
+//        List<SectionHeader> sections = super.getSectionList();
+//        int i = 0;
+//        while (i < sections.size()) {
+//            if (activity.getStartTime().equals(sections.get(i).getTitle())) {
+//                sections.get(i).removeItem(activity);
+//                if (sections.get(i).getChildItems().isEmpty()) {
+//                    sections.remove(i);
+//                }
+//                i = sections.size();
+//            }
+//            i++;
+//        }
+//        super.setSectionList(sections);  //todo: tu coś się dzieje
     }
 
-    /**
-     * Przekształca treeMap w List<SectionHeader>
-     *
-     * @return
-     */
-    public List<SectionHeader> createUserSchedule() {
+//    /**
+//     * Przekształca treeMap w List<SectionHeader>
+//     *
+//     * @return
+//     */
+//    public List<SectionHeader> createUserSchedule() {
+//
+//        List<SectionHeader> planForDay = new LinkedList<>();
+//        SectionHeader sc;
+//        String key;
+////        List<Activity> value;
+//        Cursor value;
+//        boolean isLec = false;
+////        for (Map.Entry<String, List<Activity>> entry : mPlanData.entrySet()) {
+//        for (Map.Entry<String, Cursor> entry : mPlanData.entrySet()) {
+//
+//            value = entry.getValue();
+//            key = Utils.deFormatTime(entry.getKey());
+//            if (value.getColumnCount() > 2) {
+//                isLec = true;
+//            }
+//            sc = new SectionHeader(value, key, isLec);
+//            planForDay.add(sc);
+//        }
+//        return planForDay;
+//    }
 
-        List<SectionHeader> planForDay = new LinkedList<>();
+    public List<SectionHeader> getUserSchedForDay(Context context, int dateId){
+        //Pobrać wszystkie startTime
+        String[] timeSelArgs = {dateId+""};
+        Cursor startTimeCursor = context.getContentResolver().query(DatabaseContract.UserStartTimesEntry.CONTENT_URI, null,
+                null, timeSelArgs, null);
+        Cursor actForTimeCursor;
+        startTimeCursor.moveToFirst();
+        String time = "";
+        String[] selectionArgsLect = new String[3];
+        String[] selectionArgsBreak = new String[2];
+        int isInUsr = 1;
+        String[] lecturesProjection = {
+                DatabaseContract.LecturesEntry.COLUMN_ID,
+                DatabaseContract.LecturesEntry.COLUMN_TITLE,
+                DatabaseContract.LecturesEntry.COLUMN_AUTHOR,
+                DatabaseContract.LecturesEntry.COLUMN_ABSTRACT,
+                DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
+                DatabaseContract.LecturesEntry.COLUMN_START_TIME,
+                DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
+                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
+        String[] breakssProjection = {
+                DatabaseContract.BreakEntry.COLUMN_TYPE,
+                DatabaseContract.BreakEntry.COLUMN_TITLE,
+                DatabaseContract.BreakEntry.COLUMN_START_TIME,
+        };
+        String selectionLect = DatabaseContract.LecturesEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.LecturesEntry.COLUMN_DATE_ID + " = ? AND " +
+                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR + " = ?" ;
+        String selectionBreak = DatabaseContract.BreakEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.BreakEntry.COLUMN_DATE_ID + " = ?";
+
         SectionHeader sc;
-        String key;
-//        List<Activity> value;
-        Cursor value;
-        boolean isLec = false;
-//        for (Map.Entry<String, List<Activity>> entry : mPlanData.entrySet()) {
-        for (Map.Entry<String, Cursor> entry : mPlanData.entrySet()) {
+        boolean isLect;
+        List<SectionHeader> list = new ArrayList<SectionHeader>();
 
-            value = entry.getValue();
-            key = Utils.deFormatTime(entry.getKey());
-            if (value.getColumnCount() > 2) {
-                isLec = true;
+        //Pobrac kursor dla każdej godziny
+        while (!startTimeCursor.isAfterLast()) {
+            time = startTimeCursor.getString(0);
+            selectionArgsLect[0] = time + "";
+            selectionArgsLect[1] = dateId + "";
+            selectionArgsLect[2] = isInUsr + "";
+            selectionArgsBreak[0] = time + "";
+            selectionArgsBreak[1] = dateId + "";
+            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI,
+                    lecturesProjection, selectionLect, selectionArgsLect, "time(" + DatabaseContract.LecturesEntry.COLUMN_START_TIME + ")");
+            isLect = true;
+            if (actForTimeCursor.getCount() < 1) {
+                actForTimeCursor = context.getContentResolver().query(DatabaseContract.BreakEntry.CONTENT_URI,
+                        breakssProjection, selectionBreak, selectionArgsBreak, "time(" + DatabaseContract.BreakEntry.COLUMN_START_TIME + ")");
+                isLect = false;
+
             }
-            sc = new SectionHeader(value, key, isLec);
-            planForDay.add(sc);
+            sc = new SectionHeader(actForTimeCursor, time, isLect);
+            list.add(sc);
+            startTimeCursor.moveToNext();
         }
-        return planForDay;
+        startTimeCursor.close();
+        return list;
     }
+
 }

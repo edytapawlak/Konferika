@@ -37,8 +37,8 @@ import com.app.android.konferika.obj.Schedule;
 import com.app.android.konferika.obj.UserSchedule;
 
 
-public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, LoaderManager.LoaderCallbacks<DisplayData>, SchedFragment {
-
+public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, SchedFragment {
+//    LoaderManager.LoaderCallbacks<DisplayData>,
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
@@ -57,7 +57,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     public void onStart() {
         super.onStart();
         //Toast.makeText(mContext, "OnStart", Toast.LENGTH_SHORT).show();
-        userSchedule = UserSchedule.getInstance(mContext, null);
+//        userSchedule = UserSchedule.getInstance(mContext, null);
         //loadData();
         recyclerView.setAdapter(sectionAdapter);
     }
@@ -72,7 +72,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
+//        userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
@@ -194,39 +194,39 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         sectionAdapter.closeActData();
     }
 
-    @Override
-    public Loader<DisplayData> onCreateLoader(int loaderId, Bundle args) {
-        return new FetchData(mContext, args.getInt("day") + 1);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<DisplayData> loader, DisplayData data) {
-        sectionAdapter.setActivitiesData(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<DisplayData> loader) {
-
-    }
-
-    private static class FetchData extends AsyncTaskLoader<DisplayData> {
-
-        int dateId;
-        public FetchData(Context context, int dateID) {
-            super(context);
-            dateId = dateID;
-        }
-
-        @Override
-        public DisplayData loadInBackground() {
-            Log.v("IDDate",dateId+"");
-            return new ConferencePlanData(getContext(),  dateId);
-        }
-
-        @Override
-        public void deliverResult(DisplayData data) {
-            super.deliverResult(data);
-        }
-    }
+//    @Override
+//    public Loader<DisplayData> onCreateLoader(int loaderId, Bundle args) {
+//        return new FetchData(mContext, args.getInt("day") + 1);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(Loader<DisplayData> loader, DisplayData data) {
+//        sectionAdapter.setActivitiesData(data);
+//    }
+//
+//    @Override
+//    public void onLoaderReset(Loader<DisplayData> loader) {
+//
+//    }
+//
+//    private static class FetchData extends AsyncTaskLoader<DisplayData> {
+//
+//        int dateId;
+//        public FetchData(Context context, int dateID) {
+//            super(context);
+//            dateId = dateID;
+//        }
+//
+//        @Override
+//        public DisplayData loadInBackground() {
+//            Log.v("IDDate",dateId+"");
+//            return new ConferencePlanData(getContext(),  dateId);
+//        }
+//
+//        @Override
+//        public void deliverResult(DisplayData data) {
+//            super.deliverResult(data);
+//        }
+//    }
 
 }

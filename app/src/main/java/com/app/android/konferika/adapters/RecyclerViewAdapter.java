@@ -51,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         it.moveToPosition(position);
         holder.text.setText(it.getString(1));
         holder.author.setText(it.getString(2));
-        holder.tags.setText("tag -- napraw to"); // TODO
+//        holder.tags.setText("tag -- napraw to"); // TODO
 //        holder.image.setImageBitmap(null);
         holder.ratingBar.setRating(it.getFloat(3));
         holder.idTv.setText(it.getInt(0) + "");

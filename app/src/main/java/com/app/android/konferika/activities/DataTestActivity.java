@@ -1,8 +1,10 @@
 package com.app.android.konferika.activities;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,7 +15,7 @@ import com.app.android.konferika.utils.OpenConferenceJsonUtils;
 
 import java.net.URL;
 
-public class DataTestActivity extends AppCompatActivity {
+public class DataTestActivity extends BaseActivity {
 
     private TextView mTextView;
     private TextView mErrorMessageDisplay;
@@ -22,13 +24,20 @@ public class DataTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weather_test);
+
+        mActivity = this;
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_weather_test, null, false);
+        super.navigationView.setCheckedItem(R.id.drawer_tags);
+
+        super.lay.addView(contentView, 0);
+        initToolbar();
 
         mTextView = (TextView) findViewById(R.id.tv_weather_data);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        loadData();
+//        loadData();
     }
 
     private void showDataView() {

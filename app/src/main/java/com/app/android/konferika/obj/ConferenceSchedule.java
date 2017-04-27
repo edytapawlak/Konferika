@@ -15,14 +15,11 @@ public class ConferenceSchedule implements Schedule {
     private UserSchedule userSched;
 
     public ConferenceSchedule(Context con) {
-//        if (this.schedule == null) {
             this.schedule = new ConferencePlanData[3];
 
             this.schedule[0] = new ConferencePlanData(con, 1);
             this.schedule[1] = new ConferencePlanData(con, 2);
             this.schedule[2] = new ConferencePlanData(con, 3);
-
-//        }
     }
 
     @Override
@@ -77,18 +74,15 @@ public class ConferenceSchedule implements Schedule {
 
     @Override
     public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
-        int dayId = lecture.getDate();
-        if (userSched == null) {
-            userSched = UserSchedule.getInstance(context, null);
-        }
-
-        if (lecture.getIsInUserSchedule()) {
-            userSched.addActivity(context, lecture, dayId);
-
-            Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
-        } else {
-            userSched.deleteActivity(context, lecture, dayId);
-            Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
-        }
+//        int dayId = lecture.getDate();
+//
+//        if (lecture.getIsInUserSchedule()) {
+//            userSched.addActivity(context, lecture, dayId);
+//
+//            Toast.makeText(context, "Dodano do planu", Toast.LENGTH_SHORT).show();
+//        } else {
+//            userSched.deleteActivity(context, lecture, dayId);
+//            Toast.makeText(context, "Usunięto z planu", Toast.LENGTH_SHORT).show();
+//        }
     }
 }

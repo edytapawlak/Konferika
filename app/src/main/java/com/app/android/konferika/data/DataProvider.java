@@ -24,6 +24,14 @@ public class DataProvider extends ContentProvider {
     public static final int CODE_BREAKS = 300;
     public static final int CODE_SPECYFIC_BREAK = 301;
     public static final int CODE_GET_ALL_START_TIMES = 400;
+    public static final int CODE_GET_ALL_USERS_START_TIMES = 401;
+    public static final int CODE_GET_LECT_TAGS = 500;
+    public static final int CODE_GET_SPECYFIC_TAG_LECT = 501;
+    public static final int CODE_GET_POS_TAGS = 600;
+    public static final int CODE_GET_SPECYFIC_TAG_POS = 601;
+    public static final int CODE_TAGS = 700;
+
+
 
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -48,6 +56,10 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_POSTERS, CODE_POSTERS);
         matcher.addURI(authority, DatabaseContract.PATH_BREAK, CODE_BREAKS);
         matcher.addURI(authority, DatabaseContract.PATH_ALL_START_TIME, CODE_GET_ALL_START_TIMES);
+        matcher.addURI(authority, DatabaseContract.PATH_ALL_USERS_START_TIME, CODE_GET_ALL_USERS_START_TIMES);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT, CODE_GET_LECT_TAGS);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS, CODE_GET_POS_TAGS);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS, CODE_TAGS);
 
         /*
          * This URI would look something like content://com.example.android.sunshine/weather/1472214172
@@ -57,6 +69,8 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_LECTURES + "/#", CODE_SPECYFIC_LECTURE);
         matcher.addURI(authority, DatabaseContract.PATH_POSTERS + "/#", CODE_SPECYFIC_POSTER);
         matcher.addURI(authority, DatabaseContract.PATH_BREAK + "/#", CODE_SPECYFIC_BREAK);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT + "/#", CODE_GET_SPECYFIC_TAG_LECT);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS + "/#", CODE_GET_SPECYFIC_TAG_POS);
 
         return matcher;
     }
@@ -139,7 +153,30 @@ public class DataProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted3;
+            case CODE_TAGS:
+                db.beginTransaction();
+                int rowsInserted4 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        String selection = DatabaseContract.TagsEntry.COLUMN_TITLE + " = ?";
+                        String[] selectionArgs = {value.getAsString(DatabaseContract.TagsEntry.COLUMN_TITLE)};
 
+                        int affected = db.update(DatabaseContract.TagsEntry.TABLE_NAME,
+                                value, selection, selectionArgs);
+                        if (affected == 0) {
+                            long rowId = db.insert(DatabaseContract.TagsEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted4++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted4 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted4;
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -244,9 +281,26 @@ public class DataProvider extends ContentProvider {
                         + selectionArgs[0] +
                         " ORDER BY time(startTime)", null);
                 break;
+            case CODE_GET_ALL_USERS_START_TIMES:
+                SQLiteDatabase dab = mOpenHelper.getReadableDatabase();
+                cursor = dab.rawQuery("SELECT startTime FROM (SELECT startTime, date_id FROM Ref WHERE is_in_usr = 1 UNION SELECT startTime, date_id FROM Break) WHERE date_id = "
+                        + selectionArgs[0] +
+                        " ORDER BY time(startTime)", null);
+                break;
             case CODE_BREAKS: {
                 cursor = mOpenHelper.getReadableDatabase().query(
                         DatabaseContract.BreakEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case CODE_TAGS: {
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        DatabaseContract.TagsEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,

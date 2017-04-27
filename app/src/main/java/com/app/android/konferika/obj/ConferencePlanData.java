@@ -9,28 +9,12 @@ import com.app.android.konferika.data.DatabaseContract;
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.app.android.konferika.data.ActivityData;
-
 public class ConferencePlanData extends DisplayData {
 
 
     public ConferencePlanData(Context context, int dateId) {
         super.setDateId(dateId);
-//
-//        String[] projection = {DatabaseContract.LecturesEntry.COLUMN_TITLE,
-//                DatabaseContract.LecturesEntry.COLUMN_AUTHOR,
-//                DatabaseContract.LecturesEntry.COLUMN_ABSTRACT,
-//                DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
-//                DatabaseContract.LecturesEntry.COLUMN_START_TIME,
-//                DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-//                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
-//        String selection = DatabaseContract.LecturesEntry.COLUMN_DATE_ID + "= ?";
-//        String[] selectionArgs = {dateId + ""};
-//        String sortOrder = null;
-//        context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI, projection, selection, selectionArgs, sortOrder);
-
-        super.setSectionList(getConferencePlan(context, dateId));//ActivityData.getHeaders(context, dateId));
-
+        super.setSectionList(getConferencePlan(context, dateId));
     }
 
     @Override

@@ -13,7 +13,11 @@ public class DatabaseContract {
     public static final String PATH_LECTURES = "Ref";
     public static final String PATH_POSTERS = "Posters";
     public static final String PATH_BREAK = "Break";
+    public static final String PATH_TAGS_LECT = "Lectires_tags";
+    public static final String PATH_TAGS_POS = "Posters_tags";
+    public static final String PATH_TAGS = "Tags";
     public static final String PATH_ALL_START_TIME = "StartTimes";
+    public static final String PATH_ALL_USERS_START_TIME = "UserStartTimes";
 
     public static final class LecturesEntry implements BaseColumns {
 
@@ -108,12 +112,95 @@ public class DatabaseContract {
                     .build();
         }
     }
-        public static final class StartTimesEntry implements BaseColumns {
 
-            public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
-                    .appendPath(PATH_ALL_START_TIME)
+    public static final class StartTimesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_ALL_START_TIME)
+                .build();
+
+
+    }
+
+    public static final class UserStartTimesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_ALL_USERS_START_TIME)
+                .build();
+    }
+
+    public static final class TagsEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_TAGS)
+                .build();
+
+        public static final String TABLE_NAME = "Tags";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "tag_text";
+
+        /**
+         * @param id TagID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildTagUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
                     .build();
-
-
         }
+    }
+
+    public static final class LectureTagsEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_TAGS_LECT)
+                .build();
+
+        public static final String TAGS_TABLE_NAME = "Tags";
+        public static final String LECTURES_TAGS_TABLE_NAME  = "Lectures_tags";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "tag_text";
+        public static final String COLUMN_LECT_ID = "lecture_id";
+        public static final String COLUMN_POSTER_LECT_TAG_ID = "tag_id";
+
+
+
+        /**
+         * @param id TagID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildTagUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+    }
+    public static final class PostersTagsEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_TAGS_POS)
+                .build();
+
+        public static final String TAGS_TABLE_NAME = "Tags";
+        public static final String POSTERS_TAGS_TABLE_NAME = "Posters_tags";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "tag_text";
+        public static final String COLUMN_POSTER_ID = "poster_id";
+        public static final String COLUMN_POSTER_LECT_TAG_ID = "tag_id";
+
+
+        /**
+         * @param id TagID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildTagUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+    }
+
 }

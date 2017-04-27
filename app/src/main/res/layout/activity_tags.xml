@@ -5,33 +5,32 @@
     android:layout_height="match_parent"
     android:theme="@android:style/Theme.NoTitleBar">
 
-            <ScrollView
-                android:id="@+id/scroll_tags"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/coordinatorLayout"
+    <ScrollView
+        android:id="@+id/scroll_tags"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/main_toolbar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/tlo1"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Tagi"
-                app:titleTextColor="@color/text_color" />
+                android:layout_height="match_parent">
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/main_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/tlo1"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Tagi"
+                    app:titleTextColor="@color/text_color" />
 
 
                 <LinearLayout
@@ -42,7 +41,7 @@
 
                 </LinearLayout>
 
-        </android.support.design.widget.AppBarLayout>
-    </android.support.design.widget.CoordinatorLayout>
-            </ScrollView>
+            </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.CoordinatorLayout>
+    </ScrollView>
 </FrameLayout>

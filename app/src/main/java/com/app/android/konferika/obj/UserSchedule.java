@@ -12,40 +12,26 @@ import java.util.List;
 public class UserSchedule implements Schedule, Serializable {
 
     private UserDayData[] schedule;
-    private static UserSchedule scheduleObject;
+//    private UserSchedule scheduleObject;
 
 
-    private UserSchedule(Context con, Bundle savedState) {
-        if (savedState != null && savedState.getSerializable("userSchedule") != null) {
-            scheduleObject = (UserSchedule) savedState.getSerializable("userSchedule");
-        } else {
-            if (this.schedule == null) {
-                this.schedule = new UserDayData[3];
+    public UserSchedule(Context con, Bundle savedState) {
+//        if (savedState != null && savedState.getSerializable("userSchedule") != null) {
+//            scheduleObject = (UserSchedule) savedState.getSerializable("userSchedule");
+//        } else {
+        if (this.schedule == null) {
+            this.schedule = new UserDayData[3];
 
-                this.schedule[0] = new UserDayData(con, 1);
-                this.schedule[1] = new UserDayData(con, 2);
-                this.schedule[2] = new UserDayData(con, 3);
-            }
+            this.schedule[0] = new UserDayData(con, 1);
+            this.schedule[1] = new UserDayData(con, 2);
+            this.schedule[2] = new UserDayData(con, 3);
         }
-    }
-
-    public static UserSchedule getInstance(Context context, Bundle savedState) {
-        if (scheduleObject == null) {
-            synchronized (UserSchedule.class) {
-                if (scheduleObject == null) {
-                    scheduleObject = new UserSchedule(context, savedState);
-                }
-            }
-        }
-        return scheduleObject;
+//    }
     }
 
 
-//    public void addActivity(Context con, Activity act, int date) {
-//        if (act.isLecture()) {
-//            Lecture lec = (Lecture) act;
-//            ActivityData.setIsUsrSched(con, lec.getId(), true);
-//        }
+    public void addActivity(Context con, Lecture act, int date) {
+////        ActivityData.setIsUsrSched(con, act.getId(), true);
 //        if (schedule == null) {
 //            new UserSchedule(con, null);
 //        }
@@ -57,35 +43,20 @@ public class UserSchedule implements Schedule, Serializable {
 //            schedule[2].addActivityToList(con, act);
 //
 //        }
-//    }
-
-    public void addActivity(Context con, Lecture act, int date) {
-//        ActivityData.setIsUsrSched(con, act.getId(), true);
-        if (schedule == null) {
-            new UserSchedule(con, null);
-        }
-        if (date == schedule[0].getDate()) {
-            schedule[0].addActivityToList(con, act);
-        } else if (date == schedule[1].getDate()) {
-            schedule[1].addActivityToList(con, act);
-        } else if (date == schedule[2].getDate()) {
-            schedule[2].addActivityToList(con, act);
-
-        }
     }
 
     public void deleteActivity(Context con, Activity act, int date) {
-        if (act.isLecture()) {
-            Lecture lect = (Lecture) act;
-//            ActivityData.setIsUsrSched(con, lect.getId(), false);
-            if (date == schedule[0].getDate()) {
-                schedule[0].deleteActivityFromList(lect);
-            } else if (date == schedule[1].getDate()) {
-                schedule[1].deleteActivityFromList(lect);
-            } else if (date == schedule[2].getDate()) {
-                schedule[2].deleteActivityFromList(lect);
-            }
-        }
+//        if (act.isLecture()) {
+//            Lecture lect = (Lecture) act;
+////            ActivityData.setIsUsrSched(con, lect.getId(), false);
+//            if (date == schedule[0].getDate()) {
+//                schedule[0].deleteActivityFromList(lect);
+//            } else if (date == schedule[1].getDate()) {
+//                schedule[1].deleteActivityFromList(lect);
+//            } else if (date == schedule[2].getDate()) {
+//                schedule[2].deleteActivityFromList(lect);
+//            }
+//        }
     }
 
     @Override
@@ -157,18 +128,18 @@ public class UserSchedule implements Schedule, Serializable {
      */
     @Override
     public void handleStarChange(Context context, Lecture lecture, UserSchedule userSchedule) {
-        //Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
-        int dayId = lecture.getDate();
-        if (scheduleObject == null) {
-            scheduleObject = UserSchedule.getInstance(context, null);
-        }
-        if (lecture.getIsInUserSchedule()) {
-            scheduleObject.addActivity(context, lecture, dayId);
-
-            Toast.makeText(context, "Dodano do planu 1", Toast.LENGTH_SHORT).show();
-        } else {
-            scheduleObject.deleteActivity(context, lecture, dayId);
-            Toast.makeText(context, "Usunięto z planu 1", Toast.LENGTH_SHORT).show();
-        }
+//        //Toast.makeText(context, "Błąt", Toast.LENGTH_SHORT).show();
+//        int dayId = lecture.getDate();
+//        if (scheduleObject == null) {
+//            scheduleObject = UserSchedule.getInstance(context, null);
+//        }
+//        if (lecture.getIsInUserSchedule()) {
+//            scheduleObject.addActivity(context, lecture, dayId);
+//
+//            Toast.makeText(context, "Dodano do planu 1", Toast.LENGTH_SHORT).show();
+//        } else {
+//            scheduleObject.deleteActivity(context, lecture, dayId);
+//            Toast.makeText(context, "Usunięto z planu 1", Toast.LENGTH_SHORT).show();
+//        }
     }
 }

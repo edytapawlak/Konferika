@@ -2,6 +2,7 @@ package com.app.android.konferika.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,18 +19,20 @@ import android.widget.Toast;
 
 import com.app.android.konferika.R;
 //import com.app.android.konferika.data.ActivityData;
+import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagsActivity extends BaseActivity{
+public class TagsActivity extends BaseActivity {
+    private ScrollView scrollView;
+    private LinearLayout linear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
-
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_tags, null, false);
         super.navigationView.setCheckedItem(R.id.drawer_tags);
@@ -37,9 +40,9 @@ public class TagsActivity extends BaseActivity{
         super.lay.addView(contentView, 0);
         initToolbar();
 
-        final List<Tag> tags = new ArrayList<>();//ActivityData.getTagArray(this);
-        LinearLayout linear = (LinearLayout) findViewById(R.id.tags_linear_layout);
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll_tags);
+        final List<Tag> tags = getTagLis();
+        linear = (LinearLayout) findViewById(R.id.tags_linear_layout);
+        scrollView = (ScrollView) findViewById(R.id.scroll_tags);
         Button btn1;
         for (Tag t :
                 tags) {
@@ -49,13 +52,13 @@ public class TagsActivity extends BaseActivity{
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            params.setMargins(70,2,70,2);
+            params.setMargins(70, 2, 70, 2);
             Button btn = new Button(this);
             btn.setId(t.getId());
             final int id_ = btn.getId();
             btn.setText(t.getTitle());
             btn.setMinHeight(20);
-            btn.setPadding(10,1,10,1);
+            btn.setPadding(10, 1, 10, 1);
             btn.setTransformationMethod(null);
             btn.setTextColor(ContextCompat.getColor(mActivity, R.color.blu));
             btn.setBackgroundColor(Color.argb(100, 255, 255, 255));
@@ -82,15 +85,35 @@ public class TagsActivity extends BaseActivity{
                 }
             });
         }
+        scrollView.invalidate();
+        linear.invalidate();
     }
-    private String findTagTitleById(List<Tag> arr, int id){
+
+
+    private String findTagTitleById(List<Tag> arr, int id) {
         for (Tag t :
                 arr) {
-            if(t.getId() == id){
+            if (t.getId() == id) {
                 return t.getTitle();
             }
         }
-            return  "";
+        return "";
+    }
+
+
+    private List<Tag> getTagLis() {
+        String[] projection = {DatabaseContract.TagsEntry.COLUMN_ID, DatabaseContract.TagsEntry.COLUMN_TITLE};
+        Cursor tagsCursor = this.getContentResolver().query(DatabaseContract.TagsEntry.CONTENT_URI, projection, null, null, null);
+        tagsCursor.moveToFirst();
+        List<Tag> tagList = new ArrayList<>();
+        Tag tag;
+        while (!tagsCursor.isAfterLast()) {
+            tag = new Tag(tagsCursor.getString(1), tagsCursor.getInt(0));
+            tagList.add(tag);
+            tagsCursor.moveToNext();
+        }
+        tagsCursor.close();
+        return tagList;
     }
 
 }
