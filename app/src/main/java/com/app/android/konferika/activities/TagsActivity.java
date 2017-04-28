@@ -80,6 +80,7 @@ public class TagsActivity extends BaseActivity {
                     Intent i = new Intent(TagsActivity.this, TagDataActivity.class);
                     i.putExtra("tagId", id_);
                     String tagTitle = findTagTitleById(tags, id_);
+//                    Log.v("Tag_id", tagTitle);
                     i.putExtra("tagTitle", tagTitle);
                     startActivity(i);
                 }

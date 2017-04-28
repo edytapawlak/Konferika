@@ -66,7 +66,8 @@ public final class OpenConferenceJsonUtils {
         final String OWM_ID = "id";
 
         /* String array to hold each lecture String */
-        String[] result = null;
+        String[] result = new String[1];
+        result[0] = "";
 
         JSONArray jsonArray = new JSONArray(forecastJsonStr);
 //        parsedLecturesData = new String[jsonArray.length()];
@@ -257,7 +258,7 @@ public final class OpenConferenceJsonUtils {
 
             /* Get the JSON object representing the day */
             JSONObject lectureForecast = jsonArray.getJSONObject(i);
-
+//-------------- Dodaje autorów ---------------------
             authorsArr = lectureForecast.getJSONArray(OWM_AUTHORS);
             authors = new String[authorsArr.length()];
             JSONObject authorJson;
@@ -269,6 +270,8 @@ public final class OpenConferenceJsonUtils {
             title = lectureForecast.getString(OWM_TITLE);
             id = lectureForecast.getInt(OWM_ID);
             description = lectureForecast.getString(OWM_ABSTRACT);
+
+//------------- Dodaje tagi ---------------------
             tmp = lectureForecast.getJSONArray(OWM_TAGS);
             tags = new String[tmp.length()];
             for (int j = 0; j < tmp.length(); j++) {
@@ -281,25 +284,27 @@ public final class OpenConferenceJsonUtils {
                 endTime = schedule.getString(OWM_ENDTIME);
                 date = schedule.getString(OWM_DATE);
             }
-            if (tags.length > 0) {
-                parsedLecturesData[i] = " - " + title + " - " + date + "--" + tags[0];
-            } else {
-                parsedLecturesData[i] = " - " + title + " - " + date + "--";
-            }
+
+            parsedLecturesData[i] = " - " + title + " - " + date + "--";
 
             if (i != jsonArray.length() - 1) {
                 deleteWhere += id + ", ";
             } else {
                 deleteWhere += id;
+            }
+            String authorsText = "";
+                for (int k = 0; k < authors.length - 1 ; k++) {
+                    authorsText += authors[k] + ", ";
+                }
+                authorsText += authors[authors.length - 1];
 
                 ContentValues cv = new ContentValues();
                 cv.put(DatabaseContract.PostersEntry.COLUMN_ID, id);
                 cv.put(DatabaseContract.PostersEntry.COLUMN_TITLE, title);
-                cv.put(DatabaseContract.PostersEntry.COLUMN_AUTHOR, authors[0]);
+                cv.put(DatabaseContract.PostersEntry.COLUMN_AUTHOR, authorsText);
                 cv.put(DatabaseContract.PostersEntry.COLUMN_ABSTRACT, description);
                 toadd.add(cv);
 
-            }
         }
         ContentValues[] arr = new ContentValues[toadd.size()];
         int i = 0;

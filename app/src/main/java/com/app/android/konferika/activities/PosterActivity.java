@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -93,15 +94,9 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
         switch (loaderId) {
 
             case ID_POSTERS_LOADER:
-                /* URI for all rows of weather data in our weather table */
                 Uri forecastQueryUri = DatabaseContract.PostersEntry.CONTENT_URI;
-                /* Sort order: Ascending by date */
+                Log.v("URI POSTERS", forecastQueryUri.toString());
                 String sortOrder = DatabaseContract.PostersEntry.COLUMN_MARK + " DESC";
-                /*
-                 * A SELECTION in SQL declares which rows you'd like to return. In our case, we
-                 * want all weather data from today onwards that is stored in our weather table.
-                 * We created a handy method to do that in our WeatherEntry class.
-                 */
                 String selection = null;
 
                 return new CursorLoader(this,

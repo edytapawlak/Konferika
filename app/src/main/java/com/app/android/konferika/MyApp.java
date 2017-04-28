@@ -99,9 +99,10 @@ public class MyApp extends Application {
 //                    i++;
 //
 //                }
-            Toast.makeText(con, "Jest ich " + weatherData.length, Toast.LENGTH_SHORT).show();
+            Toast.makeText(con, "Już! " + weatherData.length, Toast.LENGTH_SHORT).show();
             } else {
 //                showErrorMessage();
+                Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();
             }
         }
     }

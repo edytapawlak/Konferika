@@ -44,6 +44,7 @@ public class DataProvider extends ContentProvider {
 
     private DatabaseOpenHelper mOpenHelper;
     private Context context;
+
     @Override
     public boolean onCreate() {
         this.context = this.getContext();
@@ -125,6 +126,7 @@ public class DataProvider extends ContentProvider {
                 db.beginTransaction();
                 rowsInserted = 0;
                 try {
+                    int i =0;
                     for (ContentValues value : values) {
                         selection = DatabaseContract.PostersEntry.COLUMN_ID + " = ?";
                         selectionArgs[0] = value.getAsString(DatabaseContract.PostersEntry.COLUMN_ID);
@@ -135,7 +137,10 @@ public class DataProvider extends ContentProvider {
                             long rowId = db.insert(DatabaseContract.PostersEntry.TABLE_NAME, null, value);
                             if (rowId > 0) rowsInserted++;
                         }
+                        i++;
                     }
+                    Log.v("addedD ROWS: ", i + "");
+
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
@@ -225,8 +230,8 @@ public class DataProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
 
-                            long rowId = db.insert(DatabaseContract.LectureTagsEntry.TABLE_NAME, null, value);
-                            if (rowId > 0) rowsInserted++;
+                        long rowId = db.insert(DatabaseContract.LectureTagsEntry.TABLE_NAME, null, value);
+                        if (rowId > 0) rowsInserted++;
                     }
                     db.setTransactionSuccessful();
                 } finally {
@@ -352,7 +357,7 @@ public class DataProvider extends ContentProvider {
                 SQLiteDatabase db = mOpenHelper.getReadableDatabase();
                 cursor = db.rawQuery("SELECT " + projectionText + " FROM " +
                         "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
-                        "WHERE startTime = \"" + selectionArgs[0] + "\" AND date_id = " + selectionArgs[1] + " AND is_in_usr_sched = 1 "+ " ORDER BY " +
+                        "WHERE startTime = \"" + selectionArgs[0] + "\" AND date_id = " + selectionArgs[1] + " AND is_in_usr_sched = 1 " + " ORDER BY " +
                         sortOrder, null);
                 break;
             }
@@ -423,6 +428,19 @@ public class DataProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case CODE_GET_SPECYFIC_TAG_LECT: {
+                String projectionText = "";
+                for (int i = 0; i < projection.length - 1; i++) {
+                    projectionText += projection[i] + ", ";
+                }
+                projectionText = projectionText + projection[projection.length - 1];
+                String data_id = uri.getLastPathSegment();
+                cursor = mOpenHelper.getReadableDatabase().rawQuery("SELECT " + projectionText + " FROM " +
+                        "Ref " +
+                        " WHERE " + DatabaseContract.LecturesEntry.COLUMN_ID + " IN " +
+                        "(SELECT lecture_id FROM Lectures_tags WHERE tag_id = " + data_id + ")", null);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -451,11 +469,11 @@ public class DataProvider extends ContentProvider {
                 cur = db.rawQuery("DELETE FROM Ref WHERE _id NOT IN " + selectionArgs[0], null);
                 numRowsDeleted = cur.getCount();
                 break;
-                case CODE_POSTERS:
-                    db = mOpenHelper.getWritableDatabase();
-                    cur = db.rawQuery("DELETE FROM Posters WHERE id NOT IN " + selectionArgs[0], null);
-                    numRowsDeleted = cur.getCount();
-                    break;
+            case CODE_POSTERS:
+                db = mOpenHelper.getWritableDatabase();
+                cur = db.rawQuery("DELETE FROM Posters WHERE id NOT IN " + selectionArgs[0], null);
+                numRowsDeleted = cur.getCount();
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
