@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 /**
  * Created by edyta on 25.04.17.
@@ -30,8 +31,11 @@ public class DataProvider extends ContentProvider {
     public static final int CODE_GET_POS_TAGS = 600;
     public static final int CODE_GET_SPECYFIC_TAG_POS = 601;
     public static final int CODE_TAGS = 700;
-
-
+    public static final int CODE_LECTURES_JOIN_SCHED = 800;
+    public static final int CODE_SPECYFIC_LECTURES_JOIN_SCHED = 801;
+    public static final int CODE_USER_LECTURES = 802;
+    public static final int CODE_SPECYFIC_SCHED = 901;
+    public static final int CODE_SCHED = 900;
 
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -60,6 +64,9 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT, CODE_GET_LECT_TAGS);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS, CODE_GET_POS_TAGS);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS, CODE_TAGS);
+        matcher.addURI(authority, DatabaseContract.PATH_LECTURES_JOIN_SCHED, CODE_LECTURES_JOIN_SCHED);
+        matcher.addURI(authority, DatabaseContract.PATH_SCHED, CODE_SCHED);
+        matcher.addURI(authority, DatabaseContract.PATH_USERS_LECTURES, CODE_USER_LECTURES);
 
         /*
          * This URI would look something like content://com.example.android.sunshine/weather/1472214172
@@ -71,6 +78,8 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_BREAK + "/#", CODE_SPECYFIC_BREAK);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT + "/#", CODE_GET_SPECYFIC_TAG_LECT);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS + "/#", CODE_GET_SPECYFIC_TAG_POS);
+        matcher.addURI(authority, DatabaseContract.PATH_SCHED + "/#", CODE_SPECYFIC_SCHED);
+        matcher.addURI(authority, DatabaseContract.PATH_LECTURES_JOIN_SCHED + "/#", CODE_SPECYFIC_LECTURES_JOIN_SCHED);
 
         return matcher;
     }
@@ -177,6 +186,31 @@ public class DataProvider extends ContentProvider {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted4;
+            case CODE_SCHED:
+                db.beginTransaction();
+                int rowsInserted5 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        String selection = DatabaseContract.ScheduleEntry.COLUMN_ID + " = ?";
+                        String[] selectionArgs = {value.getAsString(DatabaseContract.ScheduleEntry.COLUMN_ID)};
+
+                        int affected = db.update(DatabaseContract.ScheduleEntry.TABLE_NAME,
+                                value, selection, selectionArgs);
+                        if (affected == 0) {
+                            long rowId = db.insert(DatabaseContract.ScheduleEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted5++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted5 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted5;
+
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -242,9 +276,60 @@ public class DataProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
-
                 break;
             }
+            case CODE_SPECYFIC_LECTURES_JOIN_SCHED: {
+                String id = uri.getLastPathSegment();
+                String projectionText = "";
+                for (int i = 0; i < projection.length - 1; i++) {
+                    projectionText += projection[i] + ", ";
+                }
+                projectionText = projectionText + projection[projection.length - 1];
+
+                SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+                cursor = db.rawQuery("SELECT " + projectionText + " FROM " +
+                        "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
+                        "WHERE _id = " + id, null);
+                break;
+            }
+
+            case CODE_LECTURES_JOIN_SCHED: {
+                String projectionText = "";
+                for (int i = 0; i < projection.length - 1; i++) {
+                    projectionText += projection[i] + ", ";
+                }
+                projectionText = projectionText + projection[projection.length - 1];
+
+                SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+                cursor = db.rawQuery("SELECT " + projectionText + " FROM " +
+                        "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
+                        "WHERE startTime = \"" + selectionArgs[0] + "\" AND date_id = " + selectionArgs[1] + " ORDER BY " +
+                        sortOrder, null);
+                break;
+            }
+
+            case CODE_USER_LECTURES: {
+                String projectionText = "";
+                for (int i = 0; i < projection.length - 1; i++) {
+                    projectionText += projection[i] + ", ";
+                }
+                projectionText = projectionText + projection[projection.length - 1];
+
+//                SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+//                cursor = db.rawQuery("SELECT " + projectionText + " FROM " +
+//                        "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
+//                        "WHERE startTime = \"" + selectionArgs[0] + "\" AND date_id = " + selectionArgs[1] + " AND " +
+//                        DatabaseContract.UserLecturesEntry.COLUMN_IS_IN_USR
+//                        + " = 1 ORDER BY " +
+//                        sortOrder, null);
+                SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+                cursor = db.rawQuery("SELECT " + projectionText + " FROM " +
+                        "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
+                        "WHERE startTime = \"" + selectionArgs[0] + "\" AND date_id = " + selectionArgs[1] + " AND is_in_usr_sched = 1 "+ " ORDER BY " +
+                        sortOrder, null);
+                break;
+            }
+
             case CODE_SPECYFIC_POSTER: {
 
                 String data_id = uri.getLastPathSegment();
@@ -283,9 +368,11 @@ public class DataProvider extends ContentProvider {
                 break;
             case CODE_GET_ALL_USERS_START_TIMES:
                 SQLiteDatabase dab = mOpenHelper.getReadableDatabase();
-                cursor = dab.rawQuery("SELECT startTime FROM (SELECT startTime, date_id FROM Ref WHERE is_in_usr = 1 UNION SELECT startTime, date_id FROM Break) WHERE date_id = "
+                cursor = dab.rawQuery("SELECT startTime FROM (SELECT startTime, date_id FROM Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id " +
+                        " WHERE is_in_usr_sched = 1 UNION SELECT startTime, date_id FROM Break) WHERE date_id = "
                         + selectionArgs[0] +
                         " ORDER BY time(startTime)", null);
+
                 break;
             case CODE_BREAKS: {
                 cursor = mOpenHelper.getReadableDatabase().query(
@@ -309,7 +396,7 @@ public class DataProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
-                default:
+            default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
@@ -371,7 +458,7 @@ public class DataProvider extends ContentProvider {
         switch (match) {
             case CODE_LECTURES:
                 long id = db.insert(DatabaseContract.LecturesEntry.TABLE_NAME, null, values);
-                if ( id > 0 ) {
+                if (id > 0) {
                     returnUri = ContentUris.withAppendedId(DatabaseContract.LecturesEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -391,20 +478,27 @@ public class DataProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         switch (match) {
-            case CODE_SPECYFIC_LECTURE:
-                String data_id = uri.getLastPathSegment();
-                selection = DatabaseContract.LecturesEntry.COLUMN_ID + "= ? ";
-                String[] selectionArguments = new String[]{data_id};
-                updatedRows = db.update(DatabaseContract.LecturesEntry.TABLE_NAME,
-                        values, selection, selectionArguments);
+//            case CODE_SPECYFIC_LECTURE:
+//                String data_id = uri.getLastPathSegment();
+//                selection = DatabaseContract.LecturesEntry.COLUMN_ID + "= ? ";
+//                String[] selectionArguments = new String[]{data_id};
+//                updatedRows = db.update(DatabaseContract.LecturesEntry.TABLE_NAME,
+//                        values, selection, selectionArguments);
+//                break;
+            case CODE_SPECYFIC_SCHED:
+                String id = uri.getLastPathSegment();
+                selection = DatabaseContract.ScheduleEntry.COLUMN_ID + "= ? ";
+                String[] selectionArguments2 = new String[]{id};
+                updatedRows = db.update(DatabaseContract.ScheduleEntry.TABLE_NAME,
+                        values, selection, selectionArguments2);
                 break;
-                case CODE_SPECYFIC_POSTER:
-                    String poster_id = uri.getLastPathSegment();
-                    selection = DatabaseContract.PostersEntry.COLUMN_ID + "= ? ";
-                    String[] selectionArguments2 = new String[]{poster_id};
-                    updatedRows = db.update(DatabaseContract.PostersEntry.TABLE_NAME,
-                            values, selection, selectionArguments2);
-                    break;
+            case CODE_SPECYFIC_POSTER:
+                String poster_id = uri.getLastPathSegment();
+                selection = DatabaseContract.PostersEntry.COLUMN_ID + "= ? ";
+                String[] selectionArguments3 = new String[]{poster_id};
+                updatedRows = db.update(DatabaseContract.PostersEntry.TABLE_NAME,
+                        values, selection, selectionArguments3);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }

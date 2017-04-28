@@ -18,6 +18,13 @@ public class DatabaseContract {
     public static final String PATH_TAGS = "Tags";
     public static final String PATH_ALL_START_TIME = "StartTimes";
     public static final String PATH_ALL_USERS_START_TIME = "UserStartTimes";
+    public static final String PATH_LECTURES_JOIN_SCHED = "LecturesJoinSchedule";
+    public static final String PATH_SCHED = "UserSched";
+    public static final String PATH_USERS_LECTURES = "UserLectures";
+
+
+
+
 
     public static final class LecturesEntry implements BaseColumns {
 
@@ -122,6 +129,71 @@ public class DatabaseContract {
 
     }
 
+    public static final class LecturesJoinScheduleEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_LECTURES_JOIN_SCHED)
+                .build();
+        public static final String TABLE_NAME = "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_ABSTRACT = "abstract";
+        public static final String COLUMN_START_TIME = "startTime";
+        public static final String COLUMN_END_TIME = "endTime";
+        public static final String COLUMN_DATE_ID = "date_id";
+        public static final String COLUMN_ROOM_ID = "room_id";
+        public static final String COLUMN_IS_IN_USR = "is_in_usr_sched";
+
+        public static Uri buildLecturesJoinScheduleUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+    }
+
+    public static final class UserLecturesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_USERS_LECTURES)
+                .build();
+        public static final String TABLE_NAME = "Ref LEFT JOIN UserSchedule ON Ref._id = UserSchedule.id";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_AUTHOR = "author";
+        public static final String COLUMN_ABSTRACT = "abstract";
+        public static final String COLUMN_START_TIME = "startTime";
+        public static final String COLUMN_END_TIME = "endTime";
+        public static final String COLUMN_DATE_ID = "date_id";
+        public static final String COLUMN_ROOM_ID = "room_id";
+        public static final String COLUMN_IS_IN_USR = "is_in_usr_sched";
+
+    }
+
+    public static final class ScheduleEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_SCHED)
+                .build();
+        public static final String TABLE_NAME = "UserSchedule";
+
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_IS_IN_USR = "is_in_usr_sched";
+
+        /**
+         * @param id LectID
+         * @return Uri to query details about a single weather entry
+         */
+        public static Uri buildScheduleUriWithDate(int id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(id + "")
+                    .build();
+        }
+    }
+
+
     public static final class UserStartTimesEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
@@ -158,13 +230,12 @@ public class DatabaseContract {
                 .build();
 
         public static final String TAGS_TABLE_NAME = "Tags";
-        public static final String LECTURES_TAGS_TABLE_NAME  = "Lectures_tags";
+        public static final String LECTURES_TAGS_TABLE_NAME = "Lectures_tags";
 
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "tag_text";
         public static final String COLUMN_LECT_ID = "lecture_id";
         public static final String COLUMN_POSTER_LECT_TAG_ID = "tag_id";
-
 
 
         /**
@@ -177,6 +248,7 @@ public class DatabaseContract {
                     .build();
         }
     }
+
     public static final class PostersTagsEntry implements BaseColumns {
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()

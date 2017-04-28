@@ -50,9 +50,11 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR
         };
-        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), projection, null, null, null);
+//        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), projection, null, null, null);
+        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.buildLecturesJoinScheduleUriWithDate(lectureId),
+                projection, null, null, null);
         lectCur.moveToFirst();
         while (!lectCur.isAfterLast()){
             String title = lectCur.getString(0);
@@ -100,8 +102,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 boolean isChanged;
 //                userSched = UserSchedule.getInstance(mContext, null);
 
-                String[] projection = {DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
-                Cursor checkedCursor = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(id), projection, null, null, null);
+                String[] projection = {DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
+                Cursor checkedCursor = mContext.getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.buildLecturesJoinScheduleUriWithDate(id),
+                        projection, null, null, null);
                 checkedCursor.moveToFirst();
                 boolean isInSched = (checkedCursor.getInt(0) == 1);
                 checkedCursor.close();
@@ -123,7 +126,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 //                ContentValues cv = new ContentValues();
 //                cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isChanged);
 //                mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(id), cv ,null, null);
-//                item.setIsInUserSchedule(isChanged);
+                item.setIsInUserSchedule(isChanged);
 //                Log.v("Clik", "Clicked " + isChanged);
             }
         });

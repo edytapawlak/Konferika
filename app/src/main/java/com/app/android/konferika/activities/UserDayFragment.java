@@ -102,10 +102,14 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
 
     @Override
     public void onStarChanged(boolean isCheck, int lectureId) {
-
+        int check = isCheck?1:0;
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isCheck);
-        mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), cv, null, null);
+        cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, check);
+
+//        cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isCheck);
+//        mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), cv, null, null);
+        mContext.getContentResolver().update(DatabaseContract.ScheduleEntry.buildScheduleUriWithDate(lectureId), cv, null, null);
+
 
         loadData();
         sectionAdapter.notifyDataSetChanged();

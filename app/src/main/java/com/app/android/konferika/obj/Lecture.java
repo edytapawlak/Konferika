@@ -119,7 +119,7 @@ public class Lecture implements Activity, Serializable {
         holder.mAuthorTextView.setText(this.getAuthor());
         holder.mRoomTextView.setText(this.getRoom());
         holder.mTagsTextView.setText(this.getTags());
-        holder.myActCheckbox.setChecked(isInUserSched);
+        holder.myActCheckbox.setChecked(this.isInUserSched);
 
         if (ViewPagerAdapter.getScheduleId() != 0) {
             holder.myActCheckbox.setVisibility(View.INVISIBLE);

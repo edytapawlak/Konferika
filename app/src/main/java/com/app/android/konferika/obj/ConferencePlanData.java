@@ -51,7 +51,7 @@ public class ConferencePlanData extends DisplayData {
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
         String[] breakssProjection = {
                 DatabaseContract.BreakEntry.COLUMN_TYPE,
                 DatabaseContract.BreakEntry.COLUMN_TITLE,
@@ -69,8 +69,11 @@ public class ConferencePlanData extends DisplayData {
             time = startTimeCursor.getString(0);
             selectionArgs[0] = time + "";
             selectionArgs[1] = dateId + "";
-            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI,
+//            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI,
+//                    lecturesProjection, selectionLect, selectionArgs, "time(" + DatabaseContract.LecturesEntry.COLUMN_START_TIME + ")");
+            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.CONTENT_URI,
                     lecturesProjection, selectionLect, selectionArgs, "time(" + DatabaseContract.LecturesEntry.COLUMN_START_TIME + ")");
+
             isLect = true;
             if (actForTimeCursor.getCount() < 1) {
                 actForTimeCursor = context.getContentResolver().query(DatabaseContract.BreakEntry.CONTENT_URI,

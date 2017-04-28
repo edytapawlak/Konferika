@@ -113,6 +113,7 @@ public class UserDayData extends DisplayData implements Serializable {
         Cursor startTimeCursor = context.getContentResolver().query(DatabaseContract.UserStartTimesEntry.CONTENT_URI, null,
                 null, timeSelArgs, null);
         Cursor actForTimeCursor;
+        Log.v("StartCursor", startTimeCursor.getCount() + "");
         startTimeCursor.moveToFirst();
         String time = "";
         String[] selectionArgsLect = new String[3];
@@ -126,14 +127,14 @@ public class UserDayData extends DisplayData implements Serializable {
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR};
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
         String[] breakssProjection = {
                 DatabaseContract.BreakEntry.COLUMN_TYPE,
                 DatabaseContract.BreakEntry.COLUMN_TITLE,
                 DatabaseContract.BreakEntry.COLUMN_START_TIME,
         };
-        String selectionLect = DatabaseContract.LecturesEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.LecturesEntry.COLUMN_DATE_ID + " = ? AND " +
-                DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR + " = ?" ;
+        String selectionLect = DatabaseContract.LecturesJoinScheduleEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.LecturesEntry.COLUMN_DATE_ID + " = ? AND " +
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR + " = ?" ;
         String selectionBreak = DatabaseContract.BreakEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.BreakEntry.COLUMN_DATE_ID + " = ?";
 
         SectionHeader sc;
@@ -148,14 +149,16 @@ public class UserDayData extends DisplayData implements Serializable {
             selectionArgsLect[2] = isInUsr + "";
             selectionArgsBreak[0] = time + "";
             selectionArgsBreak[1] = dateId + "";
-            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI,
+//            actForTimeCursor = context.getContentResolver().query(DatabaseContract.LecturesEntry.CONTENT_URI,
+//                    lecturesProjection, selectionLect, selectionArgsLect, "time(" + DatabaseContract.LecturesEntry.COLUMN_START_TIME + ")");
+
+            actForTimeCursor = context.getContentResolver().query(DatabaseContract.UserLecturesEntry.CONTENT_URI,
                     lecturesProjection, selectionLect, selectionArgsLect, "time(" + DatabaseContract.LecturesEntry.COLUMN_START_TIME + ")");
             isLect = true;
             if (actForTimeCursor.getCount() < 1) {
                 actForTimeCursor = context.getContentResolver().query(DatabaseContract.BreakEntry.CONTENT_URI,
                         breakssProjection, selectionBreak, selectionArgsBreak, "time(" + DatabaseContract.BreakEntry.COLUMN_START_TIME + ")");
                 isLect = false;
-
             }
             sc = new SectionHeader(actForTimeCursor, time, isLect);
             list.add(sc);

@@ -26,13 +26,8 @@ public class SectionHeader extends StatelessSection {
 
     public SectionHeader(Cursor childrens, String sectionText, boolean isLect) {
         super(R.layout.section_header, R.layout.forecast_list_item);
-        this.childList = childList;
         this.childrens = childrens;
-        childIdes = new ArrayList<>();
-//        for (Activity a :
-//                childList) {
-//            childIdes.add(a.getId());
-//        }
+
         this.title = sectionText;
         this.areLectures = isLect;
     }
@@ -123,7 +118,7 @@ public class SectionHeader extends StatelessSection {
             String room = childrens.getString(6);
             List<Tag> tags = new ArrayList<>(); //TODO
             boolean inUsrSched = (childrens.getInt(7) == 1); //todo
-            Log.v("Holder! ", "Tworze Lecture! " + inUsrSched);
+            Log.v("Holder! ", "Tworze Lecture! " + childrens.getInt(7) + ", " + title);
 
             activ = new Lecture(title, author, abs, date, activId, startTime, room, tags, inUsrSched);
         } else if ( activId == PosterSesion.ID) {
@@ -134,7 +129,7 @@ public class SectionHeader extends StatelessSection {
             String title = childrens.getString(1);
             String startTime = childrens.getString(2);
             int type = childrens.getInt(0);
-            Log.v("Break typ ", type + "");
+//            Log.v("Break typ ", type + "");
             activ = new Break(title, startTime, type);
         }
 

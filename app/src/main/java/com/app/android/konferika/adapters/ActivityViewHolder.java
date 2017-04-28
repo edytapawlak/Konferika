@@ -100,6 +100,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         if (text != "") {
             if (text.equals("p")) {
                 activ = new PosterSesion(v.getContext());
+                activ.handleOnClick(context, null);
             } else {
                 int id = Integer.parseInt(text);
                 Intent intent = new Intent(context, ItemDetailsActivity.class);

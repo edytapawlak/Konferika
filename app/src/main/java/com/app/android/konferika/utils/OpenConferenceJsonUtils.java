@@ -75,6 +75,8 @@ public final class OpenConferenceJsonUtils {
 //        long startDay = SunshineDateUtils.normalizeDate(utcDate);
 
         List<ContentValues> toadd = new ArrayList<>();
+        List<ContentValues> scheduleToadd = new ArrayList<>();
+
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */
             String title;
@@ -138,6 +140,11 @@ public final class OpenConferenceJsonUtils {
 //            Lecture lectToAdd = new Lecture(title, authors[0], description, date, id, startTime, place, new ArrayList<Tag>(), false);
 //            ActivityData.updateLecture(context, lectToAdd);
 
+            ContentValues sched_cv = new ContentValues();
+            sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_ID, id);
+            sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, "0");
+            scheduleToadd.add(sched_cv);
+
             ContentValues cv = new ContentValues();
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ID, id);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_TITLE, title);
@@ -150,14 +157,23 @@ public final class OpenConferenceJsonUtils {
 
         }
         ContentValues[] arr = new ContentValues[toadd.size()];
+        ContentValues[] scheduleArr = new ContentValues[toadd.size()];
+
         int i = 0;
         for (ContentValues c :
                 toadd) {
             arr[i] = c;
             i++;
         }
+        i = 0;
+        for (ContentValues c :
+                scheduleToadd) {
+            scheduleArr[i] = c;
+            i++;
+        }
 
         context.getContentResolver().bulkInsert(DatabaseContract.LecturesEntry.CONTENT_URI, arr);
+        context.getContentResolver().bulkInsert(DatabaseContract.ScheduleEntry.CONTENT_URI, scheduleArr);
 
         return parsedLecturesData;
     }

@@ -121,8 +121,11 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     public void onStarChanged(boolean isCheck, int lectureId) {
 
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isCheck);
-        mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), cv, null, null);
+//        cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isCheck);
+//        mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), cv, null, null);
+        int check = isCheck?1:0;
+        cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, check);
+        mContext.getContentResolver().update(DatabaseContract.ScheduleEntry.buildScheduleUriWithDate(lectureId), cv, null, null);
 
         Bundle bundle = getArguments();
         int dateId = bundle.getInt("day") + 1;
