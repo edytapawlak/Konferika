@@ -139,7 +139,6 @@ public class DataProvider extends ContentProvider {
                         }
                         i++;
                     }
-                    Log.v("addedD ROWS: ", i + "");
 
                     db.setTransactionSuccessful();
                 } finally {
@@ -439,6 +438,18 @@ public class DataProvider extends ContentProvider {
                         "Ref " +
                         " WHERE " + DatabaseContract.LecturesEntry.COLUMN_ID + " IN " +
                         "(SELECT lecture_id FROM Lectures_tags WHERE tag_id = " + data_id + ")", null);
+                break;
+            }
+            case CODE_LECT_TAGS: {
+                String projectionText = "";
+                for (int i = 0; i < projection.length - 1; i++) {
+                    projectionText += projection[i] + ", ";
+                }
+                projectionText = projectionText + projection[projection.length - 1];
+                cursor = mOpenHelper.getReadableDatabase().rawQuery("SELECT DISTINCT " + projectionText + " FROM " +
+                        "Lectures_tags LEFT JOIN Tags ON Lectures_tags.tag_id = Tags.id " +
+                        " WHERE " + DatabaseContract.LectureTagsEntry.COLUMN_LECT_ID + " = " +
+                        selectionArgs[0], null);
                 break;
             }
             default:

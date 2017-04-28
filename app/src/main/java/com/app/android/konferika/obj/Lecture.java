@@ -2,6 +2,7 @@ package com.app.android.konferika.obj;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.app.android.konferika.activities.ItemDetailsActivity;
 import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
+import com.app.android.konferika.data.DatabaseContract;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,10 +27,11 @@ public class Lecture implements Activity, Serializable {
     private String startTime;
     private String room;
     private boolean isInUserSched;
-    private List<Tag> tags;
+    //    private List<Tag> tags;
+    private String tags;
 
 
-    public Lecture(String title, String author, String abs, int date, int id, String startTime, String room, List<Tag> tags, boolean isInSched) {
+    public Lecture(Context context, String title, String author, String abs, int date, int id, String startTime, String room, boolean isInSched) {
         this.title = title;
         this.author = author;
         this.abs = abs;
@@ -39,21 +42,33 @@ public class Lecture implements Activity, Serializable {
         this.room = room;
         this.tags = tags;
         this.isInUserSched = isInSched;
-    }
 
+        String[] projection = {DatabaseContract.TagsEntry.COLUMN_TITLE};
+        String[] selectionArgs = {id+""};
+        Cursor tagCur = context.getContentResolver().query(DatabaseContract.LectureTagsEntry.CONTENT_URI, projection, null, selectionArgs, null);
+        tagCur.moveToFirst();
+        String t = "";
+        while (!tagCur.isAfterLast()){
+            t += tagCur.getString(0) + " ";
+            tagCur.moveToNext();
+        }
+        tags = t;
+        tagCur.close();
+    }
 
 
     public String getTitle() {
         return title;
     }
 
-    public String getTags(){
-        String out = "";
-        for (Tag t :
-                this.tags) {
-            out += t.getTitle() + " ";
-        }
-        return out;
+    public String getTags() {
+//        String out = "";
+//        for (Tag t :
+//                this.tags) {
+//            out += t.getTitle() + " ";
+//        }
+//        return out;
+        return tags;
     }
 
     @Override

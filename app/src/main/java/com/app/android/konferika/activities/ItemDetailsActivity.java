@@ -67,8 +67,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
             String room = lectCur.getString(5);
             int isInUstDat = lectCur.getInt(6);
             boolean inUsrSched = (isInUstDat == 1);
+            String tags = "";
 
-            item = new Lecture(title,author, abtract, date, lectureId, startTime, room, new ArrayList<Tag>(), inUsrSched);
+            item = new Lecture(mContext, title,author, abtract, date, lectureId, startTime, room, inUsrSched);
             lectCur.moveToNext();
         }
         lectCur.close();

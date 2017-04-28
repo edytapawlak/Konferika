@@ -13,8 +13,8 @@ import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 public class MyScheduleActivity extends BaseActivity {
 
-    static ViewPager viewPager;
-    static TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
     private ViewPagerAdapter adapter;
 
     @Override

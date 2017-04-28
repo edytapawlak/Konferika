@@ -37,7 +37,6 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
 
     private Schedule schedule;
     private Context mContext;
-    private UserSchedule userSchedule;
 
     public UserDayFragment() {
     }
@@ -45,7 +44,6 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
     @Override
     public void onStart() {
         super.onStart();
-//        userSchedule = UserSchedule.getInstance(mContext, null);
         recyclerView.setAdapter(sectionAdapter);
     }
 
@@ -84,7 +82,7 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable("userSchedule", userSchedule);
+//        outState.putSerializable("userSchedule", userSchedule);
         outState.putSerializable("scheduleID", ViewPagerAdapter.getScheduleId());
     }
 
@@ -155,18 +153,6 @@ public class UserDayFragment extends Fragment implements DisplayActDataAdapter.D
     private void showErrorMessage() {
         recyclerView.setVisibility(View.INVISIBLE);
         mErrorTextView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        sectionAdapter.closeActData();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sectionAdapter.closeActData();
     }
 
     @Override

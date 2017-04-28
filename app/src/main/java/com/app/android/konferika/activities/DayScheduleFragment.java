@@ -38,7 +38,7 @@ import com.app.android.konferika.obj.UserSchedule;
 
 
 public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, SchedFragment {
-//    LoaderManager.LoaderCallbacks<DisplayData>,
+
     private RecyclerView recyclerView;
     private TextView mErrorTextView;
     private ProgressBar mLoadingProgrressBar;
@@ -46,9 +46,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
 
     private Schedule schedule;
     private Context mContext;
-    private UserSchedule userSchedule;
-
-    private static final int ID_CONFERENCE_LOADER = 55;
+//    private UserSchedule userSchedule;
 
     public DayScheduleFragment() {
     }
@@ -56,9 +54,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     @Override
     public void onStart() {
         super.onStart();
-        //Toast.makeText(mContext, "OnStart", Toast.LENGTH_SHORT).show();
-//        userSchedule = UserSchedule.getInstance(mContext, null);
-        //loadData();
         recyclerView.setAdapter(sectionAdapter);
     }
 
@@ -86,22 +81,17 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         recyclerView.setHasFixedSize(true);
 
         loadData();
-//        Bundle bundle = getArguments();
-//        int dateId = bundle.getInt("day") + 1;
-//        this.getLoaderManager().initLoader(0, bundle, this).forceLoad();
 
         sectionAdapter.addSections();
 
         recyclerView.setAdapter(sectionAdapter);
-        //Toast.makeText(mContext, "OnCreateView", Toast.LENGTH_SHORT).show();
         return view;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        outState.putSerializable("userSchedule", userSchedule);
+//        outState.putSerializable("userSchedule", userSchedule);
         outState.putSerializable("scheduleID", ViewPagerAdapter.getScheduleId());
     }
 
@@ -146,7 +136,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
 
         Bundle bundle = getArguments();
         int dateId = bundle.getInt("day") + 1;
-        // Log.v("DataId z bundle: ", dateId + "");
 
         schedule = new ConferenceSchedule(mContext);
         DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
@@ -179,57 +168,11 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         mErrorTextView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        sectionAdapter.closeActData();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sectionAdapter.closeActData();
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         sectionAdapter.closeActData();
     }
-
-//    @Override
-//    public Loader<DisplayData> onCreateLoader(int loaderId, Bundle args) {
-//        return new FetchData(mContext, args.getInt("day") + 1);
-//    }
-//
-//    @Override
-//    public void onLoadFinished(Loader<DisplayData> loader, DisplayData data) {
-//        sectionAdapter.setActivitiesData(data);
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<DisplayData> loader) {
-//
-//    }
-//
-//    private static class FetchData extends AsyncTaskLoader<DisplayData> {
-//
-//        int dateId;
-//        public FetchData(Context context, int dateID) {
-//            super(context);
-//            dateId = dateID;
-//        }
-//
-//        @Override
-//        public DisplayData loadInBackground() {
-//            Log.v("IDDate",dateId+"");
-//            return new ConferencePlanData(getContext(),  dateId);
-//        }
-//
-//        @Override
-//        public void deliverResult(DisplayData data) {
-//            super.deliverResult(data);
-//        }
-//    }
 
 }

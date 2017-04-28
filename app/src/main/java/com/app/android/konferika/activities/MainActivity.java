@@ -15,8 +15,8 @@ import com.app.android.konferika.adapters.ViewPagerAdapter;
 
 public class MainActivity extends BaseActivity {
 
-    public ViewPager viewPager;
-    TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

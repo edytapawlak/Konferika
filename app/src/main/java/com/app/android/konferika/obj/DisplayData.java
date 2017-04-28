@@ -34,7 +34,6 @@ public abstract class DisplayData {
         this.sectionList = null;
         this.sectionList = sectionList;
         this.swapSectionList(sectionList);
-        Log.v("SWAP", "SSWWAAPP");
     }
 
 

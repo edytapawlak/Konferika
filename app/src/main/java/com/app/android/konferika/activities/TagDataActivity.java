@@ -94,9 +94,10 @@ public class TagDataActivity extends AppCompatActivity {
                         int date = lectCur.getInt(4);
                         String room = lectCur.getString(5);
                         int isInUstDat = lectCur.getInt(6);
+                        String tags = "";
                         boolean inUsrSched = (isInUstDat == 1);
 
-                        l = new Lecture(title,author, abtract, date, id_-200, startTime, room, new ArrayList<Tag>(), inUsrSched);
+                        l = new Lecture(mActivity, title,author, abtract, date, id_-200, startTime, room, inUsrSched);
                         lectCur.moveToNext();
                     }
                     lectCur.close();
