@@ -17,6 +17,7 @@ package com.app.android.konferika.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
@@ -65,18 +66,14 @@ public final class OpenConferenceJsonUtils {
         final String OWM_ID = "id";
 
         /* String array to hold each lecture String */
-        String[] parsedLecturesData = null;
+        String[] result = null;
 
         JSONArray jsonArray = new JSONArray(forecastJsonStr);
-        parsedLecturesData = new String[jsonArray.length()];
-
-//        long localDate = System.currentTimeMillis();
-//        long utcDate = SunshineDateUtils.getUTCDateFromLocal(localDate);
-//        long startDay = SunshineDateUtils.normalizeDate(utcDate);
+//        parsedLecturesData = new String[jsonArray.length()];
 
         List<ContentValues> toadd = new ArrayList<>();
         List<ContentValues> scheduleToadd = new ArrayList<>();
-
+        String deleteWhere = "( ";
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */
             String title;
@@ -91,9 +88,11 @@ public final class OpenConferenceJsonUtils {
             JSONArray tmp;
             JSONArray authorsArr;
             JSONObject schedule;
+            String tagSelection = " ";
 
             /* Get the JSON object representing the day */
             JSONObject lectureForecast = jsonArray.getJSONObject(i);
+            id = lectureForecast.getInt(OWM_ID);
             authorsArr = lectureForecast.getJSONArray(OWM_AUTHORS);
             authors = new String[authorsArr.length()];
             JSONObject authorJson;
@@ -105,23 +104,63 @@ public final class OpenConferenceJsonUtils {
             title = lectureForecast.getString(OWM_TITLE);
             description = lectureForecast.getString(OWM_ABSTRACT);
             tmp = lectureForecast.getJSONArray(OWM_TAGS);
+            int tagId;
             tags = new String[tmp.length()];
             ContentValues[] contentValues = new ContentValues[tmp.length()];
+
+//------------------------------Wypełnianie tabeli Tags---------------------------------
+
             for (int j = 0; j < tmp.length(); j++) {
                 contentValues[j] = new ContentValues();
-                if(!tmp.getString(j).equals("")) {
+
+                if (!tmp.getString(j).equals("")) {
                     contentValues[j].put(DatabaseContract.TagsEntry.COLUMN_TITLE, tmp.getString(j));
                 }
                 tags[j] = tmp.getString(j);
-                Log.v("TAGS ADD", "Dodaje " + tags[j]);
+                if (j != tmp.length() - 1) {
+                    tagSelection += DatabaseContract.TagsEntry.COLUMN_TITLE + " =? OR ";
+                } else {
+                    tagSelection += DatabaseContract.TagsEntry.COLUMN_TITLE + " =? ";
+                }
+//                Log.v("TAGS ADD", "Dodaje " + tags[j]);
             }
-                context.getContentResolver().bulkInsert(DatabaseContract.TagsEntry.CONTENT_URI, contentValues);
-            schedule = lectureForecast.getJSONObject(OWM_SCHEDULE);
-            id = lectureForecast.getInt(OWM_ID);
+            context.getContentResolver().bulkInsert(DatabaseContract.TagsEntry.CONTENT_URI, contentValues);
 
+//------------------------ Wypełnianie tabeli Lecturres_tags -----------------------------------
+
+            String[] tagProjection = {DatabaseContract.TagsEntry.COLUMN_ID};
+            Cursor tagsCursor = context.getContentResolver().query(DatabaseContract.TagsEntry.CONTENT_URI, tagProjection, tagSelection, tags, null);
+//            Log.v("Tag selection: ", tagSelection);
+            String debug = "";
+            for (int j = 0; j < tags.length; j++) {
+                debug += ", " + tags[j];
+            }
+//            Log.v("Tag selection args: ", debug);
+            tagsCursor.moveToFirst();
+            ContentValues[] tags_lect = new ContentValues[tagsCursor.getCount()];
+            int k = 0;
+            while (!tagsCursor.isAfterLast()) {
+                ContentValues cv = new ContentValues();
+//                Log.v("id lecture:", id + "");
+//                Log.v("id tag:", tagsCursor.getInt(0) + "");
+                cv.put(DatabaseContract.LectureTagsEntry.COLUMN_LECT_ID, id);
+                cv.put(DatabaseContract.LectureTagsEntry.COLUMN_TAG_ID, tagsCursor.getInt(0));
+                tags_lect[k] = cv;
+                k++;
+                tagsCursor.moveToNext();
+            }
+            tagsCursor.close();
+            context.getContentResolver().bulkInsert(DatabaseContract.LectureTagsEntry.CONTENT_URI, tags_lect);
+
+//-------------------------- Dane o miejscu i czasie referatów ---------------------------------------------------
+
+            schedule = lectureForecast.getJSONObject(OWM_SCHEDULE);
             startTime = schedule.getString(OWM_STARTTIME);
             endTime = schedule.getString(OWM_ENDTIME);
             String dateString = schedule.getString(OWM_DATE);
+            place = schedule.getString(OWM_ROOM);
+
+// ------- Zamiana daty na inty
             if (dateString.equals("12 05 2017")) {
                 date = 1;
             } else if (dateString.equals("13 05 2017")) {
@@ -129,16 +168,14 @@ public final class OpenConferenceJsonUtils {
             } else {
                 date = 3;
             }
-            place = schedule.getString(OWM_ROOM);
-            if (tags.length > 0) {
-                parsedLecturesData[i] = " - " + title + " - " + date + "-" + place + "--" + tags[0];
-            } else {
-                parsedLecturesData[i] = " - " + title + " - " + date + "-" + place + "--";
-            }
-//            TU TRZEBA BĘDZIE TWORZYĆ LECTURES
 
-//            Lecture lectToAdd = new Lecture(title, authors[0], description, date, id, startTime, place, new ArrayList<Tag>(), false);
-//            ActivityData.updateLecture(context, lectToAdd);
+// -------- Tworze WHERE dla usuwania nieaktualnych danych. To ma być ciąg postaci ( id1, id2, id3, ..., 1, 2, 3 ) {1, 2, 3 bo to są id referatów, które muszą być zawsze}
+//           celem jest zapytanie typu DELETE costam FROM costam WHERE costam NOT IN (id1, ....)
+            if (i != jsonArray.length() - 1) {
+                deleteWhere += id + ", ";
+            } else {
+                deleteWhere += id;
+            }
 
             ContentValues sched_cv = new ContentValues();
             sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_ID, id);
@@ -154,8 +191,10 @@ public final class OpenConferenceJsonUtils {
             cv.put(DatabaseContract.LecturesEntry.COLUMN_DATE_ID, date);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ROOM_ID, place);
             toadd.add(cv);
-
         }
+
+        deleteWhere += ", 1, 2, 3)";
+        String[] whereArr = {deleteWhere};
         ContentValues[] arr = new ContentValues[toadd.size()];
         ContentValues[] scheduleArr = new ContentValues[toadd.size()];
 
@@ -171,11 +210,13 @@ public final class OpenConferenceJsonUtils {
             scheduleArr[i] = c;
             i++;
         }
-
         context.getContentResolver().bulkInsert(DatabaseContract.LecturesEntry.CONTENT_URI, arr);
         context.getContentResolver().bulkInsert(DatabaseContract.ScheduleEntry.CONTENT_URI, scheduleArr);
 
-        return parsedLecturesData;
+//-------------------------- Usuwam nieaktualne dane, czyli te, które znikneły z JSONA -----------------------------------------
+        context.getContentResolver().delete(DatabaseContract.LecturesEntry.CONTENT_URI, DatabaseContract.LecturesEntry.COLUMN_ID, whereArr);
+
+        return result;
     }
 
     public static String[] getPostersStringsFromJson(Context context, String forecastJsonStr)
@@ -201,6 +242,7 @@ public final class OpenConferenceJsonUtils {
         String endTime = null;
         String date = null;
 
+        String deleteWhere = "( ";
         List<ContentValues> toadd = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */
@@ -244,15 +286,20 @@ public final class OpenConferenceJsonUtils {
             } else {
                 parsedLecturesData[i] = " - " + title + " - " + date + "--";
             }
-//            TU TRZEBA BĘDZIE TWORZYĆ POSTERS
 
-            ContentValues cv = new ContentValues();
-            cv.put(DatabaseContract.PostersEntry.COLUMN_ID, id);
-            cv.put(DatabaseContract.PostersEntry.COLUMN_TITLE, title);
-            cv.put(DatabaseContract.PostersEntry.COLUMN_AUTHOR, authors[0]);
-            cv.put(DatabaseContract.PostersEntry.COLUMN_ABSTRACT, description);
-            toadd.add(cv);
+            if (i != jsonArray.length() - 1) {
+                deleteWhere += id + ", ";
+            } else {
+                deleteWhere += id;
 
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseContract.PostersEntry.COLUMN_ID, id);
+                cv.put(DatabaseContract.PostersEntry.COLUMN_TITLE, title);
+                cv.put(DatabaseContract.PostersEntry.COLUMN_AUTHOR, authors[0]);
+                cv.put(DatabaseContract.PostersEntry.COLUMN_ABSTRACT, description);
+                toadd.add(cv);
+
+            }
         }
         ContentValues[] arr = new ContentValues[toadd.size()];
         int i = 0;
@@ -262,7 +309,10 @@ public final class OpenConferenceJsonUtils {
             i++;
         }
 
+        deleteWhere += " )";
+        String[] whereArr = {deleteWhere};
         context.getContentResolver().bulkInsert(DatabaseContract.PostersEntry.CONTENT_URI, arr);
+        context.getContentResolver().delete(DatabaseContract.PostersEntry.CONTENT_URI, DatabaseContract.LecturesEntry.COLUMN_ID, whereArr);
 
         return parsedLecturesData;
     }
@@ -315,10 +365,10 @@ public final class OpenConferenceJsonUtils {
             parsedBreaksData[i] = " - " + title + " - " + date + "-" + place + "--";
 //            TU TRZEBA BĘDZIE TWORZYĆ Breaks
             int type = 3;
-            if(title.equals("Przerwa obiadowa")){
+            if (title.equals("Przerwa obiadowa")) {
                 type = 2;
             }
-            if(title.equals("Sesja plakatowa")){
+            if (title.equals("Sesja plakatowa")) {
                 type = 1;
             }
 
@@ -356,7 +406,8 @@ public final class OpenConferenceJsonUtils {
      * @param forecastJsonStr The JSON to parse into ContentValues.
      * @return An array of ContentValues parsed from the JSON.
      */
-    public static ContentValues[] getFullWeatherDataFromJson(Context context, String forecastJsonStr) {
+    public static ContentValues[] getFullWeatherDataFromJson(Context context, String
+            forecastJsonStr) {
         /** This will be implemented in a future lesson **/
         return null;
     }

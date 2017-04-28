@@ -96,7 +96,7 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
                 /* URI for all rows of weather data in our weather table */
                 Uri forecastQueryUri = DatabaseContract.PostersEntry.CONTENT_URI;
                 /* Sort order: Ascending by date */
-                String sortOrder = null;
+                String sortOrder = DatabaseContract.PostersEntry.COLUMN_MARK + " DESC";
                 /*
                  * A SELECTION in SQL declares which rows you'd like to return. In our case, we
                  * want all weather data from today onwards that is stored in our weather table.

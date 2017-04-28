@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fitsSystemWindows="true">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:auto="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
 
 <android.support.design.widget.AppBarLayout
     android:id="@+id/app_bar_layout"
@@ -188,14 +188,15 @@ android:fitsSystemWindows="true">
                     android:textSize="14sp"
                     android:text="Abstrakt"/>
 
-                <TextView
+                <!--<TextView-->
+                <io.github.kexanie.library.MathView
                     android:id="@+id/tv_lect_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_large"
                     android:textSize="16sp"
                     android:lineSpacingExtra="5dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </LinearLayout>
 

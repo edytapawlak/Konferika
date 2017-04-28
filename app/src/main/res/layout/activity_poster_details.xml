@@ -118,7 +118,7 @@
                         android:textSize="14sp"
                         android:text="Abstrakt"/>
 
-                    <TextView
+                    <io.github.kexanie.library.MathView
                         android:id="@+id/tv_poster_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

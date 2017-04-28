@@ -229,13 +229,10 @@ public class DatabaseContract {
                 .appendPath(PATH_TAGS_LECT)
                 .build();
 
-        public static final String TAGS_TABLE_NAME = "Tags";
-        public static final String LECTURES_TAGS_TABLE_NAME = "Lectures_tags";
+        public static final String TABLE_NAME = "Lectures_tags";
 
-        public static final String COLUMN_ID = "id";
-        public static final String COLUMN_TITLE = "tag_text";
         public static final String COLUMN_LECT_ID = "lecture_id";
-        public static final String COLUMN_POSTER_LECT_TAG_ID = "tag_id";
+        public static final String COLUMN_TAG_ID = "tag_id";
 
 
         /**

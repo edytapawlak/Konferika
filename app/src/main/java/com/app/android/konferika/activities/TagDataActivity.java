@@ -2,6 +2,7 @@ package com.app.android.konferika.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,8 @@ public class TagDataActivity extends AppCompatActivity {
 
         final ArrayList<Lecture> lectForTag = new ArrayList<>();//ActivityData.getLectForTag(this, tagId);
         final ArrayList<Poster> postersForTag = new ArrayList<>();//ActivityData.getPostersForTag(this, tagId);
+        Cursor lectCursor = null;
+
 
         LinearLayout lecturesLinearLayout = (LinearLayout) findViewById(R.id.tags_lectures_linear_layout);
         LinearLayout posterLinearLayout = (LinearLayout) findViewById(R.id.tags_posters_linear_layout);

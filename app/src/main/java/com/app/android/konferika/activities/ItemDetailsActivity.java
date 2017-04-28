@@ -28,6 +28,8 @@ import com.app.android.konferika.obj.UserSchedule;
 ;import java.util.ArrayList;
 import java.util.List;
 
+import io.github.kexanie.library.MathView;
+
 public class ItemDetailsActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Context mContext;
@@ -78,9 +80,10 @@ public class ItemDetailsActivity extends AppCompatActivity {
         }
 
         TextView tvTitle = (TextView) findViewById(R.id.tv_lect_title);
-        TextView tvBody = (TextView) findViewById(R.id.tv_lect_description);
-        TextView tvAuthor = (TextView) findViewById(R.id.tv_lect_author);
+//        TextView tvBody = (TextView) findViewById(R.id.tv_lect_description);
+        MathView tvBody = (MathView) findViewById(R.id.tv_lect_description);
 
+        TextView tvAuthor = (TextView) findViewById(R.id.tv_lect_author);
         TextView tvDay = (TextView) findViewById(R.id.tv_day);
         TextView tvTime = (TextView) findViewById(R.id.tv_time);
         TextView tvRoom = (TextView) findViewById(R.id.tv_room);

@@ -24,6 +24,8 @@ import com.app.android.konferika.obj.Tag;
 
 import java.util.ArrayList;
 
+import io.github.kexanie.library.MathView;
+
 public class PosterDetailsActivity extends AppCompatActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -67,7 +69,7 @@ public class PosterDetailsActivity extends AppCompatActivity {
         }
 
         TextView tvTitle = (TextView) findViewById(R.id.tv_poster_title);
-        TextView tvBody = (TextView) findViewById(R.id.tv_poster_description);
+        MathView tvBody = (MathView) findViewById(R.id.tv_poster_description);
         TextView tvAuthor = (TextView) findViewById(R.id.tv_poster_author);
         posterRatingBar = (RatingBar) findViewById(R.id.poster_details_rating_bar);
 

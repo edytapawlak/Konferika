@@ -26,7 +26,7 @@ public class DataProvider extends ContentProvider {
     public static final int CODE_SPECYFIC_BREAK = 301;
     public static final int CODE_GET_ALL_START_TIMES = 400;
     public static final int CODE_GET_ALL_USERS_START_TIMES = 401;
-    public static final int CODE_GET_LECT_TAGS = 500;
+    public static final int CODE_LECT_TAGS = 500;
     public static final int CODE_GET_SPECYFIC_TAG_LECT = 501;
     public static final int CODE_GET_POS_TAGS = 600;
     public static final int CODE_GET_SPECYFIC_TAG_POS = 601;
@@ -36,13 +36,14 @@ public class DataProvider extends ContentProvider {
     public static final int CODE_USER_LECTURES = 802;
     public static final int CODE_SPECYFIC_SCHED = 901;
     public static final int CODE_SCHED = 900;
+    public static final int CODE_TAG = 1000;
+    public static final int CODE_SPECYFIC_TAG = 1001;
 
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private DatabaseOpenHelper mOpenHelper;
     private Context context;
-
     @Override
     public boolean onCreate() {
         this.context = this.getContext();
@@ -61,7 +62,7 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_BREAK, CODE_BREAKS);
         matcher.addURI(authority, DatabaseContract.PATH_ALL_START_TIME, CODE_GET_ALL_START_TIMES);
         matcher.addURI(authority, DatabaseContract.PATH_ALL_USERS_START_TIME, CODE_GET_ALL_USERS_START_TIMES);
-        matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT, CODE_GET_LECT_TAGS);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS_LECT, CODE_LECT_TAGS);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS, CODE_GET_POS_TAGS);
         matcher.addURI(authority, DatabaseContract.PATH_TAGS, CODE_TAGS);
         matcher.addURI(authority, DatabaseContract.PATH_LECTURES_JOIN_SCHED, CODE_LECTURES_JOIN_SCHED);
@@ -80,6 +81,7 @@ public class DataProvider extends ContentProvider {
         matcher.addURI(authority, DatabaseContract.PATH_TAGS_POS + "/#", CODE_GET_SPECYFIC_TAG_POS);
         matcher.addURI(authority, DatabaseContract.PATH_SCHED + "/#", CODE_SPECYFIC_SCHED);
         matcher.addURI(authority, DatabaseContract.PATH_LECTURES_JOIN_SCHED + "/#", CODE_SPECYFIC_LECTURES_JOIN_SCHED);
+        matcher.addURI(authority, DatabaseContract.PATH_TAGS + "/#", CODE_SPECYFIC_TAG);
 
         return matcher;
     }
@@ -87,15 +89,19 @@ public class DataProvider extends ContentProvider {
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        String selection;
+        String[] selectionArgs;
+        int rowsInserted;
 
         switch (sUriMatcher.match(uri)) {
             case CODE_LECTURES:
+                selectionArgs = new String[1];
                 db.beginTransaction();
-                int rowsInserted = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        String selection = DatabaseContract.LecturesEntry.COLUMN_ID + " = ?";
-                        String[] selectionArgs = {value.getAsString(DatabaseContract.LecturesEntry.COLUMN_ID)};
+                        selection = DatabaseContract.LecturesEntry.COLUMN_ID + " = ?";
+                        selectionArgs[0] = value.getAsString(DatabaseContract.LecturesEntry.COLUMN_ID);
 
                         int affected = db.update(DatabaseContract.LecturesEntry.TABLE_NAME,
                                 value, selection, selectionArgs);
@@ -115,18 +121,19 @@ public class DataProvider extends ContentProvider {
                 return rowsInserted;
 
             case CODE_POSTERS:
+                selectionArgs = new String[1];
                 db.beginTransaction();
-                int rowsInserted2 = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        String selection = DatabaseContract.PostersEntry.COLUMN_ID + " = ?";
-                        String[] selectionArgs = {value.getAsString(DatabaseContract.PostersEntry.COLUMN_ID)};
+                        selection = DatabaseContract.PostersEntry.COLUMN_ID + " = ?";
+                        selectionArgs[0] = value.getAsString(DatabaseContract.PostersEntry.COLUMN_ID);
 
                         int affected = db.update(DatabaseContract.PostersEntry.TABLE_NAME,
                                 value, selection, selectionArgs);
                         if (affected == 0) {
                             long rowId = db.insert(DatabaseContract.PostersEntry.TABLE_NAME, null, value);
-                            if (rowId > 0) rowsInserted2++;
+                            if (rowId > 0) rowsInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
@@ -134,23 +141,24 @@ public class DataProvider extends ContentProvider {
                     db.endTransaction();
                 }
 
-                if (rowsInserted2 > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-                return rowsInserted2;
+                return rowsInserted;
             case CODE_BREAKS:
+                selectionArgs = new String[1];
                 db.beginTransaction();
-                int rowsInserted3 = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        String selection = DatabaseContract.BreakEntry.COLUMN_ID + " = ?";
-                        String[] selectionArgs = {value.getAsString(DatabaseContract.BreakEntry.COLUMN_ID)};
+                        selection = DatabaseContract.BreakEntry.COLUMN_ID + " = ?";
+                        selectionArgs[0] = value.getAsString(DatabaseContract.BreakEntry.COLUMN_ID);
 
                         int affected = db.update(DatabaseContract.BreakEntry.TABLE_NAME,
                                 value, selection, selectionArgs);
                         if (affected == 0) {
                             long rowId = db.insert(DatabaseContract.BreakEntry.TABLE_NAME, null, value);
-                            if (rowId > 0) rowsInserted3++;
+                            if (rowId > 0) rowsInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
@@ -158,23 +166,24 @@ public class DataProvider extends ContentProvider {
                     db.endTransaction();
                 }
 
-                if (rowsInserted3 > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-                return rowsInserted3;
+                return rowsInserted;
             case CODE_TAGS:
+                selectionArgs = new String[1];
                 db.beginTransaction();
-                int rowsInserted4 = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        String selection = DatabaseContract.TagsEntry.COLUMN_TITLE + " = ?";
-                        String[] selectionArgs = {value.getAsString(DatabaseContract.TagsEntry.COLUMN_TITLE)};
+                        selection = DatabaseContract.TagsEntry.COLUMN_TITLE + " = ?";
+                        selectionArgs[0] = value.getAsString(DatabaseContract.TagsEntry.COLUMN_TITLE);
 
                         int affected = db.update(DatabaseContract.TagsEntry.TABLE_NAME,
                                 value, selection, selectionArgs);
                         if (affected == 0) {
                             long rowId = db.insert(DatabaseContract.TagsEntry.TABLE_NAME, null, value);
-                            if (rowId > 0) rowsInserted4++;
+                            if (rowId > 0) rowsInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
@@ -182,34 +191,52 @@ public class DataProvider extends ContentProvider {
                     db.endTransaction();
                 }
 
-                if (rowsInserted4 > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-                return rowsInserted4;
+                return rowsInserted;
             case CODE_SCHED:
+                selectionArgs = new String[1];
                 db.beginTransaction();
-                int rowsInserted5 = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        String selection = DatabaseContract.ScheduleEntry.COLUMN_ID + " = ?";
-                        String[] selectionArgs = {value.getAsString(DatabaseContract.ScheduleEntry.COLUMN_ID)};
+                        selection = DatabaseContract.ScheduleEntry.COLUMN_ID + " = ?";
+                        selectionArgs[0] = value.getAsString(DatabaseContract.ScheduleEntry.COLUMN_ID);
 
                         int affected = db.update(DatabaseContract.ScheduleEntry.TABLE_NAME,
                                 value, selection, selectionArgs);
                         if (affected == 0) {
                             long rowId = db.insert(DatabaseContract.ScheduleEntry.TABLE_NAME, null, value);
-                            if (rowId > 0) rowsInserted5++;
+                            if (rowId > 0) rowsInserted++;
                         }
                     }
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
                 }
-
-                if (rowsInserted5 > 0) {
+                if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-                return rowsInserted5;
+                return rowsInserted;
+            case CODE_LECT_TAGS:
+                db.beginTransaction();
+                rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+
+                            long rowId = db.insert(DatabaseContract.LectureTagsEntry.TABLE_NAME, null, value);
+                            if (rowId > 0) rowsInserted++;
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted;
 
             default:
                 return super.bulkInsert(uri, values);
@@ -416,13 +443,19 @@ public class DataProvider extends ContentProvider {
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int numRowsDeleted;
         if (null == selection) selection = "1";
+        Cursor cur;
+        SQLiteDatabase db;
         switch (sUriMatcher.match(uri)) {
             case CODE_LECTURES:
-                numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
-                        DatabaseContract.LecturesEntry.TABLE_NAME,
-                        selection,
-                        selectionArgs);
+                db = mOpenHelper.getWritableDatabase();
+                cur = db.rawQuery("DELETE FROM Ref WHERE _id NOT IN " + selectionArgs[0], null);
+                numRowsDeleted = cur.getCount();
                 break;
+                case CODE_POSTERS:
+                    db = mOpenHelper.getWritableDatabase();
+                    cur = db.rawQuery("DELETE FROM Posters WHERE id NOT IN " + selectionArgs[0], null);
+                    numRowsDeleted = cur.getCount();
+                    break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
