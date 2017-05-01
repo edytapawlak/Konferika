@@ -22,5 +22,6 @@
     <dimen name="section_header_text_size">18dp</dimen>
 
     <dimen name="cardViewCornerRad">4dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
 

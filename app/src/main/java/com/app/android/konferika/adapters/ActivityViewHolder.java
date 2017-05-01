@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final LinearLayout actLayout;
     public final LinearLayout breakLayout;
     public final CheckBox myActCheckbox;
+    public final RatingBar mRatingBar;
 
     private LecturesList mLectList;
     private Context context;
@@ -51,6 +53,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         myActCheckbox = (CheckBox) itemView.findViewById(R.id.check_box_myAct);
         actLayout = (LinearLayout) itemView.findViewById(R.id.act_layotu);
         breakLayout = (LinearLayout) itemView.findViewById(R.id.break_layout);
+        mRatingBar = (RatingBar) itemView.findViewById(R.id.lecture_list_rating_bar);
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
         context = itemView.getContext();
@@ -103,9 +106,14 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                 activ.handleOnClick(context, null);
             } else {
                 int id = Integer.parseInt(text);
-                Intent intent = new Intent(context, ItemDetailsActivity.class);
-                intent.putExtra("lectID", id);
-                context.startActivity(intent);
+                if(id != 1 && id != 2 && id != 3) {
+                    Intent intent = new Intent(context, ItemDetailsActivity.class);
+                    intent.putExtra("lectID", id);
+                    context.startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getContext(), "Ten wykład nie podlega głosowaniu", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

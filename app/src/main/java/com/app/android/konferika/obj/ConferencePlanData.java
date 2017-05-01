@@ -36,7 +36,7 @@ public class ConferencePlanData extends DisplayData {
      */
     public List<SectionHeader> getConferencePlan(Context context, int dateId) {
         //Pobrać wszystkie startTime
-        String[] timeSelArgs = {dateId+""};
+        String[] timeSelArgs = {dateId + ""};
         Cursor startTimeCursor = context.getContentResolver().query(DatabaseContract.StartTimesEntry.CONTENT_URI, null,
                 null, timeSelArgs, null);
         Cursor actForTimeCursor;
@@ -51,12 +51,13 @@ public class ConferencePlanData extends DisplayData {
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR,
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE};
         String[] breakssProjection = {
                 DatabaseContract.BreakEntry.COLUMN_TYPE,
                 DatabaseContract.BreakEntry.COLUMN_TITLE,
                 DatabaseContract.BreakEntry.COLUMN_START_TIME,
-                };
+        };
         String selectionLect = DatabaseContract.LecturesEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.LecturesEntry.COLUMN_DATE_ID + " = ?";
         String selectionBreak = DatabaseContract.BreakEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.BreakEntry.COLUMN_DATE_ID + " = ?";
 

@@ -3,30 +3,22 @@ package com.app.android.konferika.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.android.konferika.R;
-//import com.app.android.konferika.data.ActivityData;
 import com.app.android.konferika.data.DatabaseContract;
-import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.obj.Poster;
-import com.app.android.konferika.obj.Tag;
-
-import java.util.ArrayList;
 
 public class TagDataActivity extends AppCompatActivity {
 
     Context mActivity;
     int tagId;
     String tagTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +42,7 @@ public class TagDataActivity extends AppCompatActivity {
         tagTitleTextView.setText(tagTitle);
 
         TextView clickableTextView;
-        while (!lectCursor.isAfterLast()){
+        while (!lectCursor.isAfterLast()) {
             final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -58,7 +50,7 @@ public class TagDataActivity extends AppCompatActivity {
             params.setMargins(10, 5, 10, 5);
             TextView lect_title_tv = new TextView(this);
             lect_title_tv.setTextSize(15);
-            lect_title_tv.setPadding(15,15,15,15);
+            lect_title_tv.setPadding(15, 15, 15, 15);
 //            lect_title_tv.setBackgroundColor(Color.argb(100, 255, 255, 255));
             TextView separator = new TextView(this);
             separator.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
@@ -73,40 +65,16 @@ public class TagDataActivity extends AppCompatActivity {
             clickableTextView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
 
-                    String[] projection = {
-                            DatabaseContract.LecturesEntry.COLUMN_TITLE,
-                            DatabaseContract.LecturesEntry.COLUMN_AUTHOR,
-                            DatabaseContract.LecturesEntry.COLUMN_ABSTRACT,
-                            DatabaseContract.LecturesEntry.COLUMN_START_TIME,
-                            DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
-                            DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                            DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
-
-                            Cursor lectCur = getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.buildLecturesJoinScheduleUriWithDate(id_-200),
-                            projection, null, null, null);
-                    lectCur.moveToFirst();
-                    Lecture l = null;
-                    while (!lectCur.isAfterLast()){
-                        String title = lectCur.getString(0);
-                        String author = lectCur.getString(1);
-                        String abtract = lectCur.getString(2);
-                        String startTime = lectCur.getString(3);
-                        int date = lectCur.getInt(4);
-                        String room = lectCur.getString(5);
-                        int isInUstDat = lectCur.getInt(6);
-                        String tags = "";
-                        boolean inUsrSched = (isInUstDat == 1);
-
-                        l = new Lecture(mActivity, title,author, abtract, date, id_-200, startTime, room, inUsrSched);
-                        lectCur.moveToNext();
-                    }
-                    lectCur.close();
-                    l.handleOnClick(mActivity, null);
+                    Intent intent = new Intent(mActivity, ItemDetailsActivity.class);
+                    intent.putExtra("lectID", id_-200);
+                    mActivity.startActivity(intent);
                 }
             });
             lectCursor.moveToNext();
         }
         lectCursor.close();
+
+//---------------- To kod dla tagów dla posterów -----------------------------------------
 
 //        TextView clickablePostersTextView;
 //        for (Poster pos :

@@ -180,13 +180,21 @@ public final class OpenConferenceJsonUtils {
 
             ContentValues sched_cv = new ContentValues();
             sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_ID, id);
-            sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, "0");
+
+//            sched_cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, "0");
+
             scheduleToadd.add(sched_cv);
+//------------Wybieram autorów, w stringu zapisuje ich po przecinku
+            String aut = "";
+            for (int j = 0; j < authors.length - 1; j++) {
+                aut += authors[j] + ", ";
+            }
+            aut += authors[authors.length - 1];
 
             ContentValues cv = new ContentValues();
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ID, id);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_TITLE, title);
-            cv.put(DatabaseContract.LecturesEntry.COLUMN_AUTHOR, authors[0]);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_AUTHOR, aut);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ABSTRACT, description);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_START_TIME, startTime);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_DATE_ID, date);

@@ -27,11 +27,12 @@ public class Lecture implements Activity, Serializable {
     private String startTime;
     private String room;
     private boolean isInUserSched;
+    private float rating;
     //    private List<Tag> tags;
     private String tags;
 
 
-    public Lecture(Context context, String title, String author, String abs, int date, int id, String startTime, String room, boolean isInSched) {
+    public Lecture(Context context, String title, String author, String abs, int date, int id, String startTime, String room, boolean isInSched, float rating) {
         this.title = title;
         this.author = author;
         this.abs = abs;
@@ -42,13 +43,14 @@ public class Lecture implements Activity, Serializable {
         this.room = room;
         this.tags = tags;
         this.isInUserSched = isInSched;
+        this.rating = rating;
 
         String[] projection = {DatabaseContract.TagsEntry.COLUMN_TITLE};
-        String[] selectionArgs = {id+""};
+        String[] selectionArgs = {id + ""};
         Cursor tagCur = context.getContentResolver().query(DatabaseContract.LectureTagsEntry.CONTENT_URI, projection, null, selectionArgs, null);
         tagCur.moveToFirst();
         String t = "";
-        while (!tagCur.isAfterLast()){
+        while (!tagCur.isAfterLast()) {
             t += tagCur.getString(0) + " ";
             tagCur.moveToNext();
         }
@@ -73,10 +75,12 @@ public class Lecture implements Activity, Serializable {
 
     @Override
     public void handleOnClick(Context context, SchedFragment fragment) {
-        Intent intent = new Intent(context, ItemDetailsActivity.class);
-        intent.putExtra("lectID", this.getId());
-        Log.v("przesyłam:", this.getTags());
-        context.startActivity(intent);
+        if(this.id != 1 && this.id != 2 && this.id != 3) {
+            Intent intent = new Intent(context, ItemDetailsActivity.class);
+            intent.putExtra("lectID", this.getId());
+            Log.v("przesyłam:", this.getTags());
+            context.startActivity(intent);
+        }
     }
 
     @Override
@@ -109,6 +113,10 @@ public class Lecture implements Activity, Serializable {
         return room;
     }
 
+    public float getRating() {
+        return rating;
+    }
+
     public String getWeekDay() {
         switch (dateId) {
             case 1:
@@ -136,10 +144,19 @@ public class Lecture implements Activity, Serializable {
         holder.mTagsTextView.setText(this.getTags());
         holder.myActCheckbox.setChecked(this.isInUserSched);
 
+
         if (ViewPagerAdapter.getScheduleId() != 0) {
             holder.myActCheckbox.setVisibility(View.INVISIBLE);
         } else {
             holder.myActCheckbox.setVisibility(View.VISIBLE);
+        }
+
+        if(this.id != 1 && this.id != 2 && this.id != 3) {
+            holder.mRatingBar.setVisibility(View.VISIBLE);
+            holder.mRatingBar.setRating(this.getRating());
+        }else{
+            holder.mRatingBar.setVisibility(View.INVISIBLE);
+            holder.myActCheckbox.setVisibility(View.INVISIBLE);
         }
 
         ViewGroup.LayoutParams breakParams = holder.breakLayout.getLayoutParams();

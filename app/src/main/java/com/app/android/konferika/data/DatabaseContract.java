@@ -145,6 +145,7 @@ public class DatabaseContract {
         public static final String COLUMN_DATE_ID = "date_id";
         public static final String COLUMN_ROOM_ID = "room_id";
         public static final String COLUMN_IS_IN_USR = "is_in_usr_sched";
+        public static final String COLUMN_RATE = "rate";
 
         public static Uri buildLecturesJoinScheduleUriWithDate(int id) {
             return CONTENT_URI.buildUpon()
@@ -181,6 +182,7 @@ public class DatabaseContract {
 
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_IS_IN_USR = "is_in_usr_sched";
+        public static final String COLUMN_RATE = "rate";
 
         /**
          * @param id LectID

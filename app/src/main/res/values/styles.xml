@@ -22,7 +22,7 @@
         <item name="android:selectableItemBackground">@drawable/selectable_item_background</item>
 
     </style>
-<!--<item name="android:src">@mipmap/empty_star</item>-->
+    <!--<item name="android:src">@mipmap/empty_star</item>-->
 
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -33,19 +33,31 @@
         <item name="elevation">6dp</item>
         <item name="pressedTranslationZ">12dp</item>
         <item name="rippleColor">@android:color/white</item>
-        <item name="android:colorBackground" > @color/coffe_color</item>
+        <item name="android:colorBackground">@color/coffe_color</item>
     </style>
 
-    <style name="SmallRatingBar"
-        parent="android:style/Widget.Material.RatingBar.Small">
+    <style name="SmallRatingBar" parent="android:style/Widget.Material.RatingBar.Small">
         <item name="colorControlNormal">@color/accent</item>
         <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 
-    <style name="RatingBar"
-        parent="android:style/Widget.Material.RatingBar">
+    <style name="RatingBar" parent="android:style/Widget.Material.RatingBar">
         <item name="colorControlNormal">#f1df7d</item>
         <item name="colorControlActivated">#efdc75</item>
     </style>
+    <style name="DarkRatingBar" parent="android:style/Widget.Material.RatingBar">
+        <item name="colorControlNormal">#5b5952</item>
+        <item name="colorControlActivated">#69675c</item>
+    </style>
+
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

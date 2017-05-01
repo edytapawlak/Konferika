@@ -107,9 +107,9 @@ public class UserDayData extends DisplayData implements Serializable {
 //        return planForDay;
 //    }
 
-    public List<SectionHeader> getUserSchedForDay(Context context, int dateId){
+    public List<SectionHeader> getUserSchedForDay(Context context, int dateId) {
         //Pobrać wszystkie startTime
-        String[] timeSelArgs = {dateId+""};
+        String[] timeSelArgs = {dateId + ""};
         Cursor startTimeCursor = context.getContentResolver().query(DatabaseContract.UserStartTimesEntry.CONTENT_URI, null,
                 null, timeSelArgs, null);
         Cursor actForTimeCursor;
@@ -127,14 +127,15 @@ public class UserDayData extends DisplayData implements Serializable {
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR};
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR,
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE};
         String[] breakssProjection = {
                 DatabaseContract.BreakEntry.COLUMN_TYPE,
                 DatabaseContract.BreakEntry.COLUMN_TITLE,
                 DatabaseContract.BreakEntry.COLUMN_START_TIME,
         };
         String selectionLect = DatabaseContract.LecturesJoinScheduleEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.LecturesEntry.COLUMN_DATE_ID + " = ? AND " +
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR + " = ?" ;
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR + " = ?";
         String selectionBreak = DatabaseContract.BreakEntry.COLUMN_START_TIME + " = ? AND " + DatabaseContract.BreakEntry.COLUMN_DATE_ID + " = ?";
 
         SectionHeader sc;

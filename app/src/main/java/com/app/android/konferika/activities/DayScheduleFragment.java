@@ -104,7 +104,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
 
     @Override
     public void onClick(Activity activ) {
-        activ.handleOnClick(mContext, this);
+//        activ.handleOnClick(mContext, this);
     }
 
     @Override

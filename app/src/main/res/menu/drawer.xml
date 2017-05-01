@@ -13,7 +13,7 @@
 
         <item
             android:id="@+id/drawer_favourite"
-            android:icon="@drawable/ic_starr_fill"
+            android:icon="@drawable/ic_heart_fill"
             android:title="@string/favourite"
             android:checkable="true"/>
 
@@ -26,7 +26,7 @@
         <item
             android:id="@+id/drawer_tags"
             android:checked="true"
-            android:icon="@drawable/ic_calendar"
+            android:icon="@drawable/ic_tags"
             android:title="@string/tags"
             android:checkable="true"/>
 
@@ -38,7 +38,7 @@
 
         <item
             android:id="@+id/drawer_poll"
-            android:icon="@mipmap/ic_lempty_heart"
+            android:icon="@mipmap/fill_star"
             android:title="@string/poll"
             android:checkable="true"/>
 

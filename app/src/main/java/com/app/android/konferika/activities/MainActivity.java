@@ -17,22 +17,23 @@ public class MainActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = this;
 
+        mActivity = this;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        super.navigationView.setCheckedItem(R.id.drawer_con_pan);
         View contentView = inflater.inflate(R.layout.activity_main, null, false);
 
         super.lay.addView(contentView, 0);
 
-        initToolbar();
-
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-
+        initToolbar();
         setupViewPager(viewPager);
+
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -46,13 +47,21 @@ public class MainActivity extends BaseActivity {
         setupViewPager(viewPager);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
+        viewPager.getAdapter().notifyDataSetChanged();
+        //setupViewPager(viewPager);
+    }
+
     /**
      * This method adds tabs to a viewPager
      *
      * @param viewPager
      */
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new DayScheduleFragment(), "Piątek");
         adapter.addFrag(new DayScheduleFragment(), "Sobota");
         adapter.addFrag(new DayScheduleFragment(), "Niedziela");
@@ -67,13 +76,6 @@ public class MainActivity extends BaseActivity {
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
         setupViewPager(viewPager);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        ViewPagerAdapter.setScheduleId(ViewPagerAdapter.CONFERENCE_SCHED);
-        // Toast.makeText(this, "OnRestart", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -11,9 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +22,11 @@ import com.app.android.konferika.adapters.DisplayActDataAdapter;
 import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.LecturesList;
-import com.app.android.konferika.obj.Tag;
 import com.app.android.konferika.obj.UserSchedule;
 
-;import java.util.ArrayList;
-import java.util.List;
-
 import io.github.kexanie.library.MathView;
+
+;
 
 public class ItemDetailsActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -36,6 +34,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
     private Lecture item;
     private UserSchedule userSched;
     private FloatingActionButton fabulousBtn;
+    private RatingBar lectRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         mContext = this;
 //        item = (Lecture) getIntent().getIntExtra("lectID");
-        int lectureId = getIntent().getIntExtra("lectID", -1);
+        final int lectureId = getIntent().getIntExtra("lectID", -1);
         String[] projection = {
                 DatabaseContract.LecturesEntry.COLUMN_TITLE,
                 DatabaseContract.LecturesEntry.COLUMN_AUTHOR,
@@ -52,7 +51,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR,
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE
         };
 //        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), projection, null, null, null);
         Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.buildLecturesJoinScheduleUriWithDate(lectureId),
@@ -68,8 +68,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
             int isInUstDat = lectCur.getInt(6);
             boolean inUsrSched = (isInUstDat == 1);
             String tags = "";
+            float rate = lectCur.getFloat(7);
 
-            item = new Lecture(mContext, title,author, abtract, date, lectureId, startTime, room, inUsrSched);
+            item = new Lecture(mContext, title,author, abtract, date, lectureId, startTime, room, inUsrSched, rate);
             lectCur.moveToNext();
         }
         lectCur.close();
@@ -89,11 +90,24 @@ public class ItemDetailsActivity extends AppCompatActivity {
         TextView tvTime = (TextView) findViewById(R.id.tv_time);
         TextView tvRoom = (TextView) findViewById(R.id.tv_room);
 
+
+        lectRatingBar = (RatingBar) findViewById(R.id.lectures_details_rating_bar);
+
+        lectRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                PosterSesion.setMarkOnPos(mContext, poster.getId(), rating);
+                ContentValues cv = new ContentValues();
+                cv.put(DatabaseContract.ScheduleEntry.COLUMN_RATE, rating);
+                mContext.getContentResolver().update(DatabaseContract.ScheduleEntry.buildScheduleUriWithDate(lectureId), cv, null, null);
+            }
+        });
+
         fabulousBtn = (FloatingActionButton) findViewById(R.id.button_fabulous);
         if (item.getIsInUserSchedule()) {
-            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.fill_star));
+            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_fill));
         } else {
-            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.empty_star));
+            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_empty));
         }
 
         fabulousBtn.setOnClickListener(new View.OnClickListener() {
@@ -117,19 +131,15 @@ public class ItemDetailsActivity extends AppCompatActivity {
 //                    userSched.deleteActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
                     isChanged = false;
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.empty_star));
+                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_empty));
                 } else {
 //                    userSched.addActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
                     isChanged = true;
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.fill_star));
+                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_fill));
                 }
 
                 DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
-//                mRefData.setCheckOnPos(id, isChanged);
-//                ContentValues cv = new ContentValues();
-//                cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isChanged);
-//                mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(id), cv ,null, null);
                 item.setIsInUserSchedule(isChanged);
 //                Log.v("Clik", "Clicked " + isChanged);
             }
@@ -141,6 +151,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         tvDay.setText(item.getWeekDay());
         tvTime.setText(item.getStartTime());
         tvRoom.setText(item.getRoom());
+        lectRatingBar.setRating(item.getRating());
 
     }
 

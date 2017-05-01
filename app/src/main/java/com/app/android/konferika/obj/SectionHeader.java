@@ -117,10 +117,11 @@ public class SectionHeader extends StatelessSection {
             String startTime = childrens.getString(4);
             String room = childrens.getString(6);
             String tags = "tu będą tagi"; //TODO
-            boolean inUsrSched = (childrens.getInt(7) == 1); //todo
+            boolean inUsrSched = (childrens.getInt(7) == 1);
+            float rating = childrens.getFloat(8);//todo
 //            Log.v("Holder! ", "Tworze Lecture! " + childrens.getInt(7) + ", " + title);
 
-            activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, room, inUsrSched);
+            activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, room, inUsrSched, rating);
         } else if ( activId == PosterSesion.ID) {
             activ = new PosterSesion(itemHolder.getContext());
 //            Log.v("Holder! ", "Tworze PosterSesion");

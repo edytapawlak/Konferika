@@ -12,11 +12,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.activities.ItemDetailsActivity;
 import com.app.android.konferika.activities.PosterDetailsActivity;
-import com.app.android.konferika.obj.Activity;
 import com.app.android.konferika.obj.Poster;
-import com.app.android.konferika.obj.PosterSesion;
 
 import java.util.List;
 /*
@@ -25,21 +22,16 @@ Adapter dla GridRecyclerView
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {//implements View.OnClickListener {
 
     public void setItems(List<Poster> items) {
-        this.items = items;
         notifyDataSetChanged();
     }
 
     private Cursor it;
-    private List<Poster> items;
-    private OnItemClickListener onItemClickListener;
+//    private OnItemClickListener onItemClickListener;
 
-    public RecyclerViewAdapter(List<Poster> items) {
-        this.items = items;
-    }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
+//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+//        this.onItemClickListener = onItemClickListener;
+//    }
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_recycler_item, parent, false);
@@ -51,7 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         it.moveToPosition(position);
         holder.text.setText(it.getString(1));
         holder.author.setText(it.getString(2));
-//        holder.tags.setText("tag -- napraw to"); // TODO
+//        holder.tags.setText("tag -- napraw to"); // Plakaty nie mają tagów
 //        holder.image.setImageBitmap(null);
         holder.ratingBar.setRating(it.getFloat(3));
         holder.idTv.setText(it.getInt(0) + "");
@@ -107,9 +99,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-    public interface OnItemClickListener {
-
-        void onItemClick(View view, Poster viewModel);
-
-    }
+//    public interface OnItemClickListener {
+//
+//        void onItemClick(View view, Poster viewModel);
+//
+//    }
 }

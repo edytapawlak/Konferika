@@ -1,39 +1,32 @@
-package com.app.android.konferika;
+package com.app.android.konferika.activities;
 
-import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.app.android.konferika.activities.DataTestActivity;
 import com.app.android.konferika.utils.NetworkUtils;
 import com.app.android.konferika.utils.OpenConferenceJsonUtils;
 
 import java.net.URL;
 
-/**
- * Tu pobieram dane przy każdym włączaniu aplikacji
- */
 
-public class MyApp extends Application {
-
+public class SplashActivity extends AppCompatActivity {
     Context con;
     @Override
-    public void onCreate() {
-        super.onCreate();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         con  =  this;
-//        Toast.makeText(this, "Tu bym ten", Toast.LENGTH_SHORT).show();
         loadData();
-
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void loadData() {
-        new MyApp.FetchDataTask().execute("get_lectures", "get_posters", "get_breaks");
+        new SplashActivity.FetchDataTask().execute("get_lectures", "get_posters", "get_breaks");
     }
 
     public class FetchDataTask extends AsyncTask<String, Void, String[]> {
@@ -86,7 +79,7 @@ public class MyApp extends Application {
         @Override
         protected void onPostExecute(String[] weatherData) {
 //            mLoadingIndicator.setVisibility(View.INVISIBLE);
-                int i = 0;
+            int i = 0;
             if (weatherData != null) {
 //                showDataView();
                 /*
@@ -99,11 +92,12 @@ public class MyApp extends Application {
 //                    i++;
 //
 //                }
-            Toast.makeText(con, "Już! " + weatherData.length, Toast.LENGTH_SHORT).show();
+                Toast.makeText(con, "Już! " + weatherData.length, Toast.LENGTH_SHORT).show();
             } else {
 //                showErrorMessage();
                 Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }
