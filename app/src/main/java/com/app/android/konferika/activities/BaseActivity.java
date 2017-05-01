@@ -90,11 +90,11 @@ public class BaseActivity extends AppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         handler.sendEmptyMessageDelayed(1, 100);
                         break;
-                    case R.id.drawer_settings:
-                        intent = new Intent(mActivity, DataTestActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        handler.sendEmptyMessageDelayed(1, 100);
-                        break;
+//                    case R.id.drawer_settings:
+//                        intent = new Intent(mActivity, DataTestActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//                        handler.sendEmptyMessageDelayed(1, 100);
+//                        break;
                     case R.id.drawer_tags:
                         intent = new Intent(mActivity, TagsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

@@ -22,9 +22,7 @@
         <activity android:name=".activities.PosterDetailsActivity" />
         <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.PollActivity" />
-        <activity android:name=".activities.DataTestActivity">
 
-        </activity>
         <activity android:name=".activities.TagsActivity"></activity>
         <activity android:name=".activities.TagDataActivity" />
 

@@ -42,11 +42,11 @@
             android:title="@string/poll"
             android:checkable="true"/>
 
-        <item
-            android:id="@+id/drawer_settings"
-            android:icon="@mipmap/ic_settings"
-            android:title="@string/settings"
-            android:checkable="true"/>
+        <!--<item-->
+            <!--android:id="@+id/drawer_settings"-->
+            <!--android:icon="@mipmap/ic_settings"-->
+            <!--android:title="@string/settings"-->
+            <!--android:checkable="true"/>-->
 
     </group>
 

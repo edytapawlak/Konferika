@@ -45,6 +45,7 @@
         <item name="colorControlNormal">#f1df7d</item>
         <item name="colorControlActivated">#efdc75</item>
     </style>
+
     <style name="DarkRatingBar" parent="android:style/Widget.Material.RatingBar">
         <item name="colorControlNormal">#5b5952</item>
         <item name="colorControlActivated">#69675c</item>

@@ -103,7 +103,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                     context.startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getContext(), "Ten wykład nie podlega głosowaniu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Wykład specjalny.", Toast.LENGTH_SHORT).show();
                 }
             }
         }

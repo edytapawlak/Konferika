@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,10 +27,19 @@ public class TagDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_data);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
         mActivity = this;
         Intent i = getIntent();
         tagId = i.getIntExtra("tagId", 0);
         tagTitle = i.getStringExtra("tagTitle");
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(tagTitle);
+        }
 
 
 //        final ArrayList<Poster> postersForTag = new ArrayList<>();//ActivityData.getPostersForTag(this, tagId);  To jakby się chciało dodawać też plakaty
@@ -39,7 +51,7 @@ public class TagDataActivity extends AppCompatActivity {
         LinearLayout lecturesLinearLayout = (LinearLayout) findViewById(R.id.tags_lectures_linear_layout);
 //        LinearLayout posterLinearLayout = (LinearLayout) findViewById(R.id.tags_posters_linear_layout);
         TextView tagTitleTextView = (TextView) findViewById(R.id.tag_title_text_view);
-        tagTitleTextView.setText(tagTitle);
+//        tagTitleTextView.setText(tagTitle);
 
         TextView clickableTextView;
         while (!lectCursor.isAfterLast()) {
@@ -108,6 +120,18 @@ public class TagDataActivity extends AppCompatActivity {
 //            });
 //        }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
