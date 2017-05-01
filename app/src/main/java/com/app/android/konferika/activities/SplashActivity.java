@@ -92,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
 //                    i++;
 //
 //                }
-                Toast.makeText(con, "Już! " + weatherData.length, Toast.LENGTH_SHORT).show();
+                Toast.makeText(con, "Już!", Toast.LENGTH_SHORT).show();
             } else {
 //                showErrorMessage();
                 Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();

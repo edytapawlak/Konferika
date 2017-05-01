@@ -10,7 +10,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -18,14 +17,10 @@ import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.RecyclerViewAdapter;
 import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Poster;
-import com.app.android.konferika.obj.PosterSesion;
-
-import java.util.List;
 
 public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     //private static Context mContext;
-    private List<Poster> items;
     Cursor mCursorPosters;
     private RecyclerView recyclerView;
     RecyclerViewAdapter adapter;
@@ -51,7 +46,6 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
         super.drawerLayout.addView(contentView, 0);
 
        // mContext = this;
-        items = PosterSesion.getPosterList(this);
 
         getSupportLoaderManager().initLoader(ID_POSTERS_LOADER, null, this);
         initRecyclerView();
@@ -60,13 +54,6 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
         setRecyclerAdapter(recyclerView);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        items = PosterSesion.getPosterList(this);
-        adapter.setItems(items);
-
-    }
 
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.poster_recycled_view);
@@ -75,7 +62,7 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     }
 
     private void setRecyclerAdapter(RecyclerView recyclerView) {
-        adapter = new RecyclerViewAdapter(items);
+        adapter = new RecyclerViewAdapter();
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
@@ -84,7 +71,6 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
     public void onItemClick(View view, Poster viewModel) {
         Intent intent = new Intent(PosterActivity.this, PosterDetailsActivity.class);
         intent.putExtra("poster", viewModel);
-
 //        intent.putExtra("posterId", )
         startActivity(intent);
     }
@@ -95,7 +81,6 @@ public class PosterActivity extends BaseActivity implements RecyclerViewAdapter.
 
             case ID_POSTERS_LOADER:
                 Uri forecastQueryUri = DatabaseContract.PostersEntry.CONTENT_URI;
-                Log.v("URI POSTERS", forecastQueryUri.toString());
                 String sortOrder = DatabaseContract.PostersEntry.COLUMN_MARK + " DESC";
                 String selection = null;
 

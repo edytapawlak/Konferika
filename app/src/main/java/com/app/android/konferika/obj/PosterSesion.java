@@ -7,50 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.PosterActivity;
 import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
-//import com.app.android.konferika.data.ActivityData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class PosterSesion implements Activity, Serializable {
     private String title = "Sesja plakatowa";
     private int date;
     private String time;
-    private static ArrayList<Poster> postersList;
-    private static PosterSesion posters;
-    public static final int  ID = 1;
-
-    public PosterSesion(Context context) {
-        if (postersList == null) {
-            postersList = new ArrayList<>();//ActivityData.getPosters(context);
-        }
-    }
-    public PosterSesion(int date, String time, String title){
-        this.title = title;
-        this.time = time;
-        this.date = date;
-    }
-
-    public static ArrayList<Poster> getPosterList(Context context) {
-        if (postersList == null) {
-            posters = new PosterSesion(context);
-        }
-        return postersList;
-    }
-
-    public static void setMarkOnPos(Context context, int posterId, float mark) {
-
-        if(postersList == null){
-            new PosterSesion(context);
-        }
-        int pos = posterId - 1;
-        postersList.get(pos).setMark(mark);
-        //ActivityData.setMarkPoster(context, posterId, mark);
-    }
+    public static final int ID = 1;
 
     @Override
     public boolean isLecture() {
@@ -67,7 +34,7 @@ public class PosterSesion implements Activity, Serializable {
         int unicode = 0x1F4C3;
         String emoji = new String(Character.toChars(unicode));
 
-        holder.mIdDataTextView.setText("p"); // mało mądre, popraw to.
+        holder.mIdDataTextView.setText("p"); // TODO mało mądre, popraw to.
         holder.mBreakTextTextView.setText(this.getTitle());
         holder.mBreakPicTextView.setText(emoji);
 

@@ -1,9 +1,7 @@
 package com.app.android.konferika.adapters;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,13 +14,10 @@ import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.activities.ItemDetailsActivity;
-import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Activity;
-import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.obj.LecturesList;
 import com.app.android.konferika.obj.PosterSesion;
 
-public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener { //View.OnLongClickListener {
+public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
@@ -37,7 +32,6 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
     public final CheckBox myActCheckbox;
     public final RatingBar mRatingBar;
 
-    private LecturesList mLectList;
     private Context context;
 
     public ActivityViewHolder(final View itemView) {
@@ -57,8 +51,6 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         mCardView.setLongClickable(true);
         itemView.setOnClickListener(this);
         context = itemView.getContext();
-        // itemView.setOnLongClickListener(this);
-
 
         myActCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,12 +89,11 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
-//        mLectList = LecturesList.getInstance(v.getContext());
         String text = mIdDataTextView.getText().toString();
         Activity activ;
         if (text != "") {
             if (text.equals("p")) {
-                activ = new PosterSesion(v.getContext());
+                activ = new PosterSesion();
                 activ.handleOnClick(context, null);
             } else {
                 int id = Integer.parseInt(text);
@@ -117,20 +108,5 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
             }
         }
     }
-
-    /**
-     * Po LongClick ...
-     *
-     * @param v
-     * @return
-     */
-
-   /* @Override
-    public boolean onLongClick(View v) {
-
-        Vibrator vb = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        vb.vibrate(100);
-        return true;
-    }*/
 
 }

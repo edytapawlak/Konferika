@@ -3,7 +3,6 @@ package com.app.android.konferika.obj;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.app.android.konferika.R;
@@ -18,8 +17,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class SectionHeader extends StatelessSection {
     List<Activity> childList;
     Cursor childrens;
-    //    List<Cursor> childList;
-    List<Integer> childIdes;
     String title;
     boolean areLectures;
 
@@ -27,11 +24,9 @@ public class SectionHeader extends StatelessSection {
     public SectionHeader(Cursor childrens, String sectionText, boolean isLect) {
         super(R.layout.section_header, R.layout.forecast_list_item);
         this.childrens = childrens;
-
         this.title = sectionText;
         this.areLectures = isLect;
     }
-
 
     public List<Activity> getChildItems() {
         return childList;
@@ -51,39 +46,6 @@ public class SectionHeader extends StatelessSection {
 
     public void setTitle(String sectionText) {
         this.title = sectionText;
-    }
-
-
-    public void addItem(Activity item) {
-        childList.add(item);
-    }
-
-    public void removeItem(Lecture activity) {
-        int i = 0;
-        Lecture lecture;
-        while (i < childList.size()) {
-            if (childList.get(i).isLecture()) {
-                lecture = (Lecture) childList.get(i);
-                if (lecture.getId() == activity.getId()) {
-                    childList.remove(i);
-                    i = childList.size();
-                }
-            }
-            i++;
-        }
-    }
-
-    public void removeItemById(int id) {
-        int i = 0;
-        Lecture lect;
-        while (i < childList.size()) {
-            if (childList.get(i).isLecture()) {
-                lect = (Lecture) childList.get(i);
-                if (lect.getId() == id) {
-                    childList.remove(i);
-                }
-            }
-        }
     }
 
     @Override
@@ -123,7 +85,7 @@ public class SectionHeader extends StatelessSection {
 
             activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, room, inUsrSched, rating);
         } else if ( activId == PosterSesion.ID) {
-            activ = new PosterSesion(itemHolder.getContext());
+            activ = new PosterSesion();
 //            Log.v("Holder! ", "Tworze PosterSesion");
         } else {
 //            Log.v("Holder! ", "Tworze Break!");

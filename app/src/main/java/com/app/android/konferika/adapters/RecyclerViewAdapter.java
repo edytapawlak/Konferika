@@ -22,16 +22,20 @@ Adapter dla GridRecyclerView
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {//implements View.OnClickListener {
 
     public void setItems(List<Poster> items) {
+        this.items = items;
         notifyDataSetChanged();
     }
 
     private Cursor it;
-//    private OnItemClickListener onItemClickListener;
+    private List<Poster> items;
+    private OnItemClickListener onItemClickListener;
 
+    public RecyclerViewAdapter() {
+    }
 
-//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_recycler_item, parent, false);
@@ -99,9 +103,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-//    public interface OnItemClickListener {
-//
-//        void onItemClick(View view, Poster viewModel);
-//
-//    }
+    public interface OnItemClickListener {
+
+        void onItemClick(View view, Poster viewModel);
+
+    }
 }

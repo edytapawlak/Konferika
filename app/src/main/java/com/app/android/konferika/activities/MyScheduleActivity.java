@@ -23,7 +23,7 @@ public class MyScheduleActivity extends BaseActivity {
 
         mActivity = this;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        super.navigationView.setCheckedItem(R.id.drawer_favourite);
+
 
         View contentView = inflater.inflate(R.layout.activity_my_schedule, null, false);
         super.lay.addView(contentView, 0);
@@ -41,6 +41,7 @@ public class MyScheduleActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
+        super.navigationView.setCheckedItem(R.id.drawer_favourite);
     }
 
     @Override
@@ -48,7 +49,6 @@ public class MyScheduleActivity extends BaseActivity {
         super.onRestart();
         ViewPagerAdapter.setScheduleId(ViewPagerAdapter.USER_SCHED);
         viewPager.getAdapter().notifyDataSetChanged();
-        //setupViewPager(viewPager);
     }
 
 

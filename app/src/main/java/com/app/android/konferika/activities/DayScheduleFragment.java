@@ -2,39 +2,26 @@ package com.app.android.konferika.activities;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.DisplayActDataAdapter;
 import com.app.android.konferika.adapters.ViewPagerAdapter;
 import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Activity;
-import com.app.android.konferika.obj.ConferencePlanData;
 import com.app.android.konferika.obj.ConferenceSchedule;
 import com.app.android.konferika.obj.DisplayData;
-import com.app.android.konferika.obj.Lecture;
 import com.app.android.konferika.obj.Schedule;
-import com.app.android.konferika.obj.UserSchedule;
 
 
 public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, SchedFragment {
@@ -46,7 +33,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
 
     private Schedule schedule;
     private Context mContext;
-//    private UserSchedule userSchedule;
 
     public DayScheduleFragment() {
     }
@@ -67,7 +53,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-//        userSchedule = UserSchedule.getInstance(mContext, savedInstanceState);
         View view = inflater.inflate(R.layout.schedule_layout, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler_view);
@@ -91,7 +76,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putSerializable("userSchedule", userSchedule);
         outState.putSerializable("scheduleID", ViewPagerAdapter.getScheduleId());
     }
 
@@ -113,16 +97,12 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         ContentValues cv = new ContentValues();
 //        cv.put(DatabaseContract.LecturesEntry.COLUMN_IS_IN_USR, isCheck);
 //        mContext.getContentResolver().update(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), cv, null, null);
-        int check = isCheck?1:0;
+        int check = isCheck ? 1 : 0;
         cv.put(DatabaseContract.ScheduleEntry.COLUMN_IS_IN_USR, check);
         mContext.getContentResolver().update(DatabaseContract.ScheduleEntry.buildScheduleUriWithDate(lectureId), cv, null, null);
 
-        Bundle bundle = getArguments();
-        int dateId = bundle.getInt("day") + 1;
-        schedule = new ConferenceSchedule(mContext);
-        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
-//        mLoadingProgrressBar.setVisibility(View.INVISIBLE);
-        sectionAdapter.setActivitiesData(dd);
+        loadData();
+
         sectionAdapter.notifyDataSetChanged();
         Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -138,6 +118,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         int dateId = bundle.getInt("day") + 1;
 
         schedule = new ConferenceSchedule(mContext);
+        
         DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
         mLoadingProgrressBar.setVisibility(View.INVISIBLE);
         sectionAdapter.setActivitiesData(dd);

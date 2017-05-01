@@ -21,7 +21,6 @@ import com.app.android.konferika.R;
 import com.app.android.konferika.adapters.DisplayActDataAdapter;
 import com.app.android.konferika.data.DatabaseContract;
 import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.obj.LecturesList;
 import com.app.android.konferika.obj.UserSchedule;
 
 import io.github.kexanie.library.MathView;
@@ -114,7 +113,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                LecturesList mRefData = LecturesList.getInstance(v.getContext());
                 int id = item.getId();
 
                 boolean isChanged;
