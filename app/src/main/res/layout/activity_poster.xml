@@ -36,7 +36,7 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/tlo2"
+            android:background="@drawable/item_det_background"
             app:titleTextColor="@color/text_color"
             app:title="Plakaty"
             app:layout_scrollFlags="scroll|enterAlways|snap"

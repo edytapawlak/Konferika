@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:minHeight="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
-        android:background="@drawable/tlo1"
+        android:background="@drawable/conf_plan_background"
         android:layout_width="match_parent"
         android:titleTextColor="@color/blu">
     </android.support.v7.widget.Toolbar>

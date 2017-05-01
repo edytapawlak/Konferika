@@ -31,7 +31,7 @@
             android:layout_height="350dp"
             android:scaleType="centerCrop"
             android:fitsSystemWindows="true"
-            android:src="@drawable/tlo2"
+            android:src="@drawable/item_det_background"
             app:layout_collapseMode="parallax" />
 
 
