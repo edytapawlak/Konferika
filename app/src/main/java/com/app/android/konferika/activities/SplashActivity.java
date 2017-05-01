@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.app.android.konferika.utils.NetworkUtils;
 import com.app.android.konferika.utils.OpenConferenceJsonUtils;
 
+import java.io.IOException;
 import java.net.URL;
 
 
@@ -20,9 +21,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         con  =  this;
         loadData();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 
     private void loadData() {
@@ -51,48 +53,56 @@ public class SplashActivity extends AppCompatActivity {
             String breaks = params[2];
             URL breaksRequestUrl = NetworkUtils.buildUrl(breaks);
 
-
-            try {
-                String jsonLectResponse = NetworkUtils
-                        .getResponseFromHttpUrl(lectRequestUrl);
-                String jsonPosResponse = NetworkUtils
-                        .getResponseFromHttpUrl(postersRequestUrl);
-                String jsonBreakResponse = NetworkUtils
-                        .getResponseFromHttpUrl(breaksRequestUrl);
-//                Log.v("Wynik: ", jsonLectResponse);
-
-                String[] simpleJsonLectData = OpenConferenceJsonUtils
-                        .getLecturesStringsFromJson(con, jsonLectResponse);
-                String[] simpleJsonPostersData = OpenConferenceJsonUtils
-                        .getPostersStringsFromJson(con, jsonPosResponse);
-                String[] simpleJsonBreakData = OpenConferenceJsonUtils
-                        .getBreaksStringsFromJson(con, jsonBreakResponse);
-
-                return simpleJsonLectData;
-
-            } catch (Exception e) {
+            int isRunning = -1;
+            try{
+                isRunning = NetworkUtils.isRunning();
+            }catch (IOException e){
                 e.printStackTrace();
                 return null;
             }
+
+            if(isRunning == 2){ // to oznacza, ze akurat jest przerwa techniczna i nie chcę aktualizować danych
+                return null;
+            }
+            if(isRunning == 0 ){
+                Intent i = new Intent(SplashActivity.this, StopActivity.class);
+                i.putExtra("info", isRunning);
+                startActivity(i);
+                finish();
+            }else {
+                try {
+                    String jsonLectResponse = NetworkUtils
+                            .getResponseFromHttpUrl(lectRequestUrl);
+                    String jsonPosResponse = NetworkUtils
+                            .getResponseFromHttpUrl(postersRequestUrl);
+                    String jsonBreakResponse = NetworkUtils
+                            .getResponseFromHttpUrl(breaksRequestUrl);
+//                Log.v("Wynik: ", jsonLectResponse);
+
+                    String[] simpleJsonLectData = OpenConferenceJsonUtils
+                            .getLecturesStringsFromJson(con, jsonLectResponse);
+                    String[] simpleJsonPostersData = OpenConferenceJsonUtils
+                            .getPostersStringsFromJson(con, jsonPosResponse);
+                    String[] simpleJsonBreakData = OpenConferenceJsonUtils
+                            .getBreaksStringsFromJson(con, jsonBreakResponse);
+
+                    return simpleJsonLectData;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            return null;
         }
 
         @Override
         protected void onPostExecute(String[] weatherData) {
-//            mLoadingIndicator.setVisibility(View.INVISIBLE);
             int i = 0;
             if (weatherData != null) {
-//                showDataView();
-                /*
-                 * Iterate through the array and append the Strings to the TextView. The reason why we add
-                 * the "\n\n\n" after the String is to give visual separation between each String in the
-                 * TextView. Later, we'll learn about a better way to display lists of data.
-                 */
-//                for (String weatherString : weatherData) {
-////                    mTextView.append((weatherString) + "\n\n\n");
-//                    i++;
-//
-//                }
-                Toast.makeText(con, "Już!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             } else {
 //                showErrorMessage();
                 Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();

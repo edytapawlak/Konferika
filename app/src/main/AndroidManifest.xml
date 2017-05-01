@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".activities.MyScheduleActivity"
             android:launchMode="singleTask" />
@@ -22,8 +22,7 @@
         <activity android:name=".activities.PosterDetailsActivity" />
         <activity android:name=".activities.BaseActivity" />
         <activity android:name=".activities.PollActivity" />
-
-        <activity android:name=".activities.TagsActivity"></activity>
+        <activity android:name=".activities.TagsActivity" />
         <activity android:name=".activities.TagDataActivity" />
 
         <provider
@@ -41,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.StopActivity"></activity>
     </application>
 
 </manifest>

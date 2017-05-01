@@ -33,8 +33,8 @@ public final class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String STATIC_LECTURES_URL =
-//            "https://rszczers.students.wmi.amu.edu.pl/oblicze_poll/json/";
-                "http://rszczers.abraham.linuxpl.info/oblicze_poll/json/";
+            "https://rszczers.students.wmi.amu.edu.pl/oblicze_poll/json/";
+//                "http://rszczers.abraham.linuxpl.info/oblicze_poll/json/";
     private static final String FORECAST_BASE_URL = STATIC_LECTURES_URL;
 
     /* The format we want our API to return */
@@ -98,5 +98,12 @@ public final class NetworkUtils {
         } finally {
             urlConnection.disconnect();
         }
+    }
+
+    public static int isRunning() throws IOException{
+        URL isRunning = NetworkUtils.buildUrl("isRunningP");
+        String jsonIsRunning = NetworkUtils.getResponseFromHttpUrl(isRunning);
+        int out = Integer.parseInt(jsonIsRunning);
+        return out;
     }
 }
