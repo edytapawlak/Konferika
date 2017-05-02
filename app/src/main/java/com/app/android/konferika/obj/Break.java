@@ -49,6 +49,8 @@ public class Break implements Activity, Serializable {
             unicode = 0x1F37A;
         } else if(type == 6){
             unicode = 0x1F3B2;
+        }else if(type == 7){
+            unicode = 0;
         }
         String emoji = new String(Character.toChars(unicode));
 

@@ -387,6 +387,9 @@ public final class OpenConferenceJsonUtils {
             if(title.contains("gier")){
                 type = 6;
             }
+            if(title.contains("Zakończenie")){
+                type = 7;
+            }
 
             if (i != jsonArray.length() - 1) {
                 deleteWhere += id + ", ";
