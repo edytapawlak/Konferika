@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.android.konferika.R;
-import com.app.android.konferika.activities.DayScheduleFragment;
 import com.app.android.konferika.activities.SchedFragment;
 import com.app.android.konferika.adapters.ActivityViewHolder;
 
@@ -44,6 +43,12 @@ public class Break implements Activity, Serializable {
         int unicode = 0x2615; //przerwa kawowa
         if(type == 2){
             unicode = 0x1F357; //przerwa obiadowa
+        } else if (type == 4){
+            unicode = 0x1F463; //spacer
+        } else if(type == 5){
+            unicode = 0x1F37A;
+        } else if(type == 6){
+            unicode = 0x1F3B2;
         }
         String emoji = new String(Character.toChars(unicode));
 

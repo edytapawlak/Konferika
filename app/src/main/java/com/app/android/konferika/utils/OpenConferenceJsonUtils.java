@@ -18,17 +18,8 @@ package com.app.android.konferika.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.util.Log;
 
-//import com.app.android.konferika.data.ActivityData;
-import com.app.android.konferika.data.DataProvider;
 import com.app.android.konferika.data.DatabaseContract;
-import com.app.android.konferika.obj.Lecture;
-import com.app.android.konferika.obj.Tag;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +27,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.app.android.konferika.data.ActivityData;
 
 /**
  * Utility functions to handle OpenWeatherMap JSON data.
@@ -345,6 +338,7 @@ public final class OpenConferenceJsonUtils {
         List<ContentValues> toadd = new ArrayList<>();
         JSONArray jsonArray = new JSONArray(forecastJsonStr);
         parsedBreaksData = new String[jsonArray.length()];
+        String deleteWhere = "( ";
 
         for (int i = 0; i < jsonArray.length(); i++) {
             /* These are the values that will be collected */
@@ -384,7 +378,21 @@ public final class OpenConferenceJsonUtils {
             if (title.equals("Sesja plakatowa")) {
                 type = 1;
             }
+            if(title.contains("Spacer po Poznaniu")){
+                type = 4;
+            }
+            if(title.contains("integra")){
+                type = 5;
+            }
+            if(title.contains("gier")){
+                type = 6;
+            }
 
+            if (i != jsonArray.length() - 1) {
+                deleteWhere += id + ", ";
+            } else {
+                deleteWhere += id;
+            }
 
             ContentValues cv = new ContentValues();
             cv.put(DatabaseContract.BreakEntry.COLUMN_ID, id);
@@ -394,10 +402,11 @@ public final class OpenConferenceJsonUtils {
             cv.put(DatabaseContract.BreakEntry.COLUMN_DATE_ID, date_id);
             cv.put(DatabaseContract.BreakEntry.COLUMN_TYPE, type);
 
-
             toadd.add(cv);
         }
 
+        deleteWhere += " )";
+        String[] whereArr = {deleteWhere};
         ContentValues[] arr = new ContentValues[toadd.size()];
         int i = 0;
         for (ContentValues c :
@@ -406,6 +415,7 @@ public final class OpenConferenceJsonUtils {
             i++;
         }
 
+        context.getContentResolver().delete(DatabaseContract.BreakEntry.CONTENT_URI, DatabaseContract.BreakEntry.COLUMN_ID, whereArr);
         context.getContentResolver().bulkInsert(DatabaseContract.BreakEntry.CONTENT_URI, arr);
 
 

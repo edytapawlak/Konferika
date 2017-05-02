@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 /**
  * Created by edyta on 25.04.17.
@@ -483,6 +482,11 @@ public class DataProvider extends ContentProvider {
             case CODE_POSTERS:
                 db = mOpenHelper.getWritableDatabase();
                 cur = db.rawQuery("DELETE FROM Posters WHERE id NOT IN " + selectionArgs[0], null);
+                numRowsDeleted = cur.getCount();
+                break;
+            case CODE_BREAKS:
+                db = mOpenHelper.getWritableDatabase();
+                cur = db.rawQuery("DELETE FROM Break WHERE id NOT IN " + selectionArgs[0], null);
                 numRowsDeleted = cur.getCount();
                 break;
             default:

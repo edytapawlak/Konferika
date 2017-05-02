@@ -100,13 +100,14 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(String[] weatherData) {
             int i = 0;
             if (weatherData != null) {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+
             } else {
 //                showErrorMessage();
                 Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();
             }
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
