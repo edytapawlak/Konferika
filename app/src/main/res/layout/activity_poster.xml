@@ -16,7 +16,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.app.android.konferika.widgets.GridRecyclerView
+    <amu.wmi.oblicze.konferika.widgets.GridRecyclerView
         android:id="@+id/poster_recycled_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

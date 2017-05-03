@@ -208,7 +208,8 @@
                     android:layout_margin="@dimen/spacing_large"
                     android:textSize="16sp"
                     android:lineSpacingExtra="5dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    auto:engine="KaTeX"/>
 
             </LinearLayout>
 

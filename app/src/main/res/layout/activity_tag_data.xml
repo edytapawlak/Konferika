@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="25dp"
-    tools:context="com.app.android.konferika.activities.TagDataActivity"
+    tools:context="com.app.android.konferika.pl.app.android.konferika.activities.TagDataActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar

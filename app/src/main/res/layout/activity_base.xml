@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.app.android.konferika.activities.BaseActivity">
+    tools:context="com.app.android.konferika.pl.app.android.konferika.activities.BaseActivity">
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

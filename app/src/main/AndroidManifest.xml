@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.android.konferika">
+    package="pl.edu.amu.wmi.oblicze.konferika">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -12,26 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.MainActivity"
+            android:name="pl.edu.amu.wmi.oblicze.konferika.activities.MainActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activities.MyScheduleActivity"
+            android:name="pl.edu.amu.wmi.oblicze.konferika.activities.MyScheduleActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activities.ItemDetailsActivity" />
-        <activity android:name=".activities.PosterActivity" />
-        <activity android:name=".activities.PosterDetailsActivity" />
-        <activity android:name=".activities.BaseActivity" />
-        <activity android:name=".activities.PollActivity" />
-        <activity android:name=".activities.TagsActivity" />
-        <activity android:name=".activities.TagDataActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.ItemDetailsActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.PosterActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.PosterDetailsActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.BaseActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.PollActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.TagsActivity" />
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.TagDataActivity" />
 
         <provider
-            android:name=".data.DataProvider"
+            android:name="pl.edu.amu.wmi.oblicze.konferika.data.DataProvider"
             android:authorities="@string/content_authority"
             android:exported="false" />
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="pl.edu.amu.wmi.oblicze.konferika.activities.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.StopActivity"></activity>
+        <activity android:name="pl.edu.amu.wmi.oblicze.konferika.activities.StopActivity"></activity>
     </application>
 
 </manifest>
