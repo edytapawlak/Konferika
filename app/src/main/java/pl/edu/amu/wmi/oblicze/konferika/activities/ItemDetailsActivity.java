@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,13 +16,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.github.kexanie.library.MathView;
 import pl.edu.amu.wmi.oblicze.konferika.R;
 import pl.edu.amu.wmi.oblicze.konferika.adapters.DisplayActDataAdapter;
 import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 import pl.edu.amu.wmi.oblicze.konferika.obj.Lecture;
 import pl.edu.amu.wmi.oblicze.konferika.obj.UserSchedule;
-
-import io.github.kexanie.library.MathView;
 
 ;
 
@@ -129,12 +127,12 @@ public class ItemDetailsActivity extends AppCompatActivity {
 //                    userSched.deleteActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
                     isChanged = false;
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_empty));
+                    fabulousBtn.setImageResource(R.mipmap.ic_heart_empty);
                 } else {
 //                    userSched.addActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
                     isChanged = true;
-                    fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_fill));
+                    fabulousBtn.setImageResource(R.mipmap.ic_heart_fill2);
                 }
 
                 DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
