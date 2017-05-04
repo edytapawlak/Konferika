@@ -13,7 +13,6 @@ import java.io.Serializable;
 import pl.edu.amu.wmi.oblicze.konferika.activities.ItemDetailsActivity;
 import pl.edu.amu.wmi.oblicze.konferika.activities.SchedFragment;
 import pl.edu.amu.wmi.oblicze.konferika.adapters.ActivityViewHolder;
-import pl.edu.amu.wmi.oblicze.konferika.adapters.ViewPagerAdapter;
 import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 
 public class Lecture implements Activity, Serializable {
@@ -140,14 +139,20 @@ public class Lecture implements Activity, Serializable {
         holder.mAuthorTextView.setText(this.getAuthor());
         holder.mRoomTextView.setText(this.getRoom());
         holder.mTagsTextView.setText(this.getTags());
-        holder.myActCheckbox.setChecked(this.isInUserSched);
+//        holder.isIn = this.isInUserSched;
+//        holder.myActCheckbox.setChecked(this.isInUserSched);
+//        if (this.isInUserSched) {
+//            holder.imageTest.setImageResource(R.drawable.ic_heart_fill);
+//        }else{
+//            holder.imageTest.setImageResource(R.drawable.ic_heart_empty);
+//        }
 
 
-        if (ViewPagerAdapter.getScheduleId() != 0) {
-            holder.myActCheckbox.setVisibility(View.INVISIBLE);
-        } else {
-            holder.myActCheckbox.setVisibility(View.VISIBLE);
-        }
+//        if (ViewPagerAdapter.getScheduleId() != 0) {
+//            holder.myActCheckbox.setVisibility(View.INVISIBLE);
+//        } else {
+//            holder.myActCheckbox.setVisibility(View.VISIBLE);
+//        }
 
         if(this.id != 1 && this.id != 2 && this.id != 3) {
             holder.mRatingBar.setVisibility(View.VISIBLE);
@@ -169,6 +174,8 @@ public class Lecture implements Activity, Serializable {
         holder.actLayout.setVisibility(View.VISIBLE);
         int id = this.getId();
         holder.mIdDataTextView.setText(id + "");
+        holder.setId(id);
+        holder.handlePlanId();
     }
 
     @Override

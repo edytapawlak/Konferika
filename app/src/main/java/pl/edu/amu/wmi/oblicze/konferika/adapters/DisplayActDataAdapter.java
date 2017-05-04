@@ -64,5 +64,4 @@ public class DisplayActDataAdapter extends SectionedRecyclerViewAdapter {
         activitiesData.swapSectionList(newActDada.getSectionList());
     }
 
-
 }

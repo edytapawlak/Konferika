@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
         adapter.addFrag(new DayScheduleFragment(), "Piątek");
         adapter.addFrag(new DayScheduleFragment(), "Sobota");
         adapter.addFrag(new DayScheduleFragment(), "Niedziela");
+//        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
     }
 

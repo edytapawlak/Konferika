@@ -63,7 +63,6 @@ public class SectionHeader extends StatelessSection {
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         ActivityViewHolder itemHolder = (ActivityViewHolder) holder;
 //        // bind view
-//        LecturesList mRefData = LecturesList.getInstance(itemHolder.getContext());
 ////        Activity activ = childList.get(position);
 //        int activId = childIdes.get(position);
         Activity activ;
@@ -78,6 +77,7 @@ public class SectionHeader extends StatelessSection {
             String room = childrens.getString(6);
             String tags = "tu będą tagi"; //TODO
             boolean inUsrSched = (childrens.getInt(7) == 1);
+            itemHolder.setIn(inUsrSched);
             float rating = childrens.getFloat(8);//todo
 //            Log.v("Holder! ", "Tworze Lecture! " + childrens.getInt(7) + ", " + title);
 

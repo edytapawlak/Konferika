@@ -19,9 +19,8 @@ import pl.edu.amu.wmi.oblicze.konferika.adapters.DisplayActDataAdapter;
 import pl.edu.amu.wmi.oblicze.konferika.adapters.ViewPagerAdapter;
 import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 import pl.edu.amu.wmi.oblicze.konferika.obj.Activity;
-import pl.edu.amu.wmi.oblicze.konferika.obj.ConferenceSchedule;
+import pl.edu.amu.wmi.oblicze.konferika.obj.ConferencePlanData;
 import pl.edu.amu.wmi.oblicze.konferika.obj.DisplayData;
-import pl.edu.amu.wmi.oblicze.konferika.obj.Schedule;
 
 
 public class DayScheduleFragment extends Fragment implements DisplayActDataAdapter.DispalyAdapterOnClickHandler, SchedFragment {
@@ -31,7 +30,7 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
     private ProgressBar mLoadingProgrressBar;
     private DisplayActDataAdapter sectionAdapter;
 
-    private Schedule schedule;
+    private DisplayData schedule;
     private Context mContext;
 
     public DayScheduleFragment() {
@@ -102,7 +101,6 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         mContext.getContentResolver().update(DatabaseContract.ScheduleEntry.buildScheduleUriWithDate(lectureId), cv, null, null);
 
         loadData();
-
         sectionAdapter.notifyDataSetChanged();
         Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -117,12 +115,12 @@ public class DayScheduleFragment extends Fragment implements DisplayActDataAdapt
         Bundle bundle = getArguments();
         int dateId = bundle.getInt("day") + 1;
 
-        schedule = new ConferenceSchedule(mContext);
+        schedule = new ConferencePlanData(mContext, dateId);
         
-        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
+//        DisplayData dd = schedule.getUserSchedForDay(mContext, dateId);
         mLoadingProgrressBar.setVisibility(View.INVISIBLE);
-        sectionAdapter.setActivitiesData(dd);
-        if (dd == null) {
+        sectionAdapter.setActivitiesData(schedule);
+        if (schedule == null) {
             showErrorMessage();
         } else {
             showDataView();
