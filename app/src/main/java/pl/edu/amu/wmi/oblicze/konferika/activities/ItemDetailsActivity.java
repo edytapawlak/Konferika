@@ -104,9 +104,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         fabulousBtn = (FloatingActionButton) findViewById(R.id.button_fabulous);
         if (item.getIsInUserSchedule()) {
-            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_fill));
+            fabulousBtn.setImageResource(R.mipmap.ic_heart_fill2);
         } else {
-            fabulousBtn.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.ic_heart_empty));
+            fabulousBtn.setImageResource(R.mipmap.ic_heart_empty2);
         }
 
         fabulousBtn.setOnClickListener(new View.OnClickListener() {
