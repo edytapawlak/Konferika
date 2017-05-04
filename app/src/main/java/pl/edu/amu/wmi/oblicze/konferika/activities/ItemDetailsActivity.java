@@ -127,7 +127,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 //                    userSched.deleteActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Usunięto z planu", Toast.LENGTH_SHORT).show();
                     isChanged = false;
-                    fabulousBtn.setImageResource(R.mipmap.ic_heart_empty);
+                    fabulousBtn.setImageResource(R.mipmap.ic_heart_empty2);
                 } else {
 //                    userSched.addActivity(mContext, item, item.getDate());
                     Toast.makeText(mContext, "Dodano do planu", Toast.LENGTH_SHORT).show();
