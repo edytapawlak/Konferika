@@ -1,5 +1,6 @@
 package pl.edu.amu.wmi.oblicze.konferika.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import pl.edu.amu.wmi.oblicze.konferika.R;
 
@@ -80,10 +82,31 @@ public class BaseActivity extends AppCompatActivity {
                         handler.sendEmptyMessageDelayed(1, 100);
                         break;
                     case R.id.drawer_map:
-                        Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/d/viewer?mid=1vJsjI7BdMOQVKy2uj79gk_OKsOQ&ll=52.434831325958655%2C16.91918844999998&z=13");
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        mapIntent.setPackage("com.google.android.apps.maps");
-                        startActivity(mapIntent);
+
+                        String uri = "https://www.google.com/maps/d/viewer?mid=1vJsjI7BdMOQVKy2uj79gk_OKsOQ&ll=52.434831325958655%2C16.91918844999998&z=13";
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setPackage("com.google.android.apps.maps");
+                        try
+                        {
+                            startActivity(intent);
+                        }
+                        catch(ActivityNotFoundException ex)
+                        {
+                            try
+                            {
+                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                startActivity(unrestrictedIntent);
+                            }
+                            catch(ActivityNotFoundException innerEx)
+                            {
+                                Toast.makeText(mActivity, "Nie znaleziono aplikacji do map", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+//                        Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/d/viewer?mid=1vJsjI7BdMOQVKy2uj79gk_OKsOQ&ll=52.434831325958655%2C16.91918844999998&z=13");
+//                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                        mapIntent.setPackage("com.google.android.apps.maps");
+//                        startActivity(mapIntent);
                         break;
                     case R.id.drawer_poll:
                         intent = new Intent(mActivity, PollActivity.class);
