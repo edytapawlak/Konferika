@@ -108,8 +108,10 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    zXingScannerView = new ZXingScannerView(getApplicationContext());
+                    setContentView(zXingScannerView);
+                    zXingScannerView.setResultHandler(this);
+                    zXingScannerView.startCamera();
                     Toast.makeText(this, "Mam pozwo", Toast.LENGTH_SHORT).show();
 
                 } else {
