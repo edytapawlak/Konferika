@@ -2,7 +2,6 @@ package pl.edu.amu.wmi.oblicze.konferika.obj;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -109,7 +108,6 @@ public class UserDayData extends DisplayData implements Serializable {
         Cursor startTimeCursor = context.getContentResolver().query(DatabaseContract.UserStartTimesEntry.CONTENT_URI, null,
                 null, timeSelArgs, null);
         Cursor actForTimeCursor;
-        Log.v("StartCursor", startTimeCursor.getCount() + "");
         startTimeCursor.moveToFirst();
         String time = "";
         String[] selectionArgsLect = new String[3];

@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,7 +32,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //if (dbexist) {
         if(isTableExists("Break")){
             opendatabase();
-            Log.v("DB: ", "Break exist");
+//            Log.v("DB: ", "Break exist");
         } else {
             System.out.println("Database doesn't exist");
             createdatabase();
@@ -58,7 +57,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         boolean checkdb = false;
         try {
             //DB_PATH = this.getWritableDatabase().getPath();
-//            Log.v("DB: ", DB_PATH);
             String myPath = DB_PATH;// + DB_NAME;
             File dbfile = new File(myPath);
             checkdb = dbfile.exists();

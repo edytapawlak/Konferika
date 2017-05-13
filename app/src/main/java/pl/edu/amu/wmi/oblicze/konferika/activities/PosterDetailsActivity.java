@@ -9,20 +9,18 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import io.github.kexanie.library.MathView;
 import pl.edu.amu.wmi.oblicze.konferika.R;
 import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 import pl.edu.amu.wmi.oblicze.konferika.obj.Poster;
 import pl.edu.amu.wmi.oblicze.konferika.obj.Tag;
-
-import java.util.ArrayList;
-
-import io.github.kexanie.library.MathView;
 
 public class PosterDetailsActivity extends AppCompatActivity {
 
@@ -39,7 +37,6 @@ public class PosterDetailsActivity extends AppCompatActivity {
         mContext = this;
 //        poster = (Poster) getIntent().getSerializableExtra("poster");
         final int posterId = getIntent().getIntExtra("posterId", -1);
-        Log.v("POsterId:", posterId +"");
         String[] projection = {
                 DatabaseContract.PostersEntry.COLUMN_TITLE,
                 DatabaseContract.PostersEntry.COLUMN_AUTHOR,

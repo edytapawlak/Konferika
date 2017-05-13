@@ -75,22 +75,18 @@ public class SectionHeader extends StatelessSection {
             int date = childrens.getInt(5);
             String startTime = childrens.getString(4);
             String room = childrens.getString(6);
-            String tags = "tu będą tagi"; //TODO
+//            String tags = "tu będą tagi";
             boolean inUsrSched = (childrens.getInt(7) == 1);
             itemHolder.setIn(inUsrSched);
-            float rating = childrens.getFloat(8);//todo
-//            Log.v("Holder! ", "Tworze Lecture! " + childrens.getInt(7) + ", " + title);
+            float rating = childrens.getFloat(8);
 
             activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, room, inUsrSched, rating);
         } else if ( activId == PosterSesion.ID) {
             activ = new PosterSesion();
-//            Log.v("Holder! ", "Tworze PosterSesion");
         } else {
-//            Log.v("Holder! ", "Tworze Break!");
             String title = childrens.getString(1);
             String startTime = childrens.getString(2);
             int type = childrens.getInt(0);
-//            Log.v("Break typ ", type + "");
             activ = new Break(title, startTime, type);
         }
 
@@ -107,7 +103,6 @@ public class SectionHeader extends StatelessSection {
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         SectionViewHolder headerHolder = (SectionViewHolder) holder;
         headerHolder.name.setText(title);
-//        Log.v("BIND", "BindHeader");
 
     }
 

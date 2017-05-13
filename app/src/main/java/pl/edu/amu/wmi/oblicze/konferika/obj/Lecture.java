@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -75,7 +74,6 @@ public class Lecture implements Activity, Serializable {
         if(this.id != 1 && this.id != 2 && this.id != 3) {
             Intent intent = new Intent(context, ItemDetailsActivity.class);
             intent.putExtra("lectID", this.getId());
-            Log.v("przesyłam:", this.getTags());
             context.startActivity(intent);
         }
     }

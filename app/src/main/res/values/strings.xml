@@ -11,7 +11,7 @@
     <string name="map">Mapa</string>
     <string name="settings">Ustawienia</string>
     <string name="poll">Głosowanie</string>
-    <string name="scan">Skanuj</string>
+    <string name="scan">Głosuj</string>
 
     <string name="content_authority">com.app.android.konferika</string>
     <string name="title_activity_splash">SplashActivity</string>

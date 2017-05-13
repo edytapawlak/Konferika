@@ -137,7 +137,6 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
                 DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
                 item.setIsInUserSchedule(isChanged);
-//                Log.v("Clik", "Clicked " + isChanged);
             }
         });
 

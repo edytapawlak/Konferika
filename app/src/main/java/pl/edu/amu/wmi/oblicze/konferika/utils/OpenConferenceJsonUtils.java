@@ -116,7 +116,6 @@ public final class OpenConferenceJsonUtils {
                 } else {
                     tagSelection += DatabaseContract.TagsEntry.COLUMN_TITLE + " =? ";
                 }
-//                Log.v("TAGS ADD", "Dodaje " + tags[j]);
             }
             context.getContentResolver().bulkInsert(DatabaseContract.TagsEntry.CONTENT_URI, contentValues);
 
@@ -124,19 +123,15 @@ public final class OpenConferenceJsonUtils {
 
             String[] tagProjection = {DatabaseContract.TagsEntry.COLUMN_ID};
             Cursor tagsCursor = context.getContentResolver().query(DatabaseContract.TagsEntry.CONTENT_URI, tagProjection, tagSelection, tags, null);
-//            Log.v("Tag selection: ", tagSelection);
-            String debug = "";
-            for (int j = 0; j < tags.length; j++) {
-                debug += ", " + tags[j];
-            }
-//            Log.v("Tag selection args: ", debug);
+//            String debug = "";
+//            for (int j = 0; j < tags.length; j++) {
+//                debug += ", " + tags[j];
+//            }
             tagsCursor.moveToFirst();
             ContentValues[] tags_lect = new ContentValues[tagsCursor.getCount()];
             int k = 0;
             while (!tagsCursor.isAfterLast()) {
                 ContentValues cv = new ContentValues();
-//                Log.v("id lecture:", id + "");
-//                Log.v("id tag:", tagsCursor.getInt(0) + "");
                 cv.put(DatabaseContract.LectureTagsEntry.COLUMN_LECT_ID, id);
                 cv.put(DatabaseContract.LectureTagsEntry.COLUMN_TAG_ID, tagsCursor.getInt(0));
                 tags_lect[k] = cv;
@@ -425,28 +420,96 @@ public final class OpenConferenceJsonUtils {
         return parsedBreaksData;
     }
 
-    /**
-     * Parse the JSON and convert it into ContentValues that can be inserted into our database.
-     *
-     * @param context         An application context, such as a service or activity context.
-     * @param forecastJsonStr The JSON to parse into ContentValues.
-     * @return An array of ContentValues parsed from the JSON.
-     */
-    public static ContentValues[] getFullWeatherDataFromJson(Context context, String
-            forecastJsonStr) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    public static String[] getSpecialLectStringsFromJson(Context context, String forecastJsonStr)
+            throws JSONException {
+
+        final String OWM_ID = "lecture_id";
+        final String OWM_TITLE = "title";
+        final String OWM_AUTHORS = "authors";
+        final String OWM_SCHEDULE = "schedule";
+        final String OWM_STARTTIME = "start";
+        final String OWM_ENDTIME = "end";
+        final String OWM_DATE = "date";
+        final String OWM_ROOM = "place";
+
+        String[] parsedSpecialData = null;
+        List<ContentValues> toadd = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray(forecastJsonStr);
+        parsedSpecialData = new String[jsonArray.length()];
+        String deleteWhere = "( ";
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            /* These are the values that will be collected */
+            int id;
+            String title;
+            String startTime;
+            String endTime;
+            String dateString;
+            int date_id;
+            String place;
+            String authors;
+            JSONArray tmp;
+            JSONObject schedule;
+
+            JSONObject lectureForecast = jsonArray.getJSONObject(i);
+            id = lectureForecast.getInt(OWM_ID);
+            title = lectureForecast.getString(OWM_TITLE);
+
+//            startTime = lectureForecast.getString(OWM_STARTTIME);
+//            endTime = lectureForecast.getString(OWM_ENDTIME);
+//            dateString = lectureForecast.getString(OWM_DATE);
+//            place = lectureForecast.getString(OWM_ROOM);
+
+            authors = lectureForecast.getString(OWM_AUTHORS);
+            schedule = lectureForecast.getJSONObject(OWM_SCHEDULE);
+
+            startTime = schedule.getString(OWM_STARTTIME);
+            endTime = schedule.getString(OWM_ENDTIME);
+            dateString = schedule.getString(OWM_DATE);
+            if (dateString.equals("12 05 2017")) {
+                date_id = 1;
+            } else if (dateString.equals("13 05 2017")) {
+                date_id = 2;
+            } else {
+                date_id = 3;
+            }
+            place = schedule.getString(OWM_ROOM);
+
+            parsedSpecialData[i] = " - " + title + " - " + dateString + "-" + place + "--";
+
+            if (i != jsonArray.length() - 1) {
+                deleteWhere += id + ", ";
+            } else {
+                deleteWhere += id;
+            }
+
+            ContentValues cv = new ContentValues();
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_ID, id);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_START_TIME, startTime);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_END_TIME, endTime);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_TITLE, title);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_DATE_ID, date_id);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_AUTHOR, authors);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_ROOM_ID, place);
+
+            toadd.add(cv);
+        }
+
+        deleteWhere += " )";
+        String[] whereArr = {deleteWhere};
+        ContentValues[] arr = new ContentValues[toadd.size()];
+        int i = 0;
+        for (ContentValues c :
+                toadd) {
+            arr[i] = c;
+            i++;
+        }
+
+        context.getContentResolver().delete(DatabaseContract.LecturesEntry.CONTENT_URI, DatabaseContract.LecturesEntry.COLUMN_ID, whereArr);
+        context.getContentResolver().bulkInsert(DatabaseContract.LecturesEntry.CONTENT_URI, arr);
+
+        return parsedSpecialData;
     }
 
-    /**
-     * In case of a conflict when inserting the values, another update query is sent.
-     *
-     * @param db     Database to insert to.
-     * @param uri    Content provider uri.
-     * @param table  Table to insert to.
-     * @param values The values to insert to.
-     * @param column Column to identify the object.
-     * @throws android.database.SQLException
-     */
 
 }

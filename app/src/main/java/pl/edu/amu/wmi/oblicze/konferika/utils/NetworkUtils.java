@@ -16,7 +16,6 @@
 package pl.edu.amu.wmi.oblicze.konferika.utils;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,21 +31,13 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String STATIC_LECTURES_URL =
-            "https://rszczers.students.wmi.amu.edu.pl/oblicze_poll/json/";
+    private static final String STATIC_LECTURES_URL = "http://oblicze.wmi.amu.edu.pl/poll/json/";
+//            "https://rszczers.students.wmi.amu.edu.pl/oblicze_poll/json/";
 //                "http://rszczers.abraham.linuxpl.info/oblicze_poll/json/";
     private static final String FORECAST_BASE_URL = STATIC_LECTURES_URL;
 
-    /* The format we want our API to return */
-    private static final String format = "json";
-    /* The units we want our API to return */
-    private static final String units = "metric";
-    /* The number of days we want our API to return */
-    private static final int numDays = 14;
-
 
     public static URL buildUrl(String thingsToGet) {
-        // COMPLETED (1) Fix this method to return the URL used to query Open Weather Map's API
         Uri builtUri = Uri.parse(FORECAST_BASE_URL + thingsToGet);
 
         URL url = null;
@@ -56,23 +47,9 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URI " + url);
-
         return url;
     }
 
-    /**
-     * Builds the URL used to talk to the weather server using latitude and longitude of a
-     * location.
-     *
-     * @param lat The latitude of the location
-     * @param lon The longitude of the location
-     * @return The Url to use to query the weather server.
-     */
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
-    }
 
     /**
      * This method returns the entire result from the HTTP response.

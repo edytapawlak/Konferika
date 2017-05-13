@@ -18,9 +18,9 @@ import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 
 public class TagDataActivity extends AppCompatActivity {
 
-    Context mActivity;
-    int tagId;
-    String tagTitle;
+    private Context mActivity;
+    private int tagId;
+    private String tagTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

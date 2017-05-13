@@ -19,8 +19,6 @@ import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
 import pl.edu.amu.wmi.oblicze.konferika.obj.Tag;
 import pl.edu.amu.wmi.oblicze.konferika.R;
 
-//import com.app.android.konferika.data.ActivityData;
-
 public class TagsActivity extends BaseActivity {
     private ScrollView scrollView;
     private LinearLayout linear;
@@ -58,14 +56,7 @@ public class TagsActivity extends BaseActivity {
             btn.setTransformationMethod(null);
             btn.setTextColor(ContextCompat.getColor(mActivity, R.color.blu));
             btn.setBackgroundColor(Color.argb(100, 255, 255, 255));
-            int color1 = (int) (Math.random() * 127);
-            int color2 = (int) (Math.random() * 127) + 127;
-            int color3 = (int) (Math.random() * 225);
-//            if (Math.random() > 0.5) {
-//                btn.setBackgroundColor(Color.argb(60, 0, color2, 0));
-//            } else {
-//                btn.setBackgroundColor(Color.argb(60, color2, 0, 0));
-//            }
+
             linear.addView(btn, params);
             btn1 = ((Button) findViewById(id_));
             btn1.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +67,6 @@ public class TagsActivity extends BaseActivity {
                     Intent i = new Intent(TagsActivity.this, TagDataActivity.class);
                     i.putExtra("tagId", id_);
                     String tagTitle = findTagTitleById(tags, id_);
-//                    Log.v("Tag_id", tagTitle);
                     i.putExtra("tagTitle", tagTitle);
                     startActivity(i);
                 }
@@ -86,6 +76,11 @@ public class TagsActivity extends BaseActivity {
         linear.invalidate();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        super.navigationView.setCheckedItem(R.id.drawer_tags);
+    }
 
     private String findTagTitleById(List<Tag> arr, int id) {
         for (Tag t :

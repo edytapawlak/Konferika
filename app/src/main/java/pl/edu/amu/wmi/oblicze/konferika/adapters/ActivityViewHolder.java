@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -97,7 +96,6 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                     imageTest.setImageResource(R.drawable.ic_heart_fill);
                     imageTest.setVisibility(View.INVISIBLE);
                 }
-                Log.v("Clik in ViewHolder", "Clicked " + isChanged);
                 DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
             }
 
@@ -140,7 +138,6 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                     myActCheckbox.setChecked(true);
                     myActCheckbox.setVisibility(View.VISIBLE);
                 }
-                Log.v("Clik in ViewHolder", "Clicked " + isChanged);
                 DisplayActDataAdapter.getmClickHandler().onStarChanged(isChanged, id);
             }
         });

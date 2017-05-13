@@ -5,30 +5,29 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
-
-import pl.edu.amu.wmi.oblicze.konferika.utils.NetworkUtils;
-import pl.edu.amu.wmi.oblicze.konferika.utils.OpenConferenceJsonUtils;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
 
+import pl.edu.amu.wmi.oblicze.konferika.utils.NetworkUtils;
+import pl.edu.amu.wmi.oblicze.konferika.utils.OpenConferenceJsonUtils;
+
 
 public class SplashActivity extends AppCompatActivity {
-    Context con;
+    private Context con;
+    private Intent intent;
+    private int isRunning;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        con  =  this;
+        con = this;
         loadData();
-
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-//        finish();
     }
 
     private void loadData() {
-        new SplashActivity.FetchDataTask().execute("get_lectures", "get_posters", "get_breaks");
+        new SplashActivity.FetchDataTask().execute("get_lectures", "get_posters", "get_breaks", "get_special");
     }
 
     public class FetchDataTask extends AsyncTask<String, Void, String[]> {
@@ -38,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
             super.onPreExecute();
 //            mLoadingIndicator.setVisibility(View.VISIBLE);
         }
+
         @Override
         protected String[] doInBackground(String... params) {
 
@@ -52,24 +52,29 @@ public class SplashActivity extends AppCompatActivity {
             URL postersRequestUrl = NetworkUtils.buildUrl(posters);
             String breaks = params[2];
             URL breaksRequestUrl = NetworkUtils.buildUrl(breaks);
+            String special = params[3];
+            URL specialRequestUrl = NetworkUtils.buildUrl(special);
 
-            int isRunning = -1;
-            try{
+            isRunning = -1;
+            try {
                 isRunning = NetworkUtils.isRunning();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
 
-            if(isRunning == 2){ // to oznacza, ze akurat jest przerwa techniczna i nie chcę aktualizować danych
+            Log.v("IsRunning", isRunning + "");
+
+            if (isRunning == 2) { // to oznacza, ze akurat jest przerwa techniczna i nie chcę aktualizować danych
                 return null;
             }
-            if(isRunning == 0 ){
-                Intent i = new Intent(SplashActivity.this, StopActivity.class);
-                i.putExtra("info", isRunning);
-                startActivity(i);
+            if (isRunning == 0) {
+                Log.v("IsRunning jest 0", isRunning + "");
+                intent = new Intent(SplashActivity.this, StopActivity.class);
+                intent.putExtra("info", isRunning);
+                startActivity(intent);
                 finish();
-            }else {
+            } else {
                 try {
                     String jsonLectResponse = NetworkUtils
                             .getResponseFromHttpUrl(lectRequestUrl);
@@ -77,8 +82,11 @@ public class SplashActivity extends AppCompatActivity {
                             .getResponseFromHttpUrl(postersRequestUrl);
                     String jsonBreakResponse = NetworkUtils
                             .getResponseFromHttpUrl(breaksRequestUrl);
-//                Log.v("Wynik: ", jsonLectResponse);
+                    String jsonSpecialResponse = NetworkUtils
+                            .getResponseFromHttpUrl(specialRequestUrl);
 
+                    String[] simpleJsonSpecialData = OpenConferenceJsonUtils
+                            .getSpecialLectStringsFromJson(con, jsonSpecialResponse);
                     String[] simpleJsonLectData = OpenConferenceJsonUtils
                             .getLecturesStringsFromJson(con, jsonLectResponse);
                     String[] simpleJsonPostersData = OpenConferenceJsonUtils
@@ -97,17 +105,17 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String[] weatherData) {
-            int i = 0;
-            if (weatherData != null) {
-
-            } else {
+        protected void onPostExecute(String[] data) {
+            if (data == null) {
+                // To znaczy, że nie ma internetu albo jest przerwa techniczna.
 //                showErrorMessage();
-                Toast.makeText(con, "Cos nie tego! ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(con, "PrzerwaTech", Toast.LENGTH_SHORT).show();
             }
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            if (isRunning != 0) {
+                intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
