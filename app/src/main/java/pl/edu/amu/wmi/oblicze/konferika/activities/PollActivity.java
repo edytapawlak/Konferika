@@ -20,6 +20,7 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
 
     private ZXingScannerView zXingScannerView;
     private final int PERMISSION_REQUEST_CAMERA = 111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,38 +36,20 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
 
     public void scan(View view) {
 
-
-        // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_REQUEST_CAMERA);
+        } else {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        PERMISSION_REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+            zXingScannerView = new ZXingScannerView(getApplicationContext());
+            setContentView(zXingScannerView);
+            zXingScannerView.setResultHandler(this);
+            zXingScannerView.startCamera();
         }
-
-        zXingScannerView = new ZXingScannerView(getApplicationContext());
-        setContentView(zXingScannerView);
-        zXingScannerView.setResultHandler(this);
-        zXingScannerView.startCamera();
 
     }
 
@@ -74,7 +57,7 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
     protected void onResume() {
         super.onResume();
         super.navigationView.setCheckedItem(R.id.drawer_poll);
-        if(zXingScannerView!= null) {
+        if (zXingScannerView != null) {
 //            zXingScannerView.resumeCameraPreview(this);
 
         }
@@ -83,7 +66,7 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
     @Override
     protected void onPause() {
         super.onPause();
-        if(zXingScannerView != null) {
+        if (zXingScannerView != null) {
             zXingScannerView.stopCamera();
         }
     }
@@ -112,19 +95,17 @@ public class PollActivity extends BaseActivity implements ZXingScannerView.Resul
                     setContentView(zXingScannerView);
                     zXingScannerView.setResultHandler(this);
                     zXingScannerView.startCamera();
-                    Toast.makeText(this, "Mam pozwo", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Mam pozwo", Toast.LENGTH_SHORT).show();
 
                 } else {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(this, "Nie mam pozwo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Brak pozwolenia. Nie można użyć aparatu do zeskanowania kodu.", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
