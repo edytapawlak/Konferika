@@ -47,7 +47,7 @@ public class Lecture implements Activity, Serializable {
         tagCur.moveToFirst();
         String t = "";
         while (!tagCur.isAfterLast()) {
-            t += tagCur.getString(0) + " ";
+            t += "#" + tagCur.getString(0) + " ";
             tagCur.moveToNext();
         }
         tags = t;

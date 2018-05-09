@@ -35,6 +35,9 @@ import pl.edu.amu.wmi.oblicze.konferika.data.DatabaseContract;
  */
 public final class OpenConferenceJsonUtils {
 
+    private static String firstDay = "11 05 2018";
+    private static String secondDay = "12 05 2018";
+    private static String thirdDay = "13 05 2018";
     /**
      * This method parses JSON from a web response and returns an array of Strings
      * describing lectures
@@ -150,9 +153,9 @@ public final class OpenConferenceJsonUtils {
             place = schedule.getString(OWM_ROOM);
 
 // ------- Zamiana daty na inty
-            if (dateString.equals("12 05 2017")) {
+            if (dateString.equals(firstDay)) {
                 date = 1;
-            } else if (dateString.equals("13 05 2017")) {
+            } else if (dateString.equals(secondDay)) {
                 date = 2;
             } else {
                 date = 3;
@@ -356,9 +359,9 @@ public final class OpenConferenceJsonUtils {
             endTime = schedule.getString(OWM_ENDTIME);
             date = schedule.getString(OWM_DATE);
             String dateString = schedule.getString(OWM_DATE);
-            if (dateString.equals("12 05 2017")) {
+            if (dateString.equals(firstDay)) {
                 date_id = 1;
-            } else if (dateString.equals("13 05 2017")) {
+            } else if (dateString.equals(secondDay)) {
                 date_id = 2;
             } else {
                 date_id = 3;
@@ -466,9 +469,9 @@ public final class OpenConferenceJsonUtils {
             startTime = schedule.getString(OWM_STARTTIME);
             endTime = schedule.getString(OWM_ENDTIME);
             dateString = schedule.getString(OWM_DATE);
-            if (dateString.equals("12 05 2017")) {
+            if (dateString.equals(firstDay)) {
                 date_id = 1;
-            } else if (dateString.equals("13 05 2017")) {
+            } else if (dateString.equals(secondDay)) {
                 date_id = 2;
             } else {
                 date_id = 3;

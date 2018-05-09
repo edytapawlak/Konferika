@@ -50,7 +50,7 @@ public class TagsActivity extends BaseActivity {
             Button btn = new Button(this);
             btn.setId(t.getId());
             final int id_ = btn.getId();
-            btn.setText(t.getTitle());
+            btn.setText("#" + t.getTitle());
             btn.setMinHeight(20);
             btn.setPadding(10, 1, 10, 1);
             btn.setTransformationMethod(null);

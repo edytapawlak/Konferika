@@ -8,7 +8,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
+import pl.edu.amu.wmi.oblicze.konferika.R;
 import pl.edu.amu.wmi.oblicze.konferika.adapters.ActivityViewHolder;
 import pl.edu.amu.wmi.oblicze.konferika.adapters.SectionViewHolder;
 
@@ -20,7 +22,11 @@ public class SectionHeader extends StatelessSection {
 
 
     public SectionHeader(Cursor childrens, String sectionText, boolean isLect) {
-        super(pl.edu.amu.wmi.oblicze.konferika.R.layout.section_header, pl.edu.amu.wmi.oblicze.konferika.R.layout.forecast_list_item);
+        //super(pl.edu.amu.wmi.oblicze.konferika.R.layout.section_header, pl.edu.amu.wmi.oblicze.konferika.R.layout.forecast_list_item);
+        super(SectionParameters.builder()
+                .itemResourceId(R.layout.forecast_list_item)
+                .headerResourceId(R.layout.section_header)
+                .build());
         this.childrens = childrens;
         this.title = sectionText;
         this.areLectures = isLect;
