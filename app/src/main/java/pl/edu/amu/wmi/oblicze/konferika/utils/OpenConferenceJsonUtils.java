@@ -18,6 +18,7 @@ package pl.edu.amu.wmi.oblicze.konferika.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -188,12 +189,13 @@ public final class OpenConferenceJsonUtils {
             cv.put(DatabaseContract.LecturesEntry.COLUMN_AUTHOR, aut);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ABSTRACT, description);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_START_TIME, startTime);
+            cv.put(DatabaseContract.LecturesEntry.COLUMN_END_TIME, endTime);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_DATE_ID, date);
             cv.put(DatabaseContract.LecturesEntry.COLUMN_ROOM_ID, place);
             toadd.add(cv);
         }
 
-        deleteWhere += ", 1, 2, 3)";
+        deleteWhere += ", 1, 2, 3, 4)";
         String[] whereArr = {deleteWhere};
         ContentValues[] arr = new ContentValues[toadd.size()];
         ContentValues[] scheduleArr = new ContentValues[toadd.size()];

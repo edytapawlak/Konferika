@@ -122,7 +122,9 @@ public class UserDayData extends DisplayData implements Serializable {
                 DatabaseContract.LecturesEntry.COLUMN_START_TIME,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
                 DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR,
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE};
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE,
+                DatabaseContract.LecturesEntry.COLUMN_END_TIME,
+        };
         String[] breakssProjection = {
                 DatabaseContract.BreakEntry.COLUMN_TYPE,
                 DatabaseContract.BreakEntry.COLUMN_TITLE,

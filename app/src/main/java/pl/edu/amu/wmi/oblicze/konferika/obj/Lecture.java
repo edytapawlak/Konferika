@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +22,7 @@ public class Lecture implements Activity, Serializable {
     private int dateId;
     private int id;
     private String startTime;
+    private String endTime;
     private String room;
     private boolean isInUserSched;
     private float rating;
@@ -28,7 +30,7 @@ public class Lecture implements Activity, Serializable {
     private String tags;
 
 
-    public Lecture(Context context, String title, String author, String abs, int date, int id, String startTime, String room, boolean isInSched, float rating) {
+    public Lecture(Context context, String title, String author, String abs, int date, int id, String startTime, String endTime, String room, boolean isInSched, float rating) {
         this.title = title;
         this.author = author;
         this.abs = abs;
@@ -36,6 +38,7 @@ public class Lecture implements Activity, Serializable {
 //        int idd = Integer.parseInt(id);
         this.id = id;
         this.startTime = startTime;
+        this.endTime = endTime;
         this.room = room;
         this.tags = tags;
         this.isInUserSched = isInSched;
@@ -71,7 +74,7 @@ public class Lecture implements Activity, Serializable {
 
     @Override
     public void handleOnClick(Context context, SchedFragment fragment) {
-        if(this.id != 1 && this.id != 2 && this.id != 3) {
+        if(this.id != 4 && this.id != 1 && this.id != 2 && this.id != 3) {
             Intent intent = new Intent(context, ItemDetailsActivity.class);
             intent.putExtra("lectID", this.getId());
             context.startActivity(intent);
@@ -135,6 +138,7 @@ public class Lecture implements Activity, Serializable {
         holder.mCardView.setCardBackgroundColor(Color.WHITE);
         holder.mRefDataTextView.setText(this.getTitle());
         holder.mAuthorTextView.setText(this.getAuthor());
+        holder.mTimeTextView.setText(this.getStartTime() + " - " + this.getEndTime());
         holder.mRoomTextView.setText(this.getRoom());
         holder.mTagsTextView.setText(this.getTags());
 //        holder.isIn = this.isInUserSched;
@@ -152,10 +156,11 @@ public class Lecture implements Activity, Serializable {
 //            holder.myActCheckbox.setVisibility(View.VISIBLE);
 //        }
 
-        if(this.id != 1 && this.id != 2 && this.id != 3) {
+        if(this.id != 4 && this.id != 1 && this.id != 2 && this.id != 3) {
             holder.mRatingBar.setVisibility(View.VISIBLE);
             holder.mRatingBar.setRating(this.getRating());
-        }else{
+            holder.myActCheckbox.setVisibility(View.VISIBLE);
+        } else {
             holder.mRatingBar.setVisibility(View.INVISIBLE);
             holder.myActCheckbox.setVisibility(View.INVISIBLE);
         }
@@ -179,5 +184,9 @@ public class Lecture implements Activity, Serializable {
     @Override
     public String getStartTime() {
         return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
     }
 }

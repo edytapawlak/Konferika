@@ -23,6 +23,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
     public final TextView mRefDataTextView;
     public final TextView mAuthorTextView;
+    public final TextView mTimeTextView;
     public final TextView mIdDataTextView;
     public final TextView mRoomTextView;
     public final TextView mTagsTextView;
@@ -45,6 +46,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
         this.isIn = false;
         mRefDataTextView = (TextView) itemView.findViewById(R.id.tv_ref);
         mAuthorTextView = (TextView) itemView.findViewById(R.id.tv_author);
+        mTimeTextView = (TextView) itemView.findViewById(R.id.tv_time);
         mIdDataTextView = (TextView) itemView.findViewById(R.id.tv_id);
         mRoomTextView = (TextView) itemView.findViewById(R.id.tv_room);
         mTagsTextView = (TextView) itemView.findViewById(R.id.tv_tags);
@@ -164,7 +166,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
                 activ.handleOnClick(context, null);
             } else {
                 int id = Integer.parseInt(text);
-                if (id != 1 && id != 2 && id != 3) {
+                if (id!= 4 && id != 1 && id != 2 && id != 3) {
                     Intent intent = new Intent(context, ItemDetailsActivity.class);
                     intent.putExtra("lectID", id);
                     context.startActivity(intent);
@@ -187,7 +189,7 @@ public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.
 
     public void setId(int id){
         this.id = id;
-        if (id == 1 || id == 2 || id == 3) {
+        if (id == 1 || id == 2 || id == 3 || id == 4) {
             myActCheckbox.setVisibility(View.INVISIBLE);
             imageTest.setVisibility(View.INVISIBLE);
         }

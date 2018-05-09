@@ -49,7 +49,8 @@ public class ItemDetailsActivity extends AppCompatActivity {
                 DatabaseContract.LecturesEntry.COLUMN_DATE_ID,
                 DatabaseContract.LecturesEntry.COLUMN_ROOM_ID,
                 DatabaseContract.LecturesJoinScheduleEntry.COLUMN_IS_IN_USR,
-                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE
+                DatabaseContract.LecturesJoinScheduleEntry.COLUMN_RATE,
+                DatabaseContract.LecturesEntry.COLUMN_END_TIME
         };
 //        Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesEntry.buildLecturesUriWithDate(lectureId), projection, null, null, null);
         Cursor lectCur = mContext.getContentResolver().query(DatabaseContract.LecturesJoinScheduleEntry.buildLecturesJoinScheduleUriWithDate(lectureId),
@@ -66,8 +67,9 @@ public class ItemDetailsActivity extends AppCompatActivity {
             boolean inUsrSched = (isInUstDat == 1);
             String tags = "";
             float rate = lectCur.getFloat(7);
+            String endTime = lectCur.getString(8);
 
-            item = new Lecture(mContext, title,author, abtract, date, lectureId, startTime, room, inUsrSched, rate);
+            item = new Lecture(mContext, title,author, abtract, date, lectureId, startTime, endTime, room, inUsrSched, rate);
             lectCur.moveToNext();
         }
         lectCur.close();

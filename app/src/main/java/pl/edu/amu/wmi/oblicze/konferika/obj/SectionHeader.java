@@ -78,15 +78,16 @@ public class SectionHeader extends StatelessSection {
             String title = childrens.getString(1);
             String author = childrens.getString(2);
             String abs = childrens.getString(3);
-            int date = childrens.getInt(5);
-            String startTime = childrens.getString(4);
+            int date = childrens.getInt(4);
+            String startTime = childrens.getString(5);
             String room = childrens.getString(6);
 //            String tags = "tu będą tagi";
             boolean inUsrSched = (childrens.getInt(7) == 1);
             itemHolder.setIn(inUsrSched);
             float rating = childrens.getFloat(8);
+            String endTime = childrens.getString(9);
 
-            activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, room, inUsrSched, rating);
+            activ = new Lecture(((ActivityViewHolder) holder).getContext(), title, author, abs, date, activId, startTime, endTime, room, inUsrSched, rating);
         } else if ( activId == PosterSesion.ID) {
             activ = new PosterSesion();
         } else {
