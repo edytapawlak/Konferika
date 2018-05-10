@@ -375,7 +375,7 @@ public final class OpenConferenceJsonUtils {
             if (title.equals("Przerwa obiadowa")) {
                 type = 2;
             }
-            if (title.equals("Sesja plakatowa")) {
+            if (title.contains("plakatowa")) {
                 type = 1;
             }
             if(title.contains("Spacer po Poznaniu")){
@@ -384,7 +384,7 @@ public final class OpenConferenceJsonUtils {
             if(title.contains("integra")){
                 type = 5;
             }
-            if(title.contains("gier")){
+            if(title.contains("WMI")){
                 type = 6;
             }
             if(title.contains("Zakończenie")){

@@ -63,13 +63,13 @@ public class SplashActivity extends AppCompatActivity {
                 return null;
             }
 
-            Log.v("IsRunning", isRunning + "");
+            //Log.v("IsRunning", isRunning + "");
 
             if (isRunning == 2) { // to oznacza, ze akurat jest przerwa techniczna i nie chcę aktualizować danych
                 return null;
             }
             if (isRunning == 0) {
-                Log.v("IsRunning jest 0", isRunning + "");
+                //Log.v("IsRunning jest 0", isRunning + "");
                 intent = new Intent(SplashActivity.this, StopActivity.class);
                 intent.putExtra("info", isRunning);
                 startActivity(intent);
